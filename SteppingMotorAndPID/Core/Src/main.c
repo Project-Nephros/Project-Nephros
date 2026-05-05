@@ -84,7 +84,10 @@ int main(void)
   //ARR value required for different frequencies
   //Slower Values to the top
   uint32_t hz = 1000000-1; //current ARR set at 1000-1 = 1khz.
-  uint32_t khz = 1000-1;
+  uint32_t khz = 1000-1; //6.4 rotations per seond.
+  uint32_t a = 500-1;
+  uint32_t sixtyrpm = 156-1;
+  uint32_t oneeightyrpm = 52 -1;
   uint32_t tenkhz = 100-1;
   //Faster Values to the bottom
 
@@ -136,7 +139,7 @@ int main(void)
 	HAL_Delay(500);
 
 	//Frequency Change
-	uint32_t frequency = khz;
+	uint32_t frequency = oneeightyrpm;
 	uint32_t CCRValue = (frequency + 1) /2;
 	__HAL_TIM_SET_AUTORELOAD(&htim2, frequency);
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, CCRValue);
