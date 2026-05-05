@@ -1,0 +1,12 @@
+../Core/Src/main.c:88:5:main	24	static
+../Core/Src/main.c:161:6:SystemClock_Config	96	static
+../Core/Src/main.c:222:13:MX_ADC1_Init	32	static
+../Core/Src/main.c:281:13:MX_USART2_UART_Init	8	static
+../Core/Src/main.c:316:13:MX_GPIO_Init	40	static
+../Core/Src/main.c:345:13:ADC_StartSequence	32	static
+../Core/Src/main.c:360:14:ADC_CountsToVolts	16	static
+../Core/Src/main.c:366:14:SensorVolts_ToPSI	24	static
+../Core/Src/main.c:376:13:UART_Print	16	static
+../Core/Src/main.c:383:13:UART_PrintPressures	96	static
+../Core/Src/main.c:392:6:HAL_ADC_ConvCpltCallback	40	static
+../Core/Src/main.c:423:6:Error_Handler	4	static,ignoring_inline_asm
