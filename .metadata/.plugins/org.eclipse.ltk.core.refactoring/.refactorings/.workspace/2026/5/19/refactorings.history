@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;Bubble_serial_read&apos;" deleteContents="true" description="Delete resource &apos;Bubble_serial_read&apos;" element1="/Bubble_serial_read" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1777965814568"/>
+</session>
