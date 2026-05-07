@@ -140,20 +140,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
-    if (motorState == Start)
-    {
-      StartPump();
-    }
-    else if (motorState == Maintenance)
-    {
-      UpdatePID(); //this won't work need to feed errors
-    }
-    else if (motorState == End)
-    {
-      currentFrequency = GetFrequency();
-      EndPump(&currentFrequency);
-    }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
