@@ -89,6 +89,15 @@ int main(void)
   uint32_t tenkhz = 100-1;
   //Faster Values to the bottom
 
+  //State Machine
+  enum MotorState {
+    Start,
+    Maintenance,
+    End
+  };
+
+  enum MotorState motorState = Start;
+
   //For Messages
   char buffer[50];
 
@@ -116,7 +125,9 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+  MotorValuesInit();
   StartMotorPWM();
+
 
   //Example console message.
   sprintf(buffer, "StartwithPWM\r\n");
@@ -129,6 +140,20 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
+    if (motorState == Start)
+    {
+      StartPump();
+    }
+    else if (motorState == Maintenance)
+    {
+      UpdatePID(); //this won't work need to feed errors
+    }
+    else if (motorState == End)
+    {
+      currentFrequency = GetFrequency();
+      EndPump(&currentFrequency);
+    }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

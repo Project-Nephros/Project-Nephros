@@ -12,6 +12,7 @@ extern "C" {
     void StartMotorPWM(void);
     void UpdateFrequency(uint32_t frequency);
     uint32_t GetFrequency(void);
+    void MotorValuesInit(void);
     void StartPump(void);
     void EndPump(uint32_t *frequency);
     void UpdatePID(int32_t error); //need to update error type

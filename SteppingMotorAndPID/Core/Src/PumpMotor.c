@@ -19,10 +19,13 @@
  static uint32_t kP = 0.1;
  static int32_t kMaxPIDFrequencyChange = 1; 
 
+ static uint32_t kStartFrequency = 0;
+
 void StartMotorPWM(void){
     //Start PWM which starts stepping
     HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
 }
+
 
 void UpdateFrequency(uint32_t frequency){
 	uint32_t CCRValue = (frequency + 1) /2;
@@ -33,6 +36,10 @@ void UpdateFrequency(uint32_t frequency){
 
 uint32_t GetFrequency(void){
     return __HAL_TIM_GET_AUTORELOAD(&htim2);
+}
+
+void MotorValuesInit(void){
+    UpdateFrequency(kStartFrequency);
 }
 
 //could potentially have startpump and endpump functions return a string 
