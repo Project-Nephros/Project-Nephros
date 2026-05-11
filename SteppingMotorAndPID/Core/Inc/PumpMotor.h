@@ -10,11 +10,11 @@ extern "C" {
 
     //Defines
     void StartMotorPWM(void);
-    void UpdateFrequency(uint32_t frequency);
+    void UpdateFrequency(uint32_t ARR);
     uint32_t GetFrequency(void);
     void MotorValuesInit(void);
     void StartPump(void);
-    void EndPump(uint32_t *frequency);
+    void EndPump(uint32_t *ARR);
     void UpdatePID(int32_t error); //need to update error type
 
 #ifdef __cplusplus

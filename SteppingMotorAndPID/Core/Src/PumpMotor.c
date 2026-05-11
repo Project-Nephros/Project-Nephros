@@ -11,15 +11,16 @@
 #include <math.h>
 
 //Variables - TODO UPDATE VARIABLES TO REALISTIC VALUES 
- static uint32_t kTimeUpdateInterval = 0;
+ static uint32_t kTimeUpdateInterval = 20;
  static uint32_t kUpdateChange = 1;
- static uint32_t kFinalStartFrequency = 0;
- static uint32_t kEndFrequency = 0;
- 
- static uint32_t kP = 0.1;
- static int32_t kMaxPIDFrequencyChange = 1; 
+ static uint32_t kUpdateDecrease = 0;
+ static uint32_t kUpdateIncrease = 0;
+ static uint32_t kFinalStartARR = 156-1; //we'll just say 60rpm for now
 
- static uint32_t kStartFrequency = 0;
+ static uint32_t kStartAndEndARR = 0; //Find Start Frequency by the lowest frequency we get no movement
+
+ static uint32_t kP = 0.1;
+ static int32_t kMaxPIDARRChange = 1; 
 
 void StartMotorPWM(void){
     //Start PWM which starts stepping
@@ -27,19 +28,19 @@ void StartMotorPWM(void){
 }
 
 
-void UpdateFrequency(uint32_t frequency){
-	uint32_t CCRValue = (frequency + 1) /2;
-	__HAL_TIM_SET_AUTORELOAD(&htim2, frequency);
+void UpdateARR(uint32_t ARR){
+	uint32_t CCRValue = (ARR + 1) /2;
+	__HAL_TIM_SET_AUTORELOAD(&htim2, ARR);
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, CCRValue);
 	HAL_TIM_GenerateEvent(&htim2, TIM_EVENTSOURCE_UPDATE);
 }
 
-uint32_t GetFrequency(void){
+uint32_t GetARR(void){
     return __HAL_TIM_GET_AUTORELOAD(&htim2);
 }
 
 void MotorValuesInit(void){
-    UpdateFrequency(kStartFrequency);
+    UpdateARR(kStartAndEndARR);
 }
 
 //could potentially have startpump and endpump functions return a string 
@@ -51,16 +52,33 @@ void StartPump(void) {
     //tim2 is currently set to tick every microsecond
     //we want to ramp up frequency a certain amount per a certain amount of time
     //until it reaches a certain frequency and then we end function
-    static uint32_t frequency = 0;
+    static uint32_t ARR = kStartAndEndARR ;
     static uint32_t lastUpdate = 0;
 
-    if (frequency < kFinalStartFrequency) {
+    if (ARR > kFinalStartARR) {
         
         uint32_t currentTime = HAL_GetTick();
 
         if ((currentTime - lastUpdate) >= kTimeUpdateInterval) {
-            frequency += kUpdateIncrease;
-            UpdateFrequency(frequency);
+            
+            uint32_t errorBetweenCurrentAndFinal = ARR - kFinalStartARR;
+            uint32_t decrease = errorBetweenCurrentAndFinal / kRampFactor;
+
+            if (decrease < 1)
+            {
+                decrease = 1;
+            }
+
+                ARR -= decrease;
+
+            if (ARR < kFinalStartARR)
+            {
+                ARR = kFinalStartARR;
+            }
+
+            UpdateARR(ARR);
+
+            lastUpdate = currentTime;
         }
     }
 }
@@ -69,17 +87,22 @@ void StartPump(void) {
 //we will only want to call it say when a button is pressed
 //at that time we will hand it the frequency and then this should work
 //but i need to double check this
-void EndPump(uint32_t *frequency) {
+void EndPump(uint32_t *ARR) {
 
     static uint32_t lastUpdate = 0;
 
-    if (*frequency > kEndFrequency) {
+    if (*ARR < kStartAndEndARR) {
         
         uint32_t currentTime = HAL_GetTick();
 
         if ((currentTime - lastUpdate) >= kTimeUpdateInterval) {
-            *frequency -= kUpdateIncrease;
-            UpdateFrequency(*frequency);
+
+            uint32_t errorBetweenCurrentAndFinal = kFinalStartARR - *ARR;
+            uint32_t increase = errorBetweenCurrentAndFinal / kRampFactor;
+
+
+            *ARR -= kUpdateIncrease;
+            UpdateARR(*ARR);
         }
     }
 }
@@ -93,12 +116,12 @@ void UpdatePID(int32_t error) {
     
     int32_t errorChange = (error * kP);
 
-    int32_t frequency = (int32_t)GetFrequency();
-    frequency += errorChange;
+    int32_t ARR = (int32_t)GetARR();
+    ARR += errorChange;
 
-    if (frequency < 0) { frequency = 0};
-    if (frequency > kMaxPIDFrequencyChange) { frequency = kMaxPIDFrequencyChange};
+    if (ARR < 0) { ARR = 0};
+    if (ARR > kMaxPIDARRChange) { ARR = kMaxPIDARRChange};
 
-    UpdateFrequency((uint32_t)frequency);
+    UpdateARR((uint32_t)ARR);
 
 }
