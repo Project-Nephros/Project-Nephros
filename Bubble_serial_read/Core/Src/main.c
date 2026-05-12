@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -33,6 +34,14 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
+#define R_FIXED 10000.0
+#define R0      100000.0
+#define BETA    4261.0
+#define T0      298.15
+#define ADC_MAX 4095.0
+#define V_REF   3.3
+
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -42,24 +51,61 @@
 
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
+DMA_HandleTypeDef hdma_adc1;
 
 TIM_HandleTypeDef htim1;
 
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
+
+float adcToTemperature(uint16_t adcValue)
+{
+    float Vout = (adcValue / ADC_MAX) * V_REF;
+
+    float R_therm = R_FIXED * (Vout / (V_REF - Vout));
+
+    float tempK = 1.0 / ((1.0 / T0) + (1.0 / BETA) * log(R_therm / R0));
+
+    return tempK - 273.15;
+}
+
 volatile uint8_t bubble_detected = 0;
 volatile uint8_t bubble_sensor_failed = 0;
-volatile uint8_t VTO_ADC_8Bit;
+volatile uint16_t VTO_ADC_12Bit;
 volatile double VTO;
 volatile double VTO_NORM = 0.3;
 
 volatile uint8_t tx_complete = 1;
+volatile uint8_t ADC_ready = 0;
+uint32_t ADC_VAL[3];
+volatile float THERM1_32Bit;
+volatile float THERM2_32Bit;
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc){
 
+	if (hadc->Instance == ADC1){
+			// call back when ADC values are ready
+			ADC_ready = 1;
+			VTO_ADC_12Bit = (uint16_t)(ADC_VAL[0]);
+
+			THERM1_32Bit = (float)adcToTemperature((uint16_t)(ADC_VAL[1]));
+			THERM2_32Bit = (float)adcToTemperature((uint16_t)(ADC_VAL[2]));
+
+			// convert to voltage for continous self test
+			VTO = (VTO_ADC_12Bit * V_REF) / ADC_MAX;
+
+			// treating all non-normal self test voltages as failure
+			if (VTO > VTO_NORM){
+				// set failure flag
+				// if control team wants; change to hold GPIO high for a faster interrupt
+				bubble_sensor_failed = 1;
+			}
+	}
+
 	// use this if block for integration
 	// update hadc->Instance to the ADC instance in use on integrated STM
+	/*
 	if (hadc->Instance == ADC1){
 		VTO_ADC_8Bit = (uint8_t)(HAL_ADC_GetValue(&hadc1));
 
@@ -73,6 +119,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc){
 			bubble_sensor_failed = 1;
 		}
 	}
+	*/
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
@@ -91,11 +138,13 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
 	tx_complete = 1;
 }
 
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_TIM1_Init(void);
@@ -137,17 +186,19 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART2_UART_Init();
   MX_ADC1_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
 
   // start ADC polling for self testing
-  HAL_ADC_Start_IT(&hadc1);
   HAL_TIM_Base_Start(&htim1);
+  HAL_ADC_Start_DMA(&hadc1, ADC_VAL, 3);
 
   char* bubble_message = "Bubble detected\r\n";
   char* fail_message = "Bubble sensor failure\r\n";
+  char temperature_message[120];
 
   /* USER CODE END 2 */
 
@@ -155,10 +206,21 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if (ADC_ready){
+		  sprintf(temperature_message, "T1 = %.2f C | T2 = %.2f C \r\n", (float)THERM1_32Bit, (float)THERM2_32Bit);
+		  ADC_ready = 0;
+		  if (tx_complete){
+		          tx_complete = 0;
+		          HAL_UART_Transmit_IT(&huart2, (uint8_t*)temperature_message, (int)strlen(temperature_message));
+		  		  }
+	  }
+
+
+
 	  //example use of bubble_detected and bubble_sensor_failed
 	  if (bubble_detected){
 		  if (tx_complete){
-        tx_complete = 0;
+			  tx_complete = 0;
 			  HAL_UART_Transmit_IT(&huart2, (uint8_t*)bubble_message, (int)strlen(bubble_message));
 		  }
 		  
@@ -169,7 +231,7 @@ int main(void)
 
 	  if (bubble_sensor_failed){
 		  if (tx_complete){
-        tx_complete = 0;
+			  tx_complete = 0;
 			  HAL_UART_Transmit_IT(&huart2, (uint8_t*)fail_message, (int)strlen(fail_message));
 		  }
 
@@ -267,13 +329,13 @@ static void MX_ADC1_Init(void)
   */
   hadc1.Instance = ADC1;
   hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
-  hadc1.Init.Resolution = ADC_RESOLUTION_8B;
+  hadc1.Init.Resolution = ADC_RESOLUTION_12B;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
   hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   hadc1.Init.LowPowerAutoWait = DISABLE;
   hadc1.Init.ContinuousConvMode = DISABLE;
-  hadc1.Init.NbrOfConversion = 1;
+  hadc1.Init.NbrOfConversion = 3;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConv = ADC_EXTERNALTRIG_T1_TRGO;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_RISING;
@@ -293,6 +355,22 @@ static void MX_ADC1_Init(void)
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Rank = ADC_REGULAR_RANK_2;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Rank = ADC_REGULAR_RANK_3;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -382,6 +460,22 @@ static void MX_USART2_UART_Init(void)
   /* USER CODE BEGIN USART2_Init 2 */
 
   /* USER CODE END USART2_Init 2 */
+
+}
+
+/**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Channel1_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
 
 }
 

@@ -66,6 +66,10 @@ void Error_Handler(void);
 #define VTTL_Pin GPIO_PIN_3
 #define VTTL_GPIO_Port GPIOA
 #define VTTL_EXTI_IRQn EXTI3_IRQn
+#define THERM1_Pin GPIO_PIN_4
+#define THERM1_GPIO_Port GPIOA
+#define THERM2_Pin GPIO_PIN_5
+#define THERM2_GPIO_Port GPIOA
 #define SWDIO_Pin GPIO_PIN_13
 #define SWDIO_GPIO_Port GPIOA
 #define SWCLK_Pin GPIO_PIN_14
