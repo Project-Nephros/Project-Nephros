@@ -11,14 +11,13 @@
 #include <math.h>
 
 //Variables - TODO UPDATE VARIABLES TO REALISTIC VALUES 
+ //START/END VARIABLES
  static uint32_t kTimeUpdateInterval = 20;
- static uint32_t kUpdateChange = 1;
- static uint32_t kUpdateDecrease = 0;
- static uint32_t kUpdateIncrease = 0;
  static uint32_t kFinalStartARR = 156-1; //we'll just say 60rpm for now
-
+ static uint32_t kRampFactor = 50; //TO BE TESTED AND CHANGED
  static uint32_t kStartAndEndARR = 0; //Find Start Frequency by the lowest frequency we get no movement
 
+ //PID VARIABLES
  static uint32_t kP = 0.1;
  static int32_t kMaxPIDARRChange = 1; 
 
@@ -90,6 +89,13 @@ void StartPump(void) {
 void EndPump(uint32_t *ARR) {
 
     static uint32_t lastUpdate = 0;
+    static uint32_t startARR = 0;
+    static uint8_t rampStarted = 0;
+
+    if (!rampStarted) {
+        startARR = *ARR;
+        rampStarted = 1;
+    }
 
     if (*ARR < kStartAndEndARR) {
         
@@ -97,13 +103,28 @@ void EndPump(uint32_t *ARR) {
 
         if ((currentTime - lastUpdate) >= kTimeUpdateInterval) {
 
-            uint32_t errorBetweenCurrentAndFinal = kFinalStartARR - *ARR;
-            uint32_t increase = errorBetweenCurrentAndFinal / kRampFactor;
+            uint32_t progressFromStartARR = *ARR - startARR;
+            uint32_t increase = progressFromStartARR / kRampFactor;
 
+            if (increase < 1)
+            {
+                increase = 1;
+            }
 
-            *ARR -= kUpdateIncrease;
+            *ARR += increase;
+
+            if (*ARR > kStartAndEndARR)
+            {
+                *ARR = kStartAndEndARR;
+            }
+
+            
             UpdateARR(*ARR);
+            lastUpdate = currentTime;
         }
+    }
+    else {
+        rampStarted = 0;
     }
 }
 
