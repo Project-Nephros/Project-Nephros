@@ -18,7 +18,7 @@
  static uint32_t kStartAndEndARR = 0; //Find Start Frequency by the lowest frequency we get no movement
 
  //PID VARIABLES
- static uint32_t kP = 0.1;
+ static uint32_t kP = -0.1;
  static int32_t kMaxPIDARRChange = 1; 
 
 void StartMotorPWM(void){

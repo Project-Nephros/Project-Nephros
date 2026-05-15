@@ -85,7 +85,10 @@ int main(void)
   //ARR value required for different frequencies
   //Slower Values to the top
   uint32_t hz = 1000000-1; //current ARR set at 1000-1 = 1khz.
-  uint32_t khz = 1000-1;
+  uint32_t khz = 1000-1; //6.4 rotations per seond.
+  uint32_t a = 500-1;
+  uint32_t sixtyrpm = 156-1;
+  uint32_t oneeightyrpm = 52 -1;
   uint32_t tenkhz = 100-1;
   //Faster Values to the bottom
 
