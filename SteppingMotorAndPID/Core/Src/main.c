@@ -146,15 +146,14 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
-	HAL_Delay(500); //this is bad:(
+	//HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
 
 	//Frequency Change
-	UpdateFrequency(khz);
-
-
+	//StartPump();
+	EndPump(GetARR());
+	HAL_Delay(10);
 	//For changing direction of motor
-	HAL_GPIO_WritePin(GPIOA, Direction_Pin, GPIO_PIN_SET); //test which direction is clockwise vs anti
+	//HAL_GPIO_WritePin(GPIOA, Direction_Pin, GPIO_PIN_SET); //test which direction is clockwise vs anti
 
 
   //Change ARR (choose a method)

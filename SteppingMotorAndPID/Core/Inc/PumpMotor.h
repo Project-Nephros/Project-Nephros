@@ -1,4 +1,5 @@
 //Define to prevent recursive inclusion 
+#ifndef __PUMPMOTOR_H__
 #define __PUMPMOTOR_H__
 
 #ifdef __cplusplus
@@ -10,8 +11,8 @@ extern "C" {
 
     //Defines
     void StartMotorPWM(void);
-    void UpdateFrequency(uint32_t ARR);
-    uint32_t GetFrequency(void);
+    void UpdateARR(uint32_t ARR);
+    uint32_t GetARR(void);
     void MotorValuesInit(void);
     void StartPump(void);
     void EndPump(uint32_t *ARR);
@@ -20,4 +21,5 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
+
 #endif /*__ PUMPMOTOR_H__ */

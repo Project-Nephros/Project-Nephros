@@ -13,13 +13,13 @@
 //Variables - TODO UPDATE VARIABLES TO REALISTIC VALUES 
  //START/END VARIABLES
  static uint32_t kTimeUpdateInterval = 20;
- static uint32_t kFinalStartARR = 156-1; //we'll just say 60rpm for now
+ static uint32_t kFinalStartARR = 52 -1; //we'll just say 60rpm for now
  static uint32_t kRampFactor = 50; //TO BE TESTED AND CHANGED
- static uint32_t kStartAndEndARR = 0; //Find Start Frequency by the lowest frequency we get no movement
+ #define kStartAndEndARR 1000 //static uint32_t kStartAndEndARR = 0; //Find Start Frequency by the lowest frequency we get no movement
 
  //PID VARIABLES
- static uint32_t kP = -0.1;
- static int32_t kMaxPIDARRChange = 1; 
+ static int32_t kP = -0.1;
+ static uint32_t kMaxPIDARRChange = 1;
 
 void StartMotorPWM(void){
     //Start PWM which starts stepping
@@ -39,7 +39,7 @@ uint32_t GetARR(void){
 }
 
 void MotorValuesInit(void){
-    UpdateARR(kStartAndEndARR);
+    UpdateARR(52 -1);
 }
 
 //could potentially have startpump and endpump functions return a string 
@@ -51,7 +51,7 @@ void StartPump(void) {
     //tim2 is currently set to tick every microsecond
     //we want to ramp up frequency a certain amount per a certain amount of time
     //until it reaches a certain frequency and then we end function
-    static uint32_t ARR = kStartAndEndARR ;
+    static uint32_t ARR = kStartAndEndARR;
     static uint32_t lastUpdate = 0;
 
     if (ARR > kFinalStartARR) {
@@ -140,8 +140,8 @@ void UpdatePID(int32_t error) {
     int32_t ARR = (int32_t)GetARR();
     ARR += errorChange;
 
-    if (ARR < 0) { ARR = 0};
-    if (ARR > kMaxPIDARRChange) { ARR = kMaxPIDARRChange};
+    if (ARR < 0) { ARR = 0;};
+    if (ARR > kMaxPIDARRChange) { ARR = kMaxPIDARRChange;};
 
     UpdateARR((uint32_t)ARR);
 
