@@ -1,0 +1,21 @@
+!SESSION 2026-05-18 22:34:18.630 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_AU
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-05-18 22:34:43.634
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-05-18 22:34:43.635
+!MESSAGE Log4j2 initialized with config file C:\Users\azaki\Documents\GitHub\Project-Nephros\new_double_thermistor\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-05-18 22:34:46.930
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-05-18 22:36:25.524
+!MESSAGE Indexed 'double_thermistor' (23 sources, 83 headers) in 3.43 sec: 5,567 declarations; 28,994 references; 0 unresolved inclusions; 1 syntax errors; 2 unresolved names (0.0058%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-05-19 00:32:01.042
+!MESSAGE Indexed 'double_thermistor' (26 sources, 89 headers) in 1.37 sec: 6,656 declarations; 39,161 references; 0 unresolved inclusions; 1 syntax errors; 2 unresolved names (0.0044%)
