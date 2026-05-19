@@ -51,21 +51,23 @@ UART_HandleTypeDef huart2;
 DMA_HandleTypeDef hdma_usart2_tx;
 
 /* USER CODE BEGIN PV */
-volatile uint16_t rawValues[2];
-char msg[50];
 
+// adc and uart variables
+volatile uint16_t ADCvalues[3];
+char msg[100];
+
+
+// thermistor variables
 #define R_FIXED 10000.0
 #define R0      100000.0
 #define BETA    4261.0
 #define T0      298.15
 #define ADC_MAX 4095.0
 #define V_REF   3.3
-
-volatile uint8_t fastSampleReady = 0;
-uint16_t fastSensorValue = 0;   // or whatever your sensor reads
-uint32_t lastSlow = 0;
-
 #define WINDOW_SIZE 10
+
+double temp1 = 0;
+double temp2 = 0;
 
 typedef struct {
     uint16_t buf[WINDOW_SIZE];
@@ -75,6 +77,17 @@ typedef struct {
 
 MovingAverage_t avg1 = {0};
 MovingAverage_t avg2 = {0};
+
+// bubble detector variables
+volatile uint8_t bubble_detection = 0;
+volatile uint8_t bubble_sensor_failed = 0;
+volatile uint16_t VTO_ADC_12Bit;
+volatile double VTO;
+volatile double VTO_NORM = 0.3;
+
+// timer variables
+volatile uint8_t timerReady = 0;
+uint32_t lastSlow = 0;
 
 /* USER CODE END PV */
 
@@ -92,11 +105,21 @@ double readSmoothedTemperature(MovingAverage_t *ma, uint16_t rawSample);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+
+	// use this if block for integration
+	// update GPIO_Pin to the VTTL_Pin in use on integrated STM
+	if (GPIO_Pin == VTTL_Pin){
+		// edge detected && VTTL HIGH
+		bubble_detection = 1;
+	}
+}
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
     if (htim->Instance == TIM2) {
         // runs every 1ms
-        fastSampleReady = 1;
+    	timerReady = 1;
     }
 }
 
@@ -137,8 +160,11 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-  HAL_ADC_Start_DMA(&hadc1, (uint32_t *) rawValues, 2);
+  HAL_ADC_Start_DMA(&hadc1, (uint32_t *) ADCvalues, 3);
   HAL_TIM_Base_Start_IT(&htim2);
+
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -148,23 +174,55 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  //check for bubble sensor failure at beginning
 
-	  // bubble detector
-	  if (fastSampleReady) {
-		  fastSampleReady = 0;
-	  }
+	  // bubble detector (TIM2) (1ms)
+	  if (timerReady) {
+		  timerReady = 0;
+
+		  // put bubble detection logic here
+		  VTO_ADC_12Bit = (uint16_t)(ADCvalues[2]);
+		  VTO = (VTO_ADC_12Bit * V_REF) / ADC_MAX;
+
+
+		  if (VTO > VTO_NORM){
+			// set failure flag
+			// if control team wants; change to hold GPIO high for a faster interrupt
+			bubble_sensor_failed = 1;
+
+
+		  //HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, 0);
+		  }
+
+
+		}
+
+
+
+	  uint32_t now = HAL_GetTick();
 
 	  //thermistors every second
-	  uint32_t now = HAL_GetTick();
 	  if (now - lastSlow >= 1000) {
 		  lastSlow = now;
 
-		  double temp1 = readSmoothedTemperature(&avg1, rawValues[0]);
-		  double temp2 = readSmoothedTemperature(&avg2, rawValues[1]);
+		  temp1 = readSmoothedTemperature(&avg1, ADCvalues[0]);
+		  temp2 = readSmoothedTemperature(&avg2, ADCvalues[1]);
 
-		  sprintf(msg, "%.2f  |  %.2f\r\n", temp1, temp2);
-		  HAL_UART_Transmit_DMA(&huart2, (uint8_t*)msg, strlen(msg));
+		  bubble_detection = 0;
+
 	  }
+
+	  // send results through uart
+	  sprintf(msg, "[T1=%.2f, T2=%.2f, Bubble=%d, Fault=%d]\r\n",
+	  				  temp1, temp2, bubble_detection, bubble_sensor_failed);
+	  //HAL_UART_Transmit_DMA(&huart2, (uint8_t*)msg, strlen(msg));
+	  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+	  bubble_sensor_failed = 0;
+
+
+
+
+
 
   }
   /* USER CODE END 3 */
@@ -258,7 +316,7 @@ static void MX_ADC1_Init(void)
   hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   hadc1.Init.LowPowerAutoWait = DISABLE;
   hadc1.Init.ContinuousConvMode = ENABLE;
-  hadc1.Init.NbrOfConversion = 2;
+  hadc1.Init.NbrOfConversion = 3;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
@@ -287,6 +345,15 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_6;
   sConfig.Rank = ADC_REGULAR_RANK_2;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_9;
+  sConfig.Rank = ADC_REGULAR_RANK_3;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -416,12 +483,22 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin : VTTL_Pin */
+  GPIO_InitStruct.Pin = VTTL_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  HAL_GPIO_Init(VTTL_GPIO_Port, &GPIO_InitStruct);
+
   /*Configure GPIO pin : LD3_Pin */
   GPIO_InitStruct.Pin = LD3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD3_GPIO_Port, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
