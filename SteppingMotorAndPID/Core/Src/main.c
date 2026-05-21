@@ -63,9 +63,25 @@ typedef enum
  * These values are used because the design team has not started moving fluid yet.
  */
 #define TARGET_FLOW_ML_MIN          250
-#define PID_TEST_DURATION_MS        30000U
+#define PID_TEST_DURATION_MS        35000U   // ADDED: extended from 30000U so we can see PID response after the 25s setpoint restore
 #define CONTROL_UPDATE_INTERVAL_MS  100U
 #define UART_PRINT_INTERVAL_MS      500U
+
+/*
+ * ADDED:
+ * Test scenario constants for dummy-value PID testing.
+ *
+ *   t = 15s : setpoint changes from 250 to 180 mL/min
+ *   t = 20s : positive disturbance of +50 mL/min starts
+ *   t = 25s : positive disturbance ends AND setpoint restored to 250 mL/min
+ *   t = 35s : test ends
+ */
+#define TEST_ALT_TARGET_ML_MIN      180
+#define TEST_SETPOINT_CHANGE_MS     15000U
+#define TEST_SETPOINT_RESTORE_MS    25000U
+#define TEST_POS_DISTURB_START_MS   20000U
+#define TEST_POS_DISTURB_END_MS     25000U
+#define TEST_POS_DISTURB_VALUE      50
 
 /*
  * ADDED:
@@ -166,6 +182,18 @@ static int32_t GetPlaceholderMeasuredFlow(uint32_t arr, uint32_t elapsedMs)
     {
         simulatedFlow -= 30;
     }
+
+    /*
+     * ADDED:
+     * Positive disturbance for the test scenario.
+     * Between 20s and 25s, add a positive offset to simulated flow.
+     * This tests whether the PID slows the motor down (raises ARR) to reject overshoot.
+     */
+    if ((elapsedMs >= TEST_POS_DISTURB_START_MS) && (elapsedMs < TEST_POS_DISTURB_END_MS))
+    {
+    	simulatedFlow += TEST_POS_DISTURB_VALUE;
+    }
+
 
     if (simulatedFlow < 0)
     {
@@ -319,29 +347,26 @@ int main(void)
 
     switch (motorState)
     {
-        case MOTOR_STATE_START_RAMP:
-        {
-            /*
-             * ADDED:
-             * Start ramp stage.
-             *
-             * StartPump() returns 1 when ramp-up is complete.
-             */
-            if (StartPump())
-            {
-                ResetPID();
+		case MOTOR_STATE_START_RAMP:
+		{
+			/* ADDED: Periodic UART print during ramp-up so we can see ARR decreasing. */
+			if ((currentTick - lastUartPrintTick) >= UART_PRINT_INTERVAL_MS)
+			{
+				PrintMotorStatus();
+				lastUartPrintTick = currentTick;
+			}
 
-                pidStartTick = currentTick;
-                lastControlUpdateTick = currentTick;
-                lastUartPrintTick = currentTick;
-
-                motorState = MOTOR_STATE_PID_TEST;
-
-                PrintMotorStatus();
-            }
-
-            break;
-        }
+			if (StartPump())
+			{
+				ResetPID();
+				pidStartTick = currentTick;
+				lastControlUpdateTick = currentTick;
+				lastUartPrintTick = currentTick;
+				motorState = MOTOR_STATE_PID_TEST;
+				PrintMotorStatus();
+			}
+			break;
+		}
 
         case MOTOR_STATE_PID_TEST:
         {
@@ -355,6 +380,31 @@ int main(void)
              * Later, replace this placeholder value with real flow sensor data.
              */
             uint32_t elapsedMs = currentTick - pidStartTick;
+
+
+
+            /*
+             * ADDED:
+             * Scheduled setpoint changes for the test scenario.
+             * 0–15s:  target = 250
+             * 15–25s: target = 180
+             * 25s+ :  target = 250
+             */
+            if (elapsedMs >= TEST_SETPOINT_RESTORE_MS)
+            {
+            	targetFlow = TARGET_FLOW_ML_MIN;
+            }
+            else if (elapsedMs >= TEST_SETPOINT_CHANGE_MS)
+            {
+            	targetFlow = TEST_ALT_TARGET_ML_MIN;
+            }
+            else
+            {
+            	targetFlow = TARGET_FLOW_ML_MIN;
+            }
+
+
+
 
             if ((currentTick - lastControlUpdateTick) >= CONTROL_UPDATE_INTERVAL_MS)
             {
@@ -391,19 +441,19 @@ int main(void)
 
         case MOTOR_STATE_END_RAMP:
         {
-            /*
-             * ADDED:
-             * End ramp stage.
-             *
-             * EndPump() returns 1 when ramp-down is complete and PWM is stopped.
-             */
-            if (EndPump())
-            {
-                motorState = MOTOR_STATE_STOPPED;
-                PrintMotorStatus();
-            }
+        	/* ADDED: Periodic UART print during ramp-down so we can see ARR increasing. */
+        	if ((currentTick - lastUartPrintTick) >= UART_PRINT_INTERVAL_MS)
+        	{
+        		PrintMotorStatus();
+        		lastUartPrintTick = currentTick;
+        	}
 
-            break;
+        	if (EndPump())
+        	{
+        		motorState = MOTOR_STATE_STOPPED;
+        		PrintMotorStatus();
+        	}
+        	break;
         }
 
         case MOTOR_STATE_STOPPED:
