@@ -54,3 +54,10 @@ Finished building: default.size.stdout
  
 Finished building: double_thermistor.list
  
+17:17:56 **** Incremental Build of configuration Debug for project double_thermistor ****
+make -j20 all 
+arm-none-eabi-size  double_thermistor.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39492	    476	   2560	  42528	   a620	double_thermistor.elf
+Finished building: default.size.stdout
+ 
