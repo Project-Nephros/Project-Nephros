@@ -1,0 +1,15 @@
+../Core/Src/main.c:136:5:main	8
+../Core/Src/main.c:255:6:SystemClock_Config	4
+../Core/Src/main.c:316:13:MX_ADC1_Init	3
+../Core/Src/main.c:374:13:MX_TIM2_Init	5
+../Core/Src/main.c:426:13:MX_USART2_UART_Init	2
+../Core/Src/main.c:461:13:MX_GPIO_Init	1
+../Core/Src/main.c:492:6:HAL_TIM_IC_CaptureCallback	4
+../Core/Src/main.c:507:13:flow_update	4
+../Core/Src/main.c:527:13:pressure_start_sequence	3
+../Core/Src/main.c:541:14:adc_counts_to_volts	1
+../Core/Src/main.c:546:14:sensor_volts_to_psi	3
+../Core/Src/main.c:555:6:HAL_ADC_ConvCpltCallback	4
+../Core/Src/main.c:583:13:uart_print	1
+../Core/Src/main.c:589:13:print_combined_line	6
+../Core/Src/main.c:625:6:Error_Handler	1
