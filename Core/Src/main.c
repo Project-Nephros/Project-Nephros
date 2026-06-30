@@ -517,7 +517,7 @@ int main(void)
       }
     }
 
-    if (currentTick - lastPIDSystemCheck >= 1000){
+    if (currentTick - lastAlarmSystemCheck >= 1000){
 
       if (dummy_temp < 35.0 || dummy_temp > 38.0) {
             sprintf(msg, "WARNING: Temp out of range (%.1f C)\r\n", dummy_temp);
