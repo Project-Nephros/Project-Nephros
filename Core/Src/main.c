@@ -23,6 +23,7 @@
 #include "usart.h"
 #include "gpio.h"
 #include "PumpMotor.h"
+#include "AlarmSystem.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -107,6 +108,12 @@ typedef enum
  * ADDED:
  * Variables used by the state machine and PID test.
  */
+
+//TIMER VARIABLES
+uint32_t lastAlarmSystemCheck = 0;
+uint32_t lastPIDSystemCheck = 0;
+
+//PID VARIABLES
 static MotorState motorState = MOTOR_STATE_START_RAMP;
 
 static uint32_t pidStartTick = 0U;
@@ -119,6 +126,15 @@ static int32_t flowError = 0;
 
 static uint8_t stoppedMessagePrinted = 0U;
 
+UART_HandleTypeDef huart2;
+
+//ALARMSYSTEM VARIABLES
+float dummy_temp = 36.5;
+float dummy_pressure = 50.0;
+int dummy_air = 0;
+
+int pressure_timer = 0;
+char msg[100];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -133,6 +149,10 @@ void SystemClock_Config(void);
 static int32_t GetPlaceholderMeasuredFlow(uint32_t arr, uint32_t elapsedMs);
 static const char* GetMotorStateName(MotorState state);
 static void PrintMotorStatus(void);
+
+static void MX_GPIO_Init(void);
+static void MX_USART2_UART_Init(void);
+/* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
@@ -287,12 +307,14 @@ int main(void)
 
   /* MCU Configuration--------------------------------------------------------*/
 
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
 
   /* USER CODE BEGIN Init */
 
   /* USER CODE END Init */
 
+  /* Configure the system clock */
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
@@ -345,157 +367,203 @@ int main(void)
 
     uint32_t currentTick = HAL_GetTick();
 
-    switch (motorState)
-    {
-		case MOTOR_STATE_START_RAMP:
-		{
-			/* ADDED: Periodic UART print during ramp-up so we can see ARR decreasing. */
-			if ((currentTick - lastUartPrintTick) >= UART_PRINT_INTERVAL_MS)
-			{
-				PrintMotorStatus();
-				lastUartPrintTick = currentTick;
-			}
+    if (currentTick - lastPIDSystemCheck >= 1){
 
-			if (StartPump())
-			{
-				ResetPID();
-				pidStartTick = currentTick;
-				lastControlUpdateTick = currentTick;
-				lastUartPrintTick = currentTick;
-				motorState = MOTOR_STATE_PID_TEST;
-				PrintMotorStatus();
-			}
-			break;
-		}
-
-        case MOTOR_STATE_PID_TEST:
+      switch (motorState)
+      {
+      case MOTOR_STATE_START_RAMP:
+      {
+        /* ADDED: Periodic UART print during ramp-up so we can see ARR decreasing. */
+        if ((currentTick - lastUartPrintTick) >= UART_PRINT_INTERVAL_MS)
         {
-            /*
-             * ADDED:
-             * PID testing stage.
-             *
-             * Since there is no real flow sensor yet, measuredFlow comes from
-             * GetPlaceholderMeasuredFlow().
-             *
-             * Later, replace this placeholder value with real flow sensor data.
-             */
-            uint32_t elapsedMs = currentTick - pidStartTick;
+          PrintMotorStatus();
+          lastUartPrintTick = currentTick;
+        }
+
+        if (StartPump())
+        {
+          ResetPID();
+          pidStartTick = currentTick;
+          lastControlUpdateTick = currentTick;
+          lastUartPrintTick = currentTick;
+          motorState = MOTOR_STATE_PID_TEST;
+          PrintMotorStatus();
+        }
+        break;
+      }
+
+          case MOTOR_STATE_PID_TEST:
+          {
+              /*
+              * ADDED:
+              * PID testing stage.
+              *
+              * Since there is no real flow sensor yet, measuredFlow comes from
+              * GetPlaceholderMeasuredFlow().
+              *
+              * Later, replace this placeholder value with real flow sensor data.
+              */
+              uint32_t elapsedMs = currentTick - pidStartTick;
 
 
 
-            /*
-             * ADDED:
-             * Scheduled setpoint changes for the test scenario.
-             * 0–15s:  target = 250
-             * 15–25s: target = 180
-             * 25s+ :  target = 250
-             */
-            if (elapsedMs >= TEST_SETPOINT_RESTORE_MS)
-            {
-            	targetFlow = TARGET_FLOW_ML_MIN;
-            }
-            else if (elapsedMs >= TEST_SETPOINT_CHANGE_MS)
-            {
-            	targetFlow = TEST_ALT_TARGET_ML_MIN;
-            }
-            else
-            {
-            	targetFlow = TARGET_FLOW_ML_MIN;
-            }
+              /*
+              * ADDED:
+              * Scheduled setpoint changes for the test scenario.
+              * 0–15s:  target = 250
+              * 15–25s: target = 180
+              * 25s+ :  target = 250
+              */
+              if (elapsedMs >= TEST_SETPOINT_RESTORE_MS)
+              {
+                targetFlow = TARGET_FLOW_ML_MIN;
+              }
+              else if (elapsedMs >= TEST_SETPOINT_CHANGE_MS)
+              {
+                targetFlow = TEST_ALT_TARGET_ML_MIN;
+              }
+              else
+              {
+                targetFlow = TARGET_FLOW_ML_MIN;
+              }
 
 
 
 
-            if ((currentTick - lastControlUpdateTick) >= CONTROL_UPDATE_INTERVAL_MS)
-            {
-                measuredFlow = GetPlaceholderMeasuredFlow(GetARR(), elapsedMs);
-                flowError = targetFlow - measuredFlow;
+              if ((currentTick - lastControlUpdateTick) >= CONTROL_UPDATE_INTERVAL_MS)
+              {
+                  measuredFlow = GetPlaceholderMeasuredFlow(GetARR(), elapsedMs);
+                  flowError = targetFlow - measuredFlow;
 
-                /*
-                 * ADDED:
-                 * Motor speed is now controlled based on PID error.
-                 */
-                UpdatePID((float)flowError);
+                  /*
+                  * ADDED:
+                  * Motor speed is now controlled based on PID error.
+                  */
+                  UpdatePID((float)flowError);
 
-                lastControlUpdateTick = currentTick;
-            }
+                  lastControlUpdateTick = currentTick;
+              }
 
+              if ((currentTick - lastUartPrintTick) >= UART_PRINT_INTERVAL_MS)
+              {
+                  PrintMotorStatus();
+                  lastUartPrintTick = currentTick;
+              }
+
+              /*
+              * ADDED:
+              * Automatically finish the placeholder PID test after 30 seconds.
+              */
+              if (elapsedMs >= PID_TEST_DURATION_MS)
+              {
+                  motorState = MOTOR_STATE_END_RAMP;
+                  PrintMotorStatus();
+              }
+
+              break;
+          }
+
+          case MOTOR_STATE_END_RAMP:
+          {
+            /* ADDED: Periodic UART print during ramp-down so we can see ARR increasing. */
             if ((currentTick - lastUartPrintTick) >= UART_PRINT_INTERVAL_MS)
             {
-                PrintMotorStatus();
-                lastUartPrintTick = currentTick;
+              PrintMotorStatus();
+              lastUartPrintTick = currentTick;
             }
 
-            /*
-             * ADDED:
-             * Automatically finish the placeholder PID test after 30 seconds.
-             */
-            if (elapsedMs >= PID_TEST_DURATION_MS)
+            if (EndPump())
             {
-                motorState = MOTOR_STATE_END_RAMP;
-                PrintMotorStatus();
+              motorState = MOTOR_STATE_STOPPED;
+              PrintMotorStatus();
             }
-
             break;
-        }
+          }
 
-        case MOTOR_STATE_END_RAMP:
-        {
-        	/* ADDED: Periodic UART print during ramp-down so we can see ARR increasing. */
-        	if ((currentTick - lastUartPrintTick) >= UART_PRINT_INTERVAL_MS)
-        	{
-        		PrintMotorStatus();
-        		lastUartPrintTick = currentTick;
-        	}
+          case MOTOR_STATE_STOPPED:
+          {
+              /*
+              * ADDED:
+              * Final stopped state.
+              * Print the stopped message only once.
+              */
+              if (!stoppedMessagePrinted)
+              {
+                  char stopMessage[] = "Pump motor PID test completed. Motor stopped.\r\n";
 
-        	if (EndPump())
-        	{
-        		motorState = MOTOR_STATE_STOPPED;
-        		PrintMotorStatus();
-        	}
-        	break;
-        }
+                  HAL_UART_Transmit(
+                      &huart2,
+                      (uint8_t*)stopMessage,
+                      strlen(stopMessage),
+                      100
+                  );
 
-        case MOTOR_STATE_STOPPED:
-        {
-            /*
-             * ADDED:
-             * Final stopped state.
-             * Print the stopped message only once.
-             */
-            if (!stoppedMessagePrinted)
-            {
-                char stopMessage[] = "Pump motor PID test completed. Motor stopped.\r\n";
+                  stoppedMessagePrinted = 1U;
+              }
 
-                HAL_UART_Transmit(
-                    &huart2,
-                    (uint8_t*)stopMessage,
-                    strlen(stopMessage),
-                    100
-                );
+              break;
+          }
 
-                stoppedMessagePrinted = 1U;
-            }
-
-            break;
-        }
-
-        default:
-        {
-            /*
-             * ADDED:
-             * Safety fallback.
-             */
-            StopMotorPWM();
-            motorState = MOTOR_STATE_STOPPED;
-            break;
-        }
+          default:
+          {
+              /*
+              * ADDED:
+              * Safety fallback.
+              */
+              StopMotorPWM();
+              motorState = MOTOR_STATE_STOPPED;
+              break;
+          }
+      }
     }
 
-    HAL_Delay(1);
+    if (currentTick - lastPIDSystemCheck >= 1000){
 
+      if (dummy_temp < 35.0 || dummy_temp > 38.0) {
+            sprintf(msg, "WARNING: Temp out of range (%.1f C)\r\n", dummy_temp);
+            HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 100);
+
+            if (dummy_temp > 40.0 || dummy_temp < 32.0) {
+                // SEVERE: Stop pumps and alarm
+                HAL_GPIO_WritePin(GPIOB, RED_LED_Pin | BUZZER_Pin, GPIO_PIN_SET);
+                HAL_UART_Transmit(&huart2, (uint8_t*)"CRITICAL: SEVERE TEMP - HALT PUMPS!\r\n", 37, 100);
+            }
+        }
+
+
+      if (dummy_pressure < 20.0 || dummy_pressure > 80.0) {
+            pressure_timer++;
+            if (pressure_timer >= 3) {
+                HAL_GPIO_WritePin(GPIOB, RED_LED_Pin | BUZZER_Pin, GPIO_PIN_SET);
+                HAL_UART_Transmit(&huart2, (uint8_t*)"ALARM: PRESSURE ERROR > 3 SECONDS!\r\n", 36, 100);
+            }
+        } else {
+            pressure_timer = 0;
+        }
+
+
+      if (dummy_air == 1) {
+            HAL_GPIO_WritePin(GPIOB, RED_LED_Pin | BUZZER_Pin, GPIO_PIN_SET);
+            HAL_UART_Transmit(&huart2, (uint8_t*)"ALARM: AIR DETECTED! SYSTEM LOCKED.\r\n", 37, 100);
+
+
+            while(dummy_air == 1) {
+
+            }
+        }
+
+
+      if (dummy_air == 0 && pressure_timer < 3 && (dummy_temp >= 32.0 && dummy_temp <= 40.0)) {
+            HAL_GPIO_WritePin(GPIOB, LD3_Pin, GPIO_PIN_SET);
+            if (dummy_temp >= 35.0 && dummy_temp <= 38.0) {
+                HAL_GPIO_WritePin(GPIOB, RED_LED_Pin | BUZZER_Pin, GPIO_PIN_RESET);
+            }
+        } else {
+            HAL_GPIO_WritePin(GPIOB, LD3_Pin, GPIO_PIN_RESET);
+        }
+
+    }
   }
-
   /* USER CODE END 3 */
 }
 
@@ -508,6 +576,8 @@ void SystemClock_Config(void)
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
+  /** Configure the main internal regulator output voltage
+  */
   if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1) != HAL_OK)
   {
     Error_Handler();
@@ -521,7 +591,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.MSIState = RCC_MSI_ON;
   RCC_OscInitStruct.MSICalibrationValue = 0;
   RCC_OscInitStruct.MSIClockRange = RCC_MSIRANGE_6;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON; //CHECK THIS BUZZER HAD PLL_NONE
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_MSI;
   RCC_OscInitStruct.PLL.PLLM = 1;
   RCC_OscInitStruct.PLL.PLLN = 40;
@@ -537,7 +607,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
 
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK; //CHECK THIS BUZZER HAD RCC_SYSCLKSOURCE_MSI;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
@@ -561,27 +631,26 @@ void SystemClock_Config(void)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-
+  /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
-
   while (1)
   {
   }
-
   /* USER CODE END Error_Handler_Debug */
 }
-
 #ifdef USE_FULL_ASSERT
-
+/**
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
 void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
-
-  /*
-   * User can add printf debugging here if needed.
-   */
-
+  /* User can add his own implementation to report the file name and line number,
+     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
-
 #endif /* USE_FULL_ASSERT */

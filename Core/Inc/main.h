@@ -57,6 +57,7 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+
 #define Direction_Pin GPIO_PIN_0
 #define Direction_GPIO_Port GPIOA
 #define SWDIO_Pin GPIO_PIN_13
@@ -65,6 +66,12 @@ void Error_Handler(void);
 #define SWCLK_GPIO_Port GPIOA
 #define LD3_Pin GPIO_PIN_3
 #define LD3_GPIO_Port GPIOB
+
+#define BUZZER_Pin GPIO_PIN_4
+#define BUZZER_GPIO_Port GPIOB
+#define RED_LED_Pin GPIO_PIN_5
+#define RED_LED_GPIO_Port GPIOB
+
 
 /* USER CODE BEGIN Private defines */
 
