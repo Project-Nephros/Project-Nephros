@@ -155,6 +155,7 @@ static void MX_TIM1_Init(void);
 double readSmoothedTemperature(MovingAverage_t *ma, uint16_t rawSample);
 
 static void flow_update(flow_ma_t *f, uint32_t window_pulses);
+static void  pressure_start_sequence(void);
 static float adc_counts_to_volts(uint32_t raw_count);
 static float sensor_volts_to_psi(float sensor_volts);
 static void  uart_print(const char *message);
@@ -249,9 +250,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
-
 	  //check for bubble sensor failure at beginning
+
 	  // bubble detector (TIM2) (1ms)
 	  if (timerReady) {
 		  timerReady = 0;
@@ -260,16 +260,24 @@ int main(void)
 		  VTO_ADC_12Bit = (uint16_t)(ADCvalues[2]);
 		  VTO = (VTO_ADC_12Bit * V_REF) / ADC_MAX;
 
+
 		  if (VTO > VTO_NORM){
 			// set failure flag
 			// if control team wants; change to hold GPIO high for a faster interrupt
 			bubble_sensor_failed = 1;
+
+
+		  //HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, 0);
 		  }
+
+
 		}
 
 
-	  // 1 second timer
+
 	  uint32_t now = HAL_GetTick();
+
+	  // 1 second timer
 	  if (now - lastSlow >= 1000) {
 		  lastSlow = now;
 
@@ -279,40 +287,63 @@ int main(void)
 
 		  bubble_detection = 0;
 
-//		  // flow sensors
-//		  last_flow_tick += FLOW_PERIOD_MS;
-//
-//		  __disable_irq();
-//		  uint32_t p1 = pulse_count_1; pulse_count_1 = 0;
-//		  uint32_t p4 = pulse_count_4; pulse_count_4 = 0;
-//		  __enable_irq();
-//
-//		  flow_update(&flow1, p1);
-//		  flow_update(&flow2, p4);
-//
-//		  // pressure sensors
-//		  uint32_t s1 = ADCvalues[3];
-//		  uint32_t s2 = ADCvalues[4];
-//
-//		  float psi1 = sensor_volts_to_psi(adc_counts_to_volts(s1) / DIVIDER_RATIO);
-//		  float psi2 = sensor_volts_to_psi(adc_counts_to_volts(s2) / DIVIDER_RATIO);
-//
-//		  /* Push into MA buffers */
-//		  p1_buffer[p_index] = psi1;
-//		  p2_buffer[p_index] = psi2;
-//		  p_index = (p_index + 1) % MA_DEPTH;
-//		  if (p_filled < MA_DEPTH) p_filled++;
+		  // flow sensors
+		  last_flow_tick += FLOW_PERIOD_MS;
+
+		  __disable_irq();
+		  uint32_t p1 = pulse_count_1; pulse_count_1 = 0;
+		  uint32_t p4 = pulse_count_4; pulse_count_4 = 0;
+		  __enable_irq();
+
+		  flow_update(&flow1, p1);
+		  flow_update(&flow2, p4);
+
+		  // pressure sensors
+		  uint32_t s1 = ADCvalues[3];
+		uint32_t s2 = ADCvalues[4];
+
+		float psi1 = sensor_volts_to_psi(adc_counts_to_volts(s1) / DIVIDER_RATIO);
+		float psi2 = sensor_volts_to_psi(adc_counts_to_volts(s2) / DIVIDER_RATIO);
+
+		/* Push into MA buffers */
+		p1_buffer[p_index] = psi1;
+		p2_buffer[p_index] = psi2;
+		p_index = (p_index + 1) % MA_DEPTH;
+		if (p_filled < MA_DEPTH) p_filled++;
 	  }
+
+		// pressure sensors
+		  /* Kick off interrupt-driven dual-channel ADC */
+//		pressure_start_sequence();
+
+		/* Wait for both channels (typically <1 ms total at 247.5 cycles
+		   sampling + 12.5 cycles conv * 2 channels). Bounded by a tick
+		   to avoid lockup if ADC misbehaves. */
+//		uint32_t wait_start = HAL_GetTick();
+//		while (!data_ready)
+//		{
+//			if (HAL_GetTick() - wait_start > 10) break;  /* safety bail */
+//		}
+//
+//		if (data_ready)
+//		{
+//			data_ready = 0;
+
 
 	  // send results through uart
 	  sprintf(msg, "[T1=%.2f, T2=%.2f, Bubble=%d, Fault=%d]\r\n",
 	  				  temp1, temp2, bubble_detection, bubble_sensor_failed);
+	  //HAL_UART_Transmit_DMA(&huart2, (uint8_t*)msg, strlen(msg));
 	  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
-
-//	  print_combined_line();
-
-
 	  bubble_sensor_failed = 0;
+
+	  print_combined_line();
+
+
+
+
+
+
   }
   /* USER CODE END 3 */
 }
@@ -724,6 +755,19 @@ static void flow_update(flow_ma_t *f, uint32_t window_pulses)
 
 /* ---------------- Pressure ---------------- */
 
+static void pressure_start_sequence(void)
+{
+    ADC_ChannelConfTypeDef sConfig = {0};
+    current_channel = 1;
+    sConfig.Channel      = ADC_CHANNEL_5;
+    sConfig.Rank         = ADC_REGULAR_RANK_1;
+    sConfig.SamplingTime = ADC_SAMPLETIME_247CYCLES_5;
+    sConfig.SingleDiff   = ADC_SINGLE_ENDED;
+    sConfig.OffsetNumber = ADC_OFFSET_NONE;
+    sConfig.Offset       = 0;
+    if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK) Error_Handler();
+    if (HAL_ADC_Start_IT(&hadc1) != HAL_OK) Error_Handler();
+}
 
 static float adc_counts_to_volts(uint32_t raw_count)
 {
@@ -799,7 +843,7 @@ static void print_combined_line(void)
              "F1: %.2f mL/min | F2: %.2f mL/min | S1: %.2f PSI | S2: %.2f PSI\r\n",
              flow1.avg_mLmin, flow2.avg_mLmin, p1_avg, p2_avg);
 
-//    uart_print(buffer);
+    uart_print(buffer);
 }
 
 /* USER CODE END 4 */

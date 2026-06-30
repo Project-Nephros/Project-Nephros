@@ -302,7 +302,7 @@ int main(void)
 //		  p2_buffer[p_index] = psi2;
 //		  p_index = (p_index + 1) % MA_DEPTH;
 //		  if (p_filled < MA_DEPTH) p_filled++;
-	  }
+//	  }
 
 	  // send results through uart
 	  sprintf(msg, "[T1=%.2f, T2=%.2f, Bubble=%d, Fault=%d]\r\n",

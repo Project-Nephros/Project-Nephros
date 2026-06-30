@@ -61,3 +61,238 @@ arm-none-eabi-size  double_thermistor.elf
   39492	    476	   2560	  42528	   a620	double_thermistor.elf
 Finished building: default.size.stdout
  
+15:34:32 **** Incremental Build of configuration Debug for project double_thermistor ****
+make -j20 all 
+arm-none-eabi-size  double_thermistor.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39492	    476	   2560	  42528	   a620	double_thermistor.elf
+Finished building: default.size.stdout
+ 
+16:27:41 **** Incremental Build of configuration Debug for project double_thermistor ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc "../Core/Src/stm32l4xx_hal_msp.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32l4xx_hal_msp.d" -MT"Core/Src/stm32l4xx_hal_msp.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32l4xx_hal_msp.o"
+../Core/Src/main.c:758:13: warning: 'pressure_start_sequence' defined but not used [-Wunused-function]
+  758 | static void pressure_start_sequence(void)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "double_thermistor.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\azaki\Documents\GitHub\Project-Nephros\new_double_thermistor\double_thermistor\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="double_thermistor.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: double_thermistor.elf
+ 
+arm-none-eabi-size  double_thermistor.elf 
+arm-none-eabi-objdump -h -S double_thermistor.elf  > "double_thermistor.list"
+   text	   data	    bss	    dec	    hex	filename
+  44020	    476	   3168	  47664	   ba30	double_thermistor.elf
+Finished building: default.size.stdout
+ 
+Finished building: double_thermistor.list
+ 
+16:35:29 **** Incremental Build of configuration Debug for project double_thermistor ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:158:14: warning: 'pressure_start_sequence' declared 'static' but never defined [-Wunused-function]
+  158 | static void  pressure_start_sequence(void);
+      |              ^~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "double_thermistor.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\azaki\Documents\GitHub\Project-Nephros\new_double_thermistor\double_thermistor\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="double_thermistor.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: double_thermistor.elf
+ 
+arm-none-eabi-size  double_thermistor.elf 
+arm-none-eabi-objdump -h -S double_thermistor.elf  > "double_thermistor.list"
+   text	   data	    bss	    dec	    hex	filename
+  44020	    476	   3168	  47664	   ba30	double_thermistor.elf
+Finished building: default.size.stdout
+ 
+Finished building: double_thermistor.list
+ 
+16:37:35 **** Incremental Build of configuration Debug for project double_thermistor ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:158:14: warning: 'pressure_start_sequence' declared 'static' but never defined [-Wunused-function]
+  158 | static void  pressure_start_sequence(void);
+      |              ^~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:777:13: warning: 'print_combined_line' defined but not used [-Wunused-function]
+  777 | static void print_combined_line(void)
+      |             ^~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "double_thermistor.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\azaki\Documents\GitHub\Project-Nephros\new_double_thermistor\double_thermistor\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="double_thermistor.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: double_thermistor.elf
+ 
+arm-none-eabi-size  double_thermistor.elf 
+arm-none-eabi-objdump -h -S double_thermistor.elf  > "double_thermistor.list"
+   text	   data	    bss	    dec	    hex	filename
+  43604	    476	   3160	  47240	   b888	double_thermistor.elf
+Finished building: default.size.stdout
+ 
+Finished building: double_thermistor.list
+ 
+16:38:56 **** Incremental Build of configuration Debug for project double_thermistor ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:158:14: warning: 'pressure_start_sequence' declared 'static' but never defined [-Wunused-function]
+  158 | static void  pressure_start_sequence(void);
+      |              ^~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:777:13: warning: 'print_combined_line' defined but not used [-Wunused-function]
+  777 | static void print_combined_line(void)
+      |             ^~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "double_thermistor.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\azaki\Documents\GitHub\Project-Nephros\new_double_thermistor\double_thermistor\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="double_thermistor.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: double_thermistor.elf
+ 
+arm-none-eabi-size  double_thermistor.elf 
+arm-none-eabi-objdump -h -S double_thermistor.elf  > "double_thermistor.list"
+   text	   data	    bss	    dec	    hex	filename
+  43604	    476	   3160	  47240	   b888	double_thermistor.elf
+Finished building: default.size.stdout
+ 
+Finished building: double_thermistor.list
+ 
+16:40:24 **** Incremental Build of configuration Debug for project double_thermistor ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:385:13: error: invalid storage class for function 'MX_ADC1_Init'
+  385 | static void MX_ADC1_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:479:13: error: invalid storage class for function 'MX_TIM1_Init'
+  479 | static void MX_TIM1_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:533:13: error: invalid storage class for function 'MX_TIM2_Init'
+  533 | static void MX_TIM2_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:578:13: error: invalid storage class for function 'MX_USART2_UART_Init'
+  578 | static void MX_USART2_UART_Init(void)
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:611:13: error: invalid storage class for function 'MX_DMA_Init'
+  611 | static void MX_DMA_Init(void)
+      |             ^~~~~~~~~~~
+../Core/Src/main.c:632:13: error: invalid storage class for function 'MX_GPIO_Init'
+  632 | static void MX_GPIO_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:707:13: error: invalid storage class for function 'flow_update'
+  707 | static void flow_update(flow_ma_t *f, uint32_t window_pulses)
+      |             ^~~~~~~~~~~
+../Core/Src/main.c:728:14: error: invalid storage class for function 'adc_counts_to_volts'
+  728 | static float adc_counts_to_volts(uint32_t raw_count)
+      |              ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:733:14: error: invalid storage class for function 'sensor_volts_to_psi'
+  733 | static float sensor_volts_to_psi(float sensor_volts)
+      |              ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:770:13: error: invalid storage class for function 'uart_print'
+  770 | static void uart_print(const char *message)
+      |             ^~~~~~~~~~
+../Core/Src/main.c:776:13: error: invalid storage class for function 'print_combined_line'
+  776 | static void print_combined_line(void)
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:820:1: error: expected declaration or statement at end of input
+  820 | }
+      | ^
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:148:13: warning: 'MX_GPIO_Init' used but never defined
+  148 | static void MX_GPIO_Init(void);
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:149:13: warning: 'MX_DMA_Init' used but never defined
+  149 | static void MX_DMA_Init(void);
+      |             ^~~~~~~~~~~
+../Core/Src/main.c:150:13: warning: 'MX_ADC1_Init' used but never defined
+  150 | static void MX_ADC1_Init(void);
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:151:13: warning: 'MX_USART2_UART_Init' used but never defined
+  151 | static void MX_USART2_UART_Init(void);
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:152:13: warning: 'MX_TIM2_Init' used but never defined
+  152 | static void MX_TIM2_Init(void);
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:153:13: warning: 'MX_TIM1_Init' used but never defined
+  153 | static void MX_TIM1_Init(void);
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:157:13: warning: 'flow_update' declared 'static' but never defined [-Wunused-function]
+  157 | static void flow_update(flow_ma_t *f, uint32_t window_pulses);
+      |             ^~~~~~~~~~~
+../Core/Src/main.c:158:14: warning: 'adc_counts_to_volts' declared 'static' but never defined [-Wunused-function]
+  158 | static float adc_counts_to_volts(uint32_t raw_count);
+      |              ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:159:14: warning: 'sensor_volts_to_psi' declared 'static' but never defined [-Wunused-function]
+  159 | static float sensor_volts_to_psi(float sensor_volts);
+      |              ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:160:14: warning: 'uart_print' used but never defined
+  160 | static void  uart_print(const char *message);
+      |              ^~~~~~~~~~
+../Core/Src/main.c:161:14: warning: 'print_combined_line' declared 'static' but never defined [-Wunused-function]
+  161 | static void  print_combined_line(void);
+      |              ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:811:6: warning: 'Error_Handler' defined but not used [-Wunused-function]
+  811 | void Error_Handler(void)
+      |      ^~~~~~~~~~~~~
+../Core/Src/main.c:776:13: warning: 'print_combined_line' defined but not used [-Wunused-function]
+  776 | static void print_combined_line(void)
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:742:6: warning: 'HAL_ADC_ConvCpltCallback' defined but not used [-Wunused-function]
+  742 | void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:733:14: warning: 'sensor_volts_to_psi' defined but not used [-Wunused-function]
+  733 | static float sensor_volts_to_psi(float sensor_volts)
+      |              ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:728:14: warning: 'adc_counts_to_volts' defined but not used [-Wunused-function]
+  728 | static float adc_counts_to_volts(uint32_t raw_count)
+      |              ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:707:13: warning: 'flow_update' defined but not used [-Wunused-function]
+  707 | static void flow_update(flow_ma_t *f, uint32_t window_pulses)
+      |             ^~~~~~~~~~~
+../Core/Src/main.c:692:6: warning: 'HAL_TIM_IC_CaptureCallback' defined but not used [-Wunused-function]
+  692 | void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:670:8: warning: 'readSmoothedTemperature' defined but not used [-Wunused-function]
+  670 | double readSmoothedTemperature(MovingAverage_t *ma, uint16_t rawSample)
+      |        ^~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:632:13: warning: 'MX_GPIO_Init' defined but not used [-Wunused-function]
+  632 | static void MX_GPIO_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:611:13: warning: 'MX_DMA_Init' defined but not used [-Wunused-function]
+  611 | static void MX_DMA_Init(void)
+      |             ^~~~~~~~~~~
+../Core/Src/main.c:578:13: warning: 'MX_USART2_UART_Init' defined but not used [-Wunused-function]
+  578 | static void MX_USART2_UART_Init(void)
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:533:13: warning: 'MX_TIM2_Init' defined but not used [-Wunused-function]
+  533 | static void MX_TIM2_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:479:13: warning: 'MX_TIM1_Init' defined but not used [-Wunused-function]
+  479 | static void MX_TIM1_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:385:13: warning: 'MX_ADC1_Init' defined but not used [-Wunused-function]
+  385 | static void MX_ADC1_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:324:6: warning: 'SystemClock_Config' defined but not used [-Wunused-function]
+  324 | void SystemClock_Config(void)
+      |      ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:134:16: warning: 'p_index' defined but not used [-Wunused-variable]
+  134 | static uint8_t p_index = 0;
+      |                ^~~~~~~
+make: *** [Core/Src/subdir.mk:34: Core/Src/main.o] Error 1
+"make -j20 all" terminated with exit code 2. Build might be incomplete.
+16:40:54 **** Incremental Build of configuration Debug for project double_thermistor ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:776:13: warning: 'print_combined_line' defined but not used [-Wunused-function]
+  776 | static void print_combined_line(void)
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:733:14: warning: 'sensor_volts_to_psi' defined but not used [-Wunused-function]
+  733 | static float sensor_volts_to_psi(float sensor_volts)
+      |              ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:728:14: warning: 'adc_counts_to_volts' defined but not used [-Wunused-function]
+  728 | static float adc_counts_to_volts(uint32_t raw_count)
+      |              ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:707:13: warning: 'flow_update' defined but not used [-Wunused-function]
+  707 | static void flow_update(flow_ma_t *f, uint32_t window_pulses)
+      |             ^~~~~~~~~~~
+../Core/Src/main.c:134:16: warning: 'p_index' defined but not used [-Wunused-variable]
+  134 | static uint8_t p_index = 0;
+      |                ^~~~~~~
+arm-none-eabi-gcc -o "double_thermistor.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\azaki\Documents\GitHub\Project-Nephros\new_double_thermistor\double_thermistor\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="double_thermistor.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: double_thermistor.elf
+ 
+arm-none-eabi-size  double_thermistor.elf 
+arm-none-eabi-objdump -h -S double_thermistor.elf  > "double_thermistor.list"
+   text	   data	    bss	    dec	    hex	filename
+  42900	    476	   2872	  46248	   b4a8	double_thermistor.elf
+Finished building: default.size.stdout
+ 
+Finished building: double_thermistor.list
+ 

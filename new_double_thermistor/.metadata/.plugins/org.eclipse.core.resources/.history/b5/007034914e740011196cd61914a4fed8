@@ -155,6 +155,7 @@ static void MX_TIM1_Init(void);
 double readSmoothedTemperature(MovingAverage_t *ma, uint16_t rawSample);
 
 static void flow_update(flow_ma_t *f, uint32_t window_pulses);
+static void  pressure_start_sequence(void);
 static float adc_counts_to_volts(uint32_t raw_count);
 static float sensor_volts_to_psi(float sensor_volts);
 static void  uart_print(const char *message);
@@ -279,29 +280,29 @@ int main(void)
 
 		  bubble_detection = 0;
 
-//		  // flow sensors
-//		  last_flow_tick += FLOW_PERIOD_MS;
-//
-//		  __disable_irq();
-//		  uint32_t p1 = pulse_count_1; pulse_count_1 = 0;
-//		  uint32_t p4 = pulse_count_4; pulse_count_4 = 0;
-//		  __enable_irq();
-//
-//		  flow_update(&flow1, p1);
-//		  flow_update(&flow2, p4);
-//
-//		  // pressure sensors
-//		  uint32_t s1 = ADCvalues[3];
-//		  uint32_t s2 = ADCvalues[4];
-//
-//		  float psi1 = sensor_volts_to_psi(adc_counts_to_volts(s1) / DIVIDER_RATIO);
-//		  float psi2 = sensor_volts_to_psi(adc_counts_to_volts(s2) / DIVIDER_RATIO);
-//
-//		  /* Push into MA buffers */
-//		  p1_buffer[p_index] = psi1;
-//		  p2_buffer[p_index] = psi2;
-//		  p_index = (p_index + 1) % MA_DEPTH;
-//		  if (p_filled < MA_DEPTH) p_filled++;
+		  // flow sensors
+		  last_flow_tick += FLOW_PERIOD_MS;
+
+		  __disable_irq();
+		  uint32_t p1 = pulse_count_1; pulse_count_1 = 0;
+		  uint32_t p4 = pulse_count_4; pulse_count_4 = 0;
+		  __enable_irq();
+
+		  flow_update(&flow1, p1);
+		  flow_update(&flow2, p4);
+
+		  // pressure sensors
+		  uint32_t s1 = ADCvalues[3];
+		  uint32_t s2 = ADCvalues[4];
+
+		  float psi1 = sensor_volts_to_psi(adc_counts_to_volts(s1) / DIVIDER_RATIO);
+		  float psi2 = sensor_volts_to_psi(adc_counts_to_volts(s2) / DIVIDER_RATIO);
+
+		  /* Push into MA buffers */
+		  p1_buffer[p_index] = psi1;
+		  p2_buffer[p_index] = psi2;
+		  p_index = (p_index + 1) % MA_DEPTH;
+		  if (p_filled < MA_DEPTH) p_filled++;
 	  }
 
 	  // send results through uart

@@ -1,10 +1,32 @@
-17:17:56 **** Incremental Build of configuration Debug for project double_thermistor ****
+16:40:54 **** Incremental Build of configuration Debug for project double_thermistor ****
 make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:776:13: warning: 'print_combined_line' defined but not used [-Wunused-function]
+  776 | static void print_combined_line(void)
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:733:14: warning: 'sensor_volts_to_psi' defined but not used [-Wunused-function]
+  733 | static float sensor_volts_to_psi(float sensor_volts)
+      |              ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:728:14: warning: 'adc_counts_to_volts' defined but not used [-Wunused-function]
+  728 | static float adc_counts_to_volts(uint32_t raw_count)
+      |              ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:707:13: warning: 'flow_update' defined but not used [-Wunused-function]
+  707 | static void flow_update(flow_ma_t *f, uint32_t window_pulses)
+      |             ^~~~~~~~~~~
+../Core/Src/main.c:134:16: warning: 'p_index' defined but not used [-Wunused-variable]
+  134 | static uint8_t p_index = 0;
+      |                ^~~~~~~
+arm-none-eabi-gcc -o "double_thermistor.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\azaki\Documents\GitHub\Project-Nephros\new_double_thermistor\double_thermistor\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="double_thermistor.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: double_thermistor.elf
+ 
 arm-none-eabi-size  double_thermistor.elf 
+arm-none-eabi-objdump -h -S double_thermistor.elf  > "double_thermistor.list"
    text	   data	    bss	    dec	    hex	filename
-  39492	    476	   2560	  42528	   a620	double_thermistor.elf
+  42900	    476	   2872	  46248	   b4a8	double_thermistor.elf
 Finished building: default.size.stdout
  
+Finished building: double_thermistor.list
+ 
 
-17:17:56 Build Finished. 0 errors, 0 warnings. (took 752ms)
+16:40:56 Build Finished. 0 errors, 5 warnings. (took 1s.452ms)
 
