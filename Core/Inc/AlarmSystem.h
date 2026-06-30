@@ -11,7 +11,7 @@ extern "C" {
 #include <stdint.h>
 
 void Temp(float temp);
-void Pressure(float pressure, int pressureTimer);
+int Pressure(float pressure, int pressureTimer);
 void Air(int air);
 void Normal(float temp, int pressureTimer, int air);
 

@@ -515,53 +515,18 @@ int main(void)
               break;
           }
       }
+
+      lastPIDSystemCheck = currentTick;
     }
 
     if (currentTick - lastAlarmSystemCheck >= 1000){
 
-      if (dummy_temp < 35.0 || dummy_temp > 38.0) {
-            sprintf(msg, "WARNING: Temp out of range (%.1f C)\r\n", dummy_temp);
-            HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 100);
+      Temp(dummy_temp);
+      pressure_timer = Pressure(dummy_pressure, pressure_timer);
+      Air(dummy_air);
+      Normal(dummy_temp, pressure_timer, dummy_air);
 
-            if (dummy_temp > 40.0 || dummy_temp < 32.0) {
-                // SEVERE: Stop pumps and alarm
-                HAL_GPIO_WritePin(GPIOB, RED_LED_Pin | BUZZER_Pin, GPIO_PIN_SET);
-                HAL_UART_Transmit(&huart2, (uint8_t*)"CRITICAL: SEVERE TEMP - HALT PUMPS!\r\n", 37, 100);
-            }
-        }
-
-
-      if (dummy_pressure < 20.0 || dummy_pressure > 80.0) {
-            pressure_timer++;
-            if (pressure_timer >= 3) {
-                HAL_GPIO_WritePin(GPIOB, RED_LED_Pin | BUZZER_Pin, GPIO_PIN_SET);
-                HAL_UART_Transmit(&huart2, (uint8_t*)"ALARM: PRESSURE ERROR > 3 SECONDS!\r\n", 36, 100);
-            }
-        } else {
-            pressure_timer = 0;
-        }
-
-
-      if (dummy_air == 1) {
-            HAL_GPIO_WritePin(GPIOB, RED_LED_Pin | BUZZER_Pin, GPIO_PIN_SET);
-            HAL_UART_Transmit(&huart2, (uint8_t*)"ALARM: AIR DETECTED! SYSTEM LOCKED.\r\n", 37, 100);
-
-
-            while(dummy_air == 1) {
-
-            }
-        }
-
-
-      if (dummy_air == 0 && pressure_timer < 3 && (dummy_temp >= 32.0 && dummy_temp <= 40.0)) {
-            HAL_GPIO_WritePin(GPIOB, LD3_Pin, GPIO_PIN_SET);
-            if (dummy_temp >= 35.0 && dummy_temp <= 38.0) {
-                HAL_GPIO_WritePin(GPIOB, RED_LED_Pin | BUZZER_Pin, GPIO_PIN_RESET);
-            }
-        } else {
-            HAL_GPIO_WritePin(GPIOB, LD3_Pin, GPIO_PIN_RESET);
-        }
-
+      lastAlarmSystemCheck = currentTick;
     }
   }
   /* USER CODE END 3 */
