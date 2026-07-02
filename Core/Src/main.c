@@ -133,7 +133,7 @@ float dummyPressure = 50.0;
 int dummyAir = 0;
 
 int pressureTimer = 0;
-char msg[100];
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/

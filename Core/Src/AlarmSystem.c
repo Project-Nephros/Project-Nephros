@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include <math.h>
 
+char msg[100];
+
 void Temp(float temp){
     if (temp < 35.0 || temp > 38.0) {
         sprintf(msg, "WARNING: Temp out of range (%.1f C)\r\n", temp);
