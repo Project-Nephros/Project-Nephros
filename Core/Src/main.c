@@ -126,14 +126,13 @@ static int32_t flowError = 0;
 
 static uint8_t stoppedMessagePrinted = 0U;
 
-UART_HandleTypeDef huart2;
 
 //ALARMSYSTEM VARIABLES
-float dummy_temp = 36.5;
-float dummy_pressure = 50.0;
-int dummy_air = 0;
+float dummyTemp = 36.5;
+float dummyPressure = 50.0;
+int dummyAir = 0;
 
-int pressure_timer = 0;
+int pressureTimer = 0;
 char msg[100];
 /* USER CODE END PV */
 
@@ -150,8 +149,7 @@ static int32_t GetPlaceholderMeasuredFlow(uint32_t arr, uint32_t elapsedMs);
 static const char* GetMotorStateName(MotorState state);
 static void PrintMotorStatus(void);
 
-static void MX_GPIO_Init(void);
-static void MX_USART2_UART_Init(void);
+
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -521,10 +519,10 @@ int main(void)
 
     if (currentTick - lastAlarmSystemCheck >= 1000){
 
-      Temp(dummy_temp);
-      pressure_timer = Pressure(dummy_pressure, pressure_timer);
-      Air(dummy_air);
-      Normal(dummy_temp, pressure_timer, dummy_air);
+      Temp(dummyTemp);
+      pressureTimer = Pressure(dummyPressure, pressureTimer);
+      Air(dummyAir);
+      Normal(dummyTemp, pressureTimer, dummyAir);
 
       lastAlarmSystemCheck = currentTick;
     }
