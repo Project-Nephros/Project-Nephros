@@ -19,4 +19,4 @@ void Normal(float temp, int pressureTimer, int air);
 }
 #endif
 
-#endif /* __PUMPMOTOR_H__ */
+#endif /* __ALARMSYSTEM_H__ */
