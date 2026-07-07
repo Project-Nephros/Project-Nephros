@@ -61,3 +61,39 @@ arm-none-eabi-size  double_thermistor.elf
   39492	    476	   2560	  42528	   a620	double_thermistor.elf
 Finished building: default.size.stdout
  
+15:14:57 **** Incremental Build of configuration Debug for project double_thermistor ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc "../Core/Src/stm32l4xx_hal_msp.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32l4xx_hal_msp.d" -MT"Core/Src/stm32l4xx_hal_msp.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32l4xx_hal_msp.o"
+arm-none-eabi-gcc -o "double_thermistor.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\azaki\Documents\GitHub\Project-Nephros\new_double_thermistor\double_thermistor\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="double_thermistor.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: double_thermistor.elf
+ 
+arm-none-eabi-size  double_thermistor.elf 
+arm-none-eabi-objdump -h -S double_thermistor.elf  > "double_thermistor.list"
+   text	   data	    bss	    dec	    hex	filename
+  39492	    476	   2560	  42528	   a620	double_thermistor.elf
+Finished building: default.size.stdout
+ 
+Finished building: double_thermistor.list
+ 
+15:15:18 **** Incremental Build of configuration Debug for project double_thermistor ****
+make -j20 all 
+arm-none-eabi-size  double_thermistor.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39492	    476	   2560	  42528	   a620	double_thermistor.elf
+Finished building: default.size.stdout
+ 
+15:18:54 **** Incremental Build of configuration Debug for project double_thermistor ****
+make -j20 all 
+arm-none-eabi-size  double_thermistor.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39492	    476	   2560	  42528	   a620	double_thermistor.elf
+Finished building: default.size.stdout
+ 
+23:39:13 **** Incremental Build of configuration Debug for project double_thermistor ****
+make -j20 all 
+arm-none-eabi-size  double_thermistor.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39492	    476	   2560	  42528	   a620	double_thermistor.elf
+Finished building: default.size.stdout
+ 

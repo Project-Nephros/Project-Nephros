@@ -1,4 +1,4 @@
-17:17:56 **** Incremental Build of configuration Debug for project double_thermistor ****
+23:39:13 **** Incremental Build of configuration Debug for project double_thermistor ****
 make -j20 all 
 arm-none-eabi-size  double_thermistor.elf 
    text	   data	    bss	    dec	    hex	filename
@@ -6,5 +6,5 @@ arm-none-eabi-size  double_thermistor.elf
 Finished building: default.size.stdout
  
 
-17:17:56 Build Finished. 0 errors, 0 warnings. (took 752ms)
+23:39:13 Build Finished. 0 errors, 0 warnings. (took 338ms)
 
