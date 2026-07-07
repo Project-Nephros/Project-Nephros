@@ -11,7 +11,7 @@
 
 char msg[100];
 
-void Temp(float temp){
+int Temp(float temp){
     if (temp < 35.0 || temp > 38.0) {
         sprintf(msg, "WARNING: Temp out of range (%.1f C)\r\n", temp);
         HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 100);
@@ -20,8 +20,12 @@ void Temp(float temp){
             // SEVERE: Stop pumps and alarm
             HAL_GPIO_WritePin(GPIOB, Alarm_LED_Pin | Buzzer_Pin, GPIO_PIN_SET);
             HAL_UART_Transmit(&huart2, (uint8_t*)"CRITICAL: SEVERE TEMP - HALT PUMPS!\r\n", 37, 100);
+            return 1;
         }
+        
     }
+
+    return 0;
 
 }
 
@@ -40,11 +44,14 @@ int Pressure(float pressure, int pressureTimer){
 }
 
 
-void Air(int air){
+int Air(int air){
     if (air == 1) {
         HAL_GPIO_WritePin(GPIOB, Alarm_LED_Pin | Buzzer_Pin, GPIO_PIN_SET);
         HAL_UART_Transmit(&huart2, (uint8_t*)"ALARM: AIR DETECTED! SYSTEM LOCKED.\r\n", 37, 100);
+        return 1;
     }
+
+    return 0;
 }
 
 void Normal(float temp, int pressureTimer, int air){

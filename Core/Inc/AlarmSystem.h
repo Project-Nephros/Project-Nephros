@@ -10,9 +10,9 @@ extern "C" {
 #include "main.h"
 #include <stdint.h>
 
-void Temp(float temp);
+int Temp(float temp);
 int Pressure(float pressure, int pressureTimer);
-void Air(int air);
+int Air(int air);
 void Normal(float temp, int pressureTimer, int air);
 
 #ifdef __cplusplus

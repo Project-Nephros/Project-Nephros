@@ -239,6 +239,9 @@ static const char* GetMotorStateName(MotorState state)
 
         case MOTOR_STATE_STOPPED:
             return "STOPPED";
+        
+        case MOTOR_STATE_EMERGENCY_STOP:
+            retun "EMERGENCY_STOP"
 
         default:
             return "UNKNOWN";
@@ -503,6 +506,25 @@ int main(void)
             break;
         }
 
+        case MOTOR_STATE_EMERGENCY_STOP:
+        {
+          StopMotorPWM();
+          HAL_GPIO_WritePin(GPIOB, Alarm_LED_Pin | Buzzer_Pin, GPIO_PIN_SET);
+          PrintMotorStatus();
+          // if (a reset button pressed or whatever) 
+          // {
+          //   MotorValuesInit();
+          //   StartMotorPWM();
+          //   motorstate = MOTOR_STATE_START_RAMP;
+          // }
+
+          // if (decide not to reset)
+          // {
+          //   end session or whatever. motorstate = MOTOR_STATE_STOP_RAMP; -> but might want printed message to be ended session w emergency stop
+          // }
+          // break;
+        }
+
         default:
         {
             /*
@@ -521,9 +543,13 @@ int main(void)
     //LOOP FOR ALARM SYSTEM
     if (currentTick - lastAlarmSystemCheck >= 1000){
 
-      Temp(dummyTemp);
       pressureTimer = Pressure(dummyPressure, pressureTimer);
-      Air(dummyAir);
+
+      if (Temp(dummyTemp) || (pressureTimer >= 3) || Air(dummyAir))
+      {
+        motorState = MOTOR_STATE_EMERGENCY_STOP;
+      }
+
       Normal(dummyTemp, pressureTimer, dummyAir);
 
       lastAlarmSystemCheck = currentTick;
