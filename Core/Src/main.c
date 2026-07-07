@@ -365,158 +365,160 @@ int main(void)
 
     uint32_t currentTick = HAL_GetTick();
 
+    //LOOP FOR PID
     if (currentTick - lastPIDSystemCheck >= 1){
 
       switch (motorState)
       {
-      case MOTOR_STATE_START_RAMP:
-      {
-        /* ADDED: Periodic UART print during ramp-up so we can see ARR decreasing. */
-        if ((currentTick - lastUartPrintTick) >= UART_PRINT_INTERVAL_MS)
+        case MOTOR_STATE_START_RAMP:
         {
-          PrintMotorStatus();
-          lastUartPrintTick = currentTick;
-        }
-
-        if (StartPump())
-        {
-          ResetPID();
-          pidStartTick = currentTick;
-          lastControlUpdateTick = currentTick;
-          lastUartPrintTick = currentTick;
-          motorState = MOTOR_STATE_PID_TEST;
-          PrintMotorStatus();
-        }
-        break;
-      }
-
-          case MOTOR_STATE_PID_TEST:
+          /* ADDED: Periodic UART print during ramp-up so we can see ARR decreasing. */
+          if ((currentTick - lastUartPrintTick) >= UART_PRINT_INTERVAL_MS)
           {
-              /*
-              * ADDED:
-              * PID testing stage.
-              *
-              * Since there is no real flow sensor yet, measuredFlow comes from
-              * GetPlaceholderMeasuredFlow().
-              *
-              * Later, replace this placeholder value with real flow sensor data.
-              */
-              uint32_t elapsedMs = currentTick - pidStartTick;
-
-
-
-              /*
-              * ADDED:
-              * Scheduled setpoint changes for the test scenario.
-              * 0–15s:  target = 250
-              * 15–25s: target = 180
-              * 25s+ :  target = 250
-              */
-              if (elapsedMs >= TEST_SETPOINT_RESTORE_MS)
-              {
-                targetFlow = TARGET_FLOW_ML_MIN;
-              }
-              else if (elapsedMs >= TEST_SETPOINT_CHANGE_MS)
-              {
-                targetFlow = TEST_ALT_TARGET_ML_MIN;
-              }
-              else
-              {
-                targetFlow = TARGET_FLOW_ML_MIN;
-              }
-
-
-
-
-              if ((currentTick - lastControlUpdateTick) >= CONTROL_UPDATE_INTERVAL_MS)
-              {
-                  measuredFlow = GetPlaceholderMeasuredFlow(GetARR(), elapsedMs);
-                  flowError = targetFlow - measuredFlow;
-
-                  /*
-                  * ADDED:
-                  * Motor speed is now controlled based on PID error.
-                  */
-                  UpdatePID((float)flowError);
-
-                  lastControlUpdateTick = currentTick;
-              }
-
-              if ((currentTick - lastUartPrintTick) >= UART_PRINT_INTERVAL_MS)
-              {
-                  PrintMotorStatus();
-                  lastUartPrintTick = currentTick;
-              }
-
-              /*
-              * ADDED:
-              * Automatically finish the placeholder PID test after 30 seconds.
-              */
-              if (elapsedMs >= PID_TEST_DURATION_MS)
-              {
-                  motorState = MOTOR_STATE_END_RAMP;
-                  PrintMotorStatus();
-              }
-
-              break;
+            PrintMotorStatus();
+            lastUartPrintTick = currentTick;
           }
 
-          case MOTOR_STATE_END_RAMP:
+          if (StartPump())
           {
-            /* ADDED: Periodic UART print during ramp-down so we can see ARR increasing. */
+            ResetPID();
+            pidStartTick = currentTick;
+            lastControlUpdateTick = currentTick;
+            lastUartPrintTick = currentTick;
+            motorState = MOTOR_STATE_PID_TEST;
+            PrintMotorStatus();
+          }
+          break;
+        }
+
+        case MOTOR_STATE_PID_TEST:
+        {
+            /*
+            * ADDED:
+            * PID testing stage.
+            *
+            * Since there is no real flow sensor yet, measuredFlow comes from
+            * GetPlaceholderMeasuredFlow().
+            *
+            * Later, replace this placeholder value with real flow sensor data.
+            */
+            uint32_t elapsedMs = currentTick - pidStartTick;
+
+
+
+            /*
+            * ADDED:
+            * Scheduled setpoint changes for the test scenario.
+            * 0–15s:  target = 250
+            * 15–25s: target = 180
+            * 25s+ :  target = 250
+            */
+            if (elapsedMs >= TEST_SETPOINT_RESTORE_MS)
+            {
+              targetFlow = TARGET_FLOW_ML_MIN;
+            }
+            else if (elapsedMs >= TEST_SETPOINT_CHANGE_MS)
+            {
+              targetFlow = TEST_ALT_TARGET_ML_MIN;
+            }
+            else
+            {
+              targetFlow = TARGET_FLOW_ML_MIN;
+            }
+
+
+
+
+            if ((currentTick - lastControlUpdateTick) >= CONTROL_UPDATE_INTERVAL_MS)
+            {
+                measuredFlow = GetPlaceholderMeasuredFlow(GetARR(), elapsedMs);
+                flowError = targetFlow - measuredFlow;
+
+                /*
+                * ADDED:
+                * Motor speed is now controlled based on PID error.
+                */
+                UpdatePID((float)flowError);
+
+                lastControlUpdateTick = currentTick;
+            }
+
             if ((currentTick - lastUartPrintTick) >= UART_PRINT_INTERVAL_MS)
             {
-              PrintMotorStatus();
-              lastUartPrintTick = currentTick;
+                PrintMotorStatus();
+                lastUartPrintTick = currentTick;
             }
 
-            if (EndPump())
+            /*
+            * ADDED:
+            * Automatically finish the placeholder PID test after 30 seconds.
+            */
+            if (elapsedMs >= PID_TEST_DURATION_MS)
             {
-              motorState = MOTOR_STATE_STOPPED;
-              PrintMotorStatus();
+                motorState = MOTOR_STATE_END_RAMP;
+                PrintMotorStatus();
             }
+
             break;
-          }
+        }
 
-          case MOTOR_STATE_STOPPED:
+        case MOTOR_STATE_END_RAMP:
+        {
+          /* ADDED: Periodic UART print during ramp-down so we can see ARR increasing. */
+          if ((currentTick - lastUartPrintTick) >= UART_PRINT_INTERVAL_MS)
           {
-              /*
-              * ADDED:
-              * Final stopped state.
-              * Print the stopped message only once.
-              */
-              if (!stoppedMessagePrinted)
-              {
-                  char stopMessage[] = "Pump motor PID test completed. Motor stopped.\r\n";
-
-                  HAL_UART_Transmit(
-                      &huart2,
-                      (uint8_t*)stopMessage,
-                      strlen(stopMessage),
-                      100
-                  );
-
-                  stoppedMessagePrinted = 1U;
-              }
-
-              break;
+            PrintMotorStatus();
+            lastUartPrintTick = currentTick;
           }
 
-          default:
+          if (EndPump())
           {
-              /*
-              * ADDED:
-              * Safety fallback.
-              */
-              StopMotorPWM();
-              motorState = MOTOR_STATE_STOPPED;
-              break;
+            motorState = MOTOR_STATE_STOPPED;
+            PrintMotorStatus();
           }
+          break;
+        }
+
+        case MOTOR_STATE_STOPPED:
+        {
+            /*
+            * ADDED:
+            * Final stopped state.
+            * Print the stopped message only once.
+            */
+            if (!stoppedMessagePrinted)
+            {
+                char stopMessage[] = "Pump motor PID test completed. Motor stopped.\r\n";
+
+                HAL_UART_Transmit(
+                    &huart2,
+                    (uint8_t*)stopMessage,
+                    strlen(stopMessage),
+                    100
+                );
+
+                stoppedMessagePrinted = 1U;
+            }
+
+            break;
+        }
+
+        default:
+        {
+            /*
+            * ADDED:
+            * Safety fallback.
+            */
+            StopMotorPWM();
+            motorState = MOTOR_STATE_STOPPED;
+            break;
+        }
       }
 
       lastPIDSystemCheck = currentTick;
     }
 
+    //LOOP FOR ALARM SYSTEM
     if (currentTick - lastAlarmSystemCheck >= 1000){
 
       Temp(dummyTemp);
