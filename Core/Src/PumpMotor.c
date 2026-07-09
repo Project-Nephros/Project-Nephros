@@ -65,6 +65,23 @@ static const uint32_t kRampFactor = 50U;
  */
 static const uint32_t kStartAndEndARR = 1000U - 1U;
 
+
+/*
+ * ADDED:
+ * Flush settings.
+ * After a session the pump keeps running at a fixed speed for a set time
+ * to push out any fluid left in the tubes.
+ *
+ * kFlushARR sets the flush speed (smaller ARR = faster).
+ * kFlushDurationMs sets how long the flush runs.
+ * Both are placeholders and should be tuned later.
+ */
+static const uint32_t kFlushARR = 52U - 1U;
+static const uint32_t kFlushDurationMs = 10000U;
+
+
+
+
 /*
  * ADDED:
  * Safety bounds for ARR.
@@ -379,6 +396,50 @@ uint8_t EndPump(void)
 
     return 0U;
 }
+
+
+uint8_t FlushPump(void)
+{
+    /*
+     * ADDED:
+     * Run the pump at a fixed flush speed for kFlushDurationMs.
+     * This is open-loop (no PID) because we only need to push fluid out,
+     * not hold a target flow.
+     *
+     * Return:
+     * 0 = still flushing
+     * 1 = flush finished
+     */
+
+    static uint8_t  flushStarted = 0U;
+    static uint32_t flushStartTick = 0U;
+
+    /*
+     * On the first call, make sure PWM is on, set the flush speed,
+     * and record the start time.
+     */
+    if (!flushStarted)
+    {
+        StartMotorPWM();
+        UpdateARR(kFlushARR);
+        flushStartTick = HAL_GetTick();
+        flushStarted = 1U;
+    }
+
+    /*
+     * When the flush time has passed, reset for next session and finish.
+     */
+    if ((HAL_GetTick() - flushStartTick) >= kFlushDurationMs)
+    {
+        flushStarted = 0U;
+        return 1U;
+    }
+
+    return 0U;
+}
+
+
+
 
 void ResetPID(void)
 {

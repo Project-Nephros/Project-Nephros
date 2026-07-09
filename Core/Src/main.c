@@ -49,6 +49,7 @@ typedef enum
 {
     MOTOR_STATE_START_RAMP = 0,
     MOTOR_STATE_PID_TEST,
+    MOTOR_STATE_FLUSH,
     MOTOR_STATE_END_RAMP,
     MOTOR_STATE_STOPPED
 } MotorState;
@@ -233,6 +234,9 @@ static const char* GetMotorStateName(MotorState state)
 
         case MOTOR_STATE_PID_TEST:
             return "PID_TEST";
+        
+        case MOTOR_STATE_FLUSH:
+            return "FLUSH";
 
         case MOTOR_STATE_END_RAMP:
             return "END_RAMP";
@@ -458,12 +462,37 @@ int main(void)
             */
             if (elapsedMs >= PID_TEST_DURATION_MS)
             {
+                motorState = MOTOR_STATE_FLUSH;
+                PrintMotorStatus();
+            }
+
+            break;
+        }
+
+        case MOTOR_STATE_FLUSH:
+        {
+            /*
+             * ADDED:
+             * Flush stage.
+             * The pump keeps running at a fixed speed to clear the tubes.
+             * FlushPump() returns 1 when the flush time is finished.
+             */
+            if ((currentTick - lastUartPrintTick) >= UART_PRINT_INTERVAL_MS)
+            {
+                PrintMotorStatus();
+                lastUartPrintTick = currentTick;
+            }
+
+            if (FlushPump())
+            {
                 motorState = MOTOR_STATE_END_RAMP;
                 PrintMotorStatus();
             }
 
             break;
         }
+
+
 
         case MOTOR_STATE_END_RAMP:
         {

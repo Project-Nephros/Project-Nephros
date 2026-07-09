@@ -27,6 +27,13 @@ void StopMotorPWM(void);
 uint8_t StartPump(void);
 uint8_t EndPump(void);
 
+// ADDED: FlushPump runs the pump at a fixed speed for a set time.
+// Used at the end of a session to push out any fluid left in the tubes.
+// Return 0 = still flushing
+// Return 1 = flush finished
+uint8_t FlushPump(void);
+
+
 // ADDED: ResetPID clears PID internal memory before entering PID control.
 // This was not in the original code.
 void ResetPID(void);
