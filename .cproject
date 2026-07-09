@@ -57,7 +57,7 @@
 							</tool>
 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.1327835387" name="MCU/MPU GCC Linker" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker">
 								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.script.1594662992" name="Linker Script (-T)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.script" value="${workspace_loc:/${ProjName}/STM32L432KCUX_FLASH.ld}" valueType="string"/>
-								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.otherflags.1289558333" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.otherflags" valueType="stringList">
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.otherflags.1289558333" name="Other flags" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.otherflags" valueType="stringList">
 									<listOptionValue builtIn="false" value="-u _printf_float"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.input.1850079315" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.input">
@@ -163,18 +163,18 @@
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.pathentry"/>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="Project_Nephros_LCD.null.2145255835" name="Project_Nephros_LCD"/>
+		<project id="project_nephros.null.1311293298" name="project_nephros"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+	<storageModule moduleId="refreshScope"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.1310561507;com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.1310561507.;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.378318186;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.303126997">
+		<scannerConfigBuildInfo instanceId="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.80516059;com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.80516059.;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.335521861;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.89058043">
 			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.1046995053;com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.1046995053.;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.1563552440;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.2068384384">
+		<scannerConfigBuildInfo instanceId="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.1001069139;com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.1001069139.;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.762222113;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.1435252260">
 			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="refreshScope"/>
 </cproject>
