@@ -10,6 +10,7 @@ extern "C" {
 #include "main.h"
 #include <stdint.h>
 
+//Functions
 int Temp(float temp);
 int Pressure(float pressure, int pressureTimer);
 int Air(int air);

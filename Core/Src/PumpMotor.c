@@ -400,9 +400,7 @@ uint8_t EndPump(void)
 
 uint8_t FlushPump(void)
 {
-    /*
-     * ADDED:
-     * Run the pump at a fixed flush speed for kFlushDurationMs.
+    /*Run the pump at a fixed flush speed for kFlushDurationMs.
      * This is open-loop (no PID) because we only need to push fluid out,
      * not hold a target flow.
      *
