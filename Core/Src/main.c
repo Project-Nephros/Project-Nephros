@@ -25,7 +25,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "PumpMotor.h"
-#include "AlarmSystem.h"
 #include "StateMachine.h"
 #include "nephros_ui.h"
 #include "nephros_safety.h"
@@ -68,7 +67,7 @@ static NephrosSensorData sensor_data =
 static NephrosSetup setup_data;
 
 //TIMER VARIABLES
-uint32_t lastAlarmSystemCheck = 0;
+uint32_t lastAlarmSystemCheck = 0; //FIXME: THis was used for the alarm system might not need anymore
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
