@@ -89,9 +89,8 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-<<<<<<< HEAD
 
-  /*
+  /*THIS NEEDS TO BE FIXED
    * MODIFIED:
    * Original manual ARR test variables were removed from main.c.
    * Motor speed settings are now handled inside PumpMotor.c.
@@ -104,8 +103,6 @@ int main(void)
   char startMessage[] =
       "Pump motor PID test started. Using placeholder flow values.\r\n";
 
-=======
->>>>>>> NEWLCD
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
