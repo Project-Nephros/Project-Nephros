@@ -90,8 +90,8 @@ void NephrosSafety_Init(NephrosLogWriter writer)
     set_outputs(false, false, false);
 
     HAL_GPIO_WritePin(
-        FAN_PORT,
-        FAN_PIN,
+        FAN_GPIO_Port,
+        FAN_Pin,
         GPIO_PIN_RESET
     );
 }
@@ -507,20 +507,20 @@ static void set_outputs(
 )
 {
     HAL_GPIO_WritePin(
-        ALARM_LED_PORT,
-        ALARM_LED_PIN,
+        ALARM_LED_GPIO_Port,
+        ALARM_LED_Pin,
         warning_led_on ? GPIO_PIN_SET : GPIO_PIN_RESET
     );
 
     HAL_GPIO_WritePin(
-        BUZZER_PORT,
-        BUZZER_PIN,
+        BUZZER_GPIO_Port,
+        BUZZER_Pin,
         buzzer_on ? GPIO_PIN_SET : GPIO_PIN_RESET
     );
 
     HAL_GPIO_WritePin(
-        PUMP_KILL_PORT,
-        PUMP_KILL_PIN,
+        PUMP_KILL_GPIO_Port,
+        PUMP_KILL_Pin,
         pump_kill_on ? GPIO_PIN_SET : GPIO_PIN_RESET
     );
 }
@@ -546,8 +546,8 @@ static void update_fan(float temperature_c)
     }
 
     HAL_GPIO_WritePin(
-        FAN_PORT,
-        FAN_PIN,
+        FAN_GPIO_Port,
+        FAN_Pin,
         fan_on ? GPIO_PIN_SET : GPIO_PIN_RESET
     );
 }

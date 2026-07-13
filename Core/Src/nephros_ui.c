@@ -221,8 +221,8 @@ bool NephrosUI_ButtonPressed(uint32_t now_ms)
     bool pressed = false;
 
     now_state = HAL_GPIO_ReadPin(
-        NEPHROS_BTN_PORT,
-        NEPHROS_BTN_PIN
+        NEPHROS_BTN_GPIO_Port,
+        NEPHROS_BTN_Pin
     );
 
     if (now_state == GPIO_PIN_RESET &&
