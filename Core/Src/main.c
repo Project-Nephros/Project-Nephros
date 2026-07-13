@@ -22,75 +22,69 @@
 #include "usart.h"
 #include "gpio.h"
 
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
 #include "PumpMotor.h"
 #include "AlarmSystem.h"
 #include "StateMachine.h"
+#include "nephros_ui.h"
+#include "nephros_safety.h"
+#include "liquidcrystal_i2c.h"
 
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
+
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <stdint.h>
+#include <errno.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
-
-
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+I2C_HandleTypeDef hi2c1;
+
+UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 
-/*
- * ADDED:
- * Variables used by the state machine and PID test.
- */
+static NephrosSensorData sensor_data =
+{
+    .temperature_c = 36.5f,
+    .pressure = 150U,
+    .air_detected = false
+};
+
+static NephrosSetup setup_data;
 
 //TIMER VARIABLES
 uint32_t lastAlarmSystemCheck = 0;
-
-//ALARMSYSTEM VARIABLES
-float dummyTemp = 36.5;
-float dummyPressure = 50.0;
-int dummyAir = 0;
-
-int pressureTimer = 0;
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+static void MX_USART2_UART_Init(void);
+static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
-
-/*//mOVED TO STATEMACHINE
- * ADDED:
- * Helper functions for placeholder PID testing and UART output.
- */
-
-
-
-/* USER CODE BEGIN PFP */
-
+static void read_sensors(NephrosSensorData *sensor);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
-
-
 /* USER CODE END 0 */
 
 /**
@@ -101,6 +95,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+<<<<<<< HEAD
 
   /*
    * MODIFIED:
@@ -115,6 +110,8 @@ int main(void)
   char startMessage[] =
       "Pump motor PID test started. Using placeholder flow values.\r\n";
 
+=======
+>>>>>>> NEWLCD
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -123,24 +120,42 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
   /* USER CODE END Init */
 
   /* Configure the system clock */
   SystemClock_Config();
-
+  /*dbg_system_clock = SystemCoreClock;
+  dbg_systick_ctrl = SysTick->CTRL;
+  dbg_systick_load = SysTick->LOAD;
+  dbg_systick_val  = SysTick->VAL;
+  dbg_primask      = __get_PRIMASK();
+  dbg_tick_before_lcd = HAL_GetTick();*/ //FIXME: CHECK WHAT THIS IS
   /* USER CODE BEGIN SysInit */
-
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  MX_I2C1_Init();
   MX_TIM1_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+    /* USER CODE BEGIN 2 */
+  /* USER CODE BEGIN 2 */
 
-  /*
+  NephrosUI_Init();
+
+  NephrosUI_ShowBoot();
+
+  NephrosUI_ShowConsolePrompt();
+
+  NephrosUI_RunStartupMenu(&setup_data);
+
+  NephrosUI_ShowSetupComplete(&setup_data);
+
+  NephrosSafety_Init(NephrosUI_Write);
+  
+    /*
    * Existing motor initialisation.
    *
    * MODIFIED:
@@ -170,32 +185,72 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+    while (1)
+    {
+        uint32_t currentTick = HAL_GetTick();
+        bool button_pressed;
+        NephrosSafetyOutput safety_output;
 
-  while (1)
-  {
+        RunStateMachine(currentTick);
+
+        read_sensors(&sensor_data);
+
+        button_pressed = NephrosUI_ButtonPressed(now);
+
+        safety_output = NephrosSafety_Update(
+            &sensor_data,
+            button_pressed,
+            now
+        );
+
+        if (safety_output.halted == true)
+        {
+            SetState(STATE_EMERGENCY_STOP);
+        }
+
+        if (safety_output.lcd_message_valid)
+        {
+            NephrosUI_ShowMessage(
+                safety_output.lcd_line1,
+                safety_output.lcd_line2
+            );
+
+            /*
+             * Demo-only delay.
+             * When PID is integrated, replace this with non-blocking timing.
+             */
+            if (safety_output.message_hold_ms > 0U)
+            {
+                HAL_Delay(safety_output.message_hold_ms);
+            }
+
+            NephrosUI_ForceRedraw();
+        }
+        else
+        {
+            if (safety_output.force_normal_lcd_redraw)
+            {
+                NephrosUI_ForceRedraw();
+            }
+
+            if (safety_output.can_cycle_lcd_view)
+            {
+                if (button_pressed)
+                {
+                    NephrosUI_NextView();
+                }
+
+                NephrosUI_ShowNormalIfChanged(&sensor_data);
+            }
+        }
+
+        HAL_Delay(20);
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
-    uint32_t currentTick = HAL_GetTick();
-
-    RunStateMachine(currentTick);
-
-    //LOOP FOR ALARM SYSTEM
-    if (currentTick - lastAlarmSystemCheck >= 1000){
-
-      pressureTimer = Pressure(dummyPressure, pressureTimer);
-
-      if (Temp(dummyTemp) || (pressureTimer >= 3) || Air(dummyAir))
-      {
-        SetState(STATE_EMERGENCY_STOP);
-      }
-
-      Normal(dummyTemp, pressureTimer, dummyAir);
-
-      lastAlarmSystemCheck = currentTick;
     }
-  }
   /* USER CODE END 3 */
 }
 
@@ -231,7 +286,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_MSI;
   RCC_OscInitStruct.PLL.PLLM = 1;
-  RCC_OscInitStruct.PLL.PLLN = 40;
+  RCC_OscInitStruct.PLL.PLLN = 40; //FIXME: MANFREDS WAS 16, CHANGED TO 40 FOR 80MHZ CLOCK. NEED TO CHECK IF THIS IS OKAY
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV7;
   RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
   RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
@@ -249,7 +304,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
   {
     Error_Handler();
   }
@@ -259,8 +314,157 @@ void SystemClock_Config(void)
   HAL_RCCEx_EnableMSIPLLMode();
 }
 
-/* USER CODE BEGIN 4 */
+/**
+  * @brief I2C1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C1_Init(void)
+{
 
+  /* USER CODE BEGIN I2C1_Init 0 */
+
+  /* USER CODE END I2C1_Init 0 */
+
+  /* USER CODE BEGIN I2C1_Init 1 */
+
+  /* USER CODE END I2C1_Init 1 */
+  hi2c1.Instance = I2C1;
+  hi2c1.Init.Timing = 0x00B07CB4;
+  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c1.Init.OwnAddress2 = 0;
+  hi2c1.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Analogue filter
+  */
+  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Digital filter
+  */
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C1_Init 2 */
+
+  /* USER CODE END I2C1_Init 2 */
+
+}
+
+/**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART2_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART2_Init 0 */
+
+  /* USER CODE END USART2_Init 0 */
+
+  /* USER CODE BEGIN USART2_Init 1 */
+
+  /* USER CODE END USART2_Init 1 */
+  huart2.Instance = USART2;
+  huart2.Init.BaudRate = 115200;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits = UART_STOPBITS_1;
+  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Mode = UART_MODE_TX_RX;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART2_Init 2 */
+
+  /* USER CODE END USART2_Init 2 */
+
+}
+
+/**
+  * @brief GPIO Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPIO_Init(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
+
+  /* USER CODE END MX_GPIO_Init_1 */
+
+  /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, LD3_Pin|GPIO_PIN_4|GPIO_PIN_5, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : PA0 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0;
+  GPIO_InitStruct.Mode = GPIO_MODE_ANALOG_ADC_CONTROL;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PA11 */
+  GPIO_InitStruct.Pin = GPIO_PIN_11;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PA12 */
+  GPIO_InitStruct.Pin = GPIO_PIN_12;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : LD3_Pin PB4 PB5 */
+  GPIO_InitStruct.Pin = LD3_Pin|GPIO_PIN_4|GPIO_PIN_5;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /* USER CODE BEGIN MX_GPIO_Init_2 */
+
+  /* USER CODE END MX_GPIO_Init_2 */
+}
+
+/* USER CODE BEGIN 4 */
+static void read_sensors(NephrosSensorData *sensor)
+{
+    /*
+     * For now, this function does nothing because we are using
+     * the debugger to edit sensor_data manually.
+     *
+     * Later, Group A sensor code should update:
+     * sensor->temperature_c
+     * sensor->pressure
+     * sensor->air_detected
+     */
+
+    (void)sensor;
+}
 /* USER CODE END 4 */
 
 /**

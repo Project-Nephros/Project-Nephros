@@ -57,18 +57,57 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define Direction_Pin GPIO_PIN_0
-#define Direction_GPIO_Port GPIOA
-#define SWDIO_Pin GPIO_PIN_13
-#define SWDIO_GPIO_Port GPIOA
-#define SWCLK_Pin GPIO_PIN_14
-#define SWCLK_GPIO_Port GPIOA
-#define LD3_Pin GPIO_PIN_3
-#define LD3_GPIO_Port GPIOB
-#define Buzzer_Pin GPIO_PIN_4
-#define Buzzer_GPIO_Port GPIOB
-#define Alarm_LED_Pin GPIO_PIN_5
-#define Alarm_LED_GPIO_Port GPIOB
+#define VCP_TX_Pin            GPIO_PIN_2
+#define VCP_TX_GPIO_Port      GPIOA
+#define SWDIO_Pin             GPIO_PIN_13
+#define SWDIO_GPIO_Port       GPIOA
+#define SWCLK_Pin             GPIO_PIN_14
+#define SWCLK_GPIO_Port       GPIOA
+#define VCP_RX_Pin            GPIO_PIN_15
+#define VCP_RX_GPIO_Port      GPIOA
+
+#define LD3_Pin               GPIO_PIN_3
+#define LD3_GPIO_Port         GPIOB
+
+/* ------ Alarm System Ports ------*/
+#define Buzzer_Pin            GPIO_PIN_4
+#define Buzzer_GPIO_Port      GPIOB
+
+#define Alarm_LED_Pin         GPIO_PIN_5
+#define Alarm_LED_GPIO_Port   GPIOB
+
+/* ------ Fan Ports ------
+ * 12 V fan MOSFET control.
+ * Configure PA8 as GPIO_Output in CubeMX.
+ */
+#define FAN_PORT                GPIOA
+#define FAN_PIN                 GPIO_PIN_8
+
+/* ------ Button PIN/PORT ------*/
+#define NEPHROS_BTN_PORT        GPIOA
+#define NEPHROS_BTN_PIN         GPIO_PIN_12
+
+// /*
+//  * One warning LED:
+//  * - warning only: LED on, buzzer off
+//  * - halt state: LED on, buzzer on
+//  */
+// #define ALARM_LED_PORT          GPIOA
+// #define ALARM_LED_PIN           GPIO_PIN_11
+
+// #define BUZZER_PORT             GPIOB
+// #define BUZZER_PIN              GPIO_PIN_5
+
+
+
+// /* DONT THINK WE WILL BE USING A KILL PORT 
+//  * Pump kill output.
+//  * Current code assumes GPIO high = pump halted.
+//  * If your motor driver uses active-low enable, adjust this logic later.
+//  */
+// #define PUMP_KILL_PORT          GPIOB
+// #define PUMP_KILL_PIN           GPIO_PIN_4
+
 
 /* USER CODE BEGIN Private defines */
 

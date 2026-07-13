@@ -25,7 +25,6 @@ https://os.mbed.com/platforms/ST-Nucleo-L432KC/
 
 
 
-
 console stuff
 Adding UART2 console view in terminal for Debugging purposes:
 
