@@ -101,9 +101,13 @@ volatile uint16_t VTO_ADC_12Bit;
 volatile double VTO;
 volatile double VTO_NORM = 0.3;
 
+typedef enum {
+    SENSOR_NORMAL = 0,
+    SENSOR_MARGINAL,
+    SENSOR_FAILED
+} BubbleSensorStatus_t;
 
-
-const char *bubble_detector_status = "NORMAL";
+volatile BubbleSensorStatus_t bubble_status = SENSOR_NORMAL;
 
 // timer variables
 volatile uint8_t timerReady = 0;
@@ -162,6 +166,7 @@ static void flow_update(flow_ema_t *f, uint32_t window_pulses);
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 
+	// use this if block for integration
 	// update GPIO_Pin to the VTTL_Pin in use on integrated STM
 	if (GPIO_Pin == VTTL_Pin){
 		// edge detected && VTTL HIGH
@@ -240,16 +245,11 @@ int main(void)
 		  VTO_ADC_12Bit = (uint16_t)(ADCvalues[2]);
 		  VTO = (VTO_ADC_12Bit * V_REF) / ADC_MAX;
 		  if (VTO < 0.5)
-		  {
-			  bubble_detector_status = "NORMAL";
-		  }
+		      status = NORMAL;
 		  else if (VTO < 2.0)
-		  {
-			  bubble_detector_status = "MARGINAL";
-		  }
+		      status = MARGINAL;
 		  else
-		  {
-			  bubble_detector_status = "FAILED";
+		      status = FAILED;
 		  }
 		}
 
@@ -276,17 +276,17 @@ int main(void)
 		  flow_update(&flow1, p1);
 		  flow_update(&flow2, p4);
 
-		  // send results through UART
-		  sprintf(msg, "[T1=%.2f, T2=%.2f, Bubble=%d, Status=%s, P1=%.2f, P2=%.2f, F1=%.2f, F2=%.2f]\r\n",
-				  temp1, temp2, bubble_detection, bubble_detector_status, psi1, psi2, flow1.avg_mLmin, flow2.avg_mLmin);
-		  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+
 
 
 
 		  bubble_detection = 0;
 	  }
 
-
+	  // send results through UART
+	  sprintf(msg, "[T1=%.2f, T2=%.2f, Bubble=%d, Fault=%d, P1=%.2f, P2=%.2f, F1=%.2f, F2=%.2f]\r\n",
+			  temp1, temp2, bubble_detection, bubble_sensor_failed, psi1, psi2, flow1.avg_mLmin, flow2.avg_mLmin);
+	  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
 
 
 	  bubble_sensor_failed = 0;
@@ -631,10 +631,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD3_GPIO_Port, &GPIO_InitStruct);
-
-  /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 

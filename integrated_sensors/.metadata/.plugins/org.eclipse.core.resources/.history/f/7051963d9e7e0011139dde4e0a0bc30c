@@ -276,17 +276,17 @@ int main(void)
 		  flow_update(&flow1, p1);
 		  flow_update(&flow2, p4);
 
-		  // send results through UART
-		  sprintf(msg, "[T1=%.2f, T2=%.2f, Bubble=%d, Status=%s, P1=%.2f, P2=%.2f, F1=%.2f, F2=%.2f]\r\n",
-				  temp1, temp2, bubble_detection, bubble_detector_status, psi1, psi2, flow1.avg_mLmin, flow2.avg_mLmin);
-		  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+
 
 
 
 		  bubble_detection = 0;
 	  }
 
-
+	  // send results through UART
+	  sprintf(msg, "[T1=%.2f, T2=%.2f, Bubble=%d, Status=%s, P1=%.2f, P2=%.2f, F1=%.2f, F2=%.2f]\r\n",
+			  temp1, temp2, bubble_detection, bubble_detector_status, psi1, psi2, flow1.avg_mLmin, flow2.avg_mLmin);
+	  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
 
 
 	  bubble_sensor_failed = 0;

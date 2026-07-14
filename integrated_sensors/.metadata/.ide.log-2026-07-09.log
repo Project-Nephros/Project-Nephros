@@ -1,0 +1,287 @@
+2026-07-13 16:55:25,972 [INFO] WebApp:194 - Connection lost
+2026-07-13 16:55:28,652 [INFO] WebApp:191 - Connection restablished
+2026-07-13 16:55:29,229 [INFO] WebApp:194 - Connection lost
+2026-07-13 16:55:30,208 [INFO] WebApp:191 - Connection restablished
+2026-07-13 16:55:31,223 [INFO] WebApp:194 - Connection lost
+2026-07-13 16:55:31,542 [INFO] WebApp:191 - Connection restablished
+2026-07-13 16:57:18,404 [INFO] WebApp:194 - Connection lost
+2026-07-13 16:57:18,715 [INFO] WebApp:191 - Connection restablished
+2026-07-13 17:33:18,652 [INFO] NvicIntPanel:101 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,2,46,451x281,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2026-07-13 17:33:22,199 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 845724024 Bytes (1073741824)
+2026-07-13 17:33:22,546 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 859044296 Bytes (1073741824)
+2026-07-13 17:33:23,828 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 944290168 Bytes (1073741824)
+2026-07-13 17:33:25,117 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: NVIC
+2026-07-13 17:33:25,117 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2026-07-13 17:33:25,117 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: DMA
+2026-07-13 17:33:25,117 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: TIM1_8L4
+2026-07-13 17:33:25,117 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: TIM1_8L4
+2026-07-13 17:33:25,118 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: SYS
+2026-07-13 17:33:25,119 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: GPIO
+2026-07-13 17:33:25,119 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: ADC
+2026-07-13 17:33:25,119 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: RCC
+2026-07-13 17:33:25,120 [INFO] CodeGenerator:892 - code generatio: config db path: C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659\\db\
+2026-07-13 17:33:25,134 [INFO] Argument:325 - Argument : hdmavalue: null
+2026-07-13 17:33:25,134 [INFO] Argument:327 - 	 sub Args: 
+2026-07-13 17:33:25,135 [INFO] Argument:325 - Argument : Instancevalue: DMA1_Channel1
+2026-07-13 17:33:25,135 [INFO] Argument:335 - Argument : Instancevalue: DMA1_Channel1
+2026-07-13 17:33:25,135 [INFO] Argument:325 - Argument : Initvalue: null
+2026-07-13 17:33:25,135 [INFO] Argument:327 - 	 sub Args: 
+2026-07-13 17:33:25,135 [INFO] Argument:325 - Argument : Requestvalue: DMA_REQUEST_0
+2026-07-13 17:33:25,135 [INFO] Argument:335 - Argument : Requestvalue: DMA_REQUEST_0
+2026-07-13 17:33:25,135 [INFO] Argument:325 - Argument : Directionvalue: DMA_PERIPH_TO_MEMORY
+2026-07-13 17:33:25,135 [INFO] Argument:335 - Argument : Directionvalue: DMA_PERIPH_TO_MEMORY
+2026-07-13 17:33:25,135 [INFO] Argument:325 - Argument : PeriphIncvalue: DMA_PINC_DISABLE
+2026-07-13 17:33:25,135 [INFO] Argument:335 - Argument : PeriphIncvalue: DMA_PINC_DISABLE
+2026-07-13 17:33:25,135 [INFO] Argument:325 - Argument : MemIncvalue: DMA_MINC_ENABLE
+2026-07-13 17:33:25,136 [INFO] Argument:335 - Argument : MemIncvalue: DMA_MINC_ENABLE
+2026-07-13 17:33:25,136 [INFO] Argument:325 - Argument : PeriphDataAlignmentvalue: DMA_PDATAALIGN_HALFWORD
+2026-07-13 17:33:25,136 [INFO] Argument:335 - Argument : PeriphDataAlignmentvalue: DMA_PDATAALIGN_HALFWORD
+2026-07-13 17:33:25,136 [INFO] Argument:325 - Argument : MemDataAlignmentvalue: DMA_MDATAALIGN_HALFWORD
+2026-07-13 17:33:25,136 [INFO] Argument:335 - Argument : MemDataAlignmentvalue: DMA_MDATAALIGN_HALFWORD
+2026-07-13 17:33:25,136 [INFO] Argument:325 - Argument : Modevalue: DMA_CIRCULAR
+2026-07-13 17:33:25,136 [INFO] Argument:335 - Argument : Modevalue: DMA_CIRCULAR
+2026-07-13 17:33:25,136 [INFO] Argument:325 - Argument : Priorityvalue: DMA_PRIORITY_LOW
+2026-07-13 17:33:25,136 [INFO] Argument:335 - Argument : Priorityvalue: DMA_PRIORITY_LOW
+2026-07-13 17:33:25,136 [INFO] Argument:325 - Argument : Lockvalue: null
+2026-07-13 17:33:25,137 [INFO] Argument:335 - Argument : Lockvalue: null
+2026-07-13 17:33:25,137 [INFO] Argument:325 - Argument : Statevalue: null
+2026-07-13 17:33:25,137 [INFO] Argument:335 - Argument : Statevalue: null
+2026-07-13 17:33:25,137 [INFO] Argument:325 - Argument : Parentvalue: null
+2026-07-13 17:33:25,137 [INFO] Argument:335 - Argument : Parentvalue: null
+2026-07-13 17:33:25,137 [INFO] Argument:325 - Argument : XferCpltCallbackvalue: null
+2026-07-13 17:33:25,137 [INFO] Argument:335 - Argument : XferCpltCallbackvalue: null
+2026-07-13 17:33:25,137 [INFO] Argument:325 - Argument : XferHalfCpltCallbackvalue: null
+2026-07-13 17:33:25,137 [INFO] Argument:335 - Argument : XferHalfCpltCallbackvalue: null
+2026-07-13 17:33:25,137 [INFO] Argument:325 - Argument : XferErrorCallbackvalue: null
+2026-07-13 17:33:25,137 [INFO] Argument:335 - Argument : XferErrorCallbackvalue: null
+2026-07-13 17:33:25,137 [INFO] Argument:325 - Argument : XferAbortCallbackvalue: null
+2026-07-13 17:33:25,137 [INFO] Argument:335 - Argument : XferAbortCallbackvalue: null
+2026-07-13 17:33:25,137 [INFO] Argument:325 - Argument : ErrorCodevalue: null
+2026-07-13 17:33:25,137 [INFO] Argument:335 - Argument : ErrorCodevalue: null
+2026-07-13 17:33:25,138 [INFO] Argument:325 - Argument : DmaBaseAddressvalue: null
+2026-07-13 17:33:25,138 [INFO] Argument:335 - Argument : DmaBaseAddressvalue: null
+2026-07-13 17:33:25,138 [INFO] Argument:325 - Argument : ChannelIndexvalue: null
+2026-07-13 17:33:25,138 [INFO] Argument:335 - Argument : ChannelIndexvalue: null
+2026-07-13 17:33:25,138 [INFO] Argument:325 - Argument : hdmavalue: null
+2026-07-13 17:33:25,138 [INFO] Argument:327 - 	 sub Args: 
+2026-07-13 17:33:25,138 [INFO] Argument:325 - Argument : Instancevalue: DMA1_Channel1
+2026-07-13 17:33:25,138 [INFO] Argument:335 - Argument : Instancevalue: DMA1_Channel1
+2026-07-13 17:33:25,138 [INFO] Argument:325 - Argument : Initvalue: null
+2026-07-13 17:33:25,138 [INFO] Argument:327 - 	 sub Args: 
+2026-07-13 17:33:25,138 [INFO] Argument:325 - Argument : Requestvalue: DMA_REQUEST_0
+2026-07-13 17:33:25,138 [INFO] Argument:335 - Argument : Requestvalue: DMA_REQUEST_0
+2026-07-13 17:33:25,139 [INFO] Argument:325 - Argument : Directionvalue: DMA_PERIPH_TO_MEMORY
+2026-07-13 17:33:25,139 [INFO] Argument:335 - Argument : Directionvalue: DMA_PERIPH_TO_MEMORY
+2026-07-13 17:33:25,139 [INFO] Argument:325 - Argument : PeriphIncvalue: DMA_PINC_DISABLE
+2026-07-13 17:33:25,139 [INFO] Argument:335 - Argument : PeriphIncvalue: DMA_PINC_DISABLE
+2026-07-13 17:33:25,139 [INFO] Argument:325 - Argument : MemIncvalue: DMA_MINC_ENABLE
+2026-07-13 17:33:25,139 [INFO] Argument:335 - Argument : MemIncvalue: DMA_MINC_ENABLE
+2026-07-13 17:33:25,139 [INFO] Argument:325 - Argument : PeriphDataAlignmentvalue: DMA_PDATAALIGN_HALFWORD
+2026-07-13 17:33:25,139 [INFO] Argument:335 - Argument : PeriphDataAlignmentvalue: DMA_PDATAALIGN_HALFWORD
+2026-07-13 17:33:25,139 [INFO] Argument:325 - Argument : MemDataAlignmentvalue: DMA_MDATAALIGN_HALFWORD
+2026-07-13 17:33:25,139 [INFO] Argument:335 - Argument : MemDataAlignmentvalue: DMA_MDATAALIGN_HALFWORD
+2026-07-13 17:33:25,139 [INFO] Argument:325 - Argument : Modevalue: DMA_CIRCULAR
+2026-07-13 17:33:25,139 [INFO] Argument:335 - Argument : Modevalue: DMA_CIRCULAR
+2026-07-13 17:33:25,139 [INFO] Argument:325 - Argument : Priorityvalue: DMA_PRIORITY_LOW
+2026-07-13 17:33:25,139 [INFO] Argument:335 - Argument : Priorityvalue: DMA_PRIORITY_LOW
+2026-07-13 17:33:25,140 [INFO] Argument:325 - Argument : Lockvalue: null
+2026-07-13 17:33:25,140 [INFO] Argument:335 - Argument : Lockvalue: null
+2026-07-13 17:33:25,140 [INFO] Argument:325 - Argument : Statevalue: null
+2026-07-13 17:33:25,140 [INFO] Argument:335 - Argument : Statevalue: null
+2026-07-13 17:33:25,140 [INFO] Argument:325 - Argument : Parentvalue: null
+2026-07-13 17:33:25,140 [INFO] Argument:335 - Argument : Parentvalue: null
+2026-07-13 17:33:25,140 [INFO] Argument:325 - Argument : XferCpltCallbackvalue: null
+2026-07-13 17:33:25,140 [INFO] Argument:335 - Argument : XferCpltCallbackvalue: null
+2026-07-13 17:33:25,140 [INFO] Argument:325 - Argument : XferHalfCpltCallbackvalue: null
+2026-07-13 17:33:25,140 [INFO] Argument:335 - Argument : XferHalfCpltCallbackvalue: null
+2026-07-13 17:33:25,140 [INFO] Argument:325 - Argument : XferErrorCallbackvalue: null
+2026-07-13 17:33:25,140 [INFO] Argument:335 - Argument : XferErrorCallbackvalue: null
+2026-07-13 17:33:25,140 [INFO] Argument:325 - Argument : XferAbortCallbackvalue: null
+2026-07-13 17:33:25,141 [INFO] Argument:335 - Argument : XferAbortCallbackvalue: null
+2026-07-13 17:33:25,141 [INFO] Argument:325 - Argument : ErrorCodevalue: null
+2026-07-13 17:33:25,141 [INFO] Argument:335 - Argument : ErrorCodevalue: null
+2026-07-13 17:33:25,141 [INFO] Argument:325 - Argument : DmaBaseAddressvalue: null
+2026-07-13 17:33:25,141 [INFO] Argument:335 - Argument : DmaBaseAddressvalue: null
+2026-07-13 17:33:25,141 [INFO] Argument:325 - Argument : ChannelIndexvalue: null
+2026-07-13 17:33:25,141 [INFO] Argument:335 - Argument : ChannelIndexvalue: null
+2026-07-13 17:33:25,141 [INFO] Argument:325 - Argument : pSyncConfigvalue: null
+2026-07-13 17:33:25,141 [INFO] Argument:327 - 	 sub Args: 
+2026-07-13 17:33:25,142 [INFO] Argument:325 - Argument : SyncSignalIDvalue: null
+2026-07-13 17:33:25,142 [INFO] Argument:335 - Argument : SyncSignalIDvalue: null
+2026-07-13 17:33:25,142 [INFO] Argument:325 - Argument : SyncPolarityvalue: null
+2026-07-13 17:33:25,142 [INFO] Argument:335 - Argument : SyncPolarityvalue: null
+2026-07-13 17:33:25,142 [INFO] Argument:325 - Argument : SyncEnablevalue: null
+2026-07-13 17:33:25,142 [INFO] Argument:335 - Argument : SyncEnablevalue: null
+2026-07-13 17:33:25,142 [INFO] Argument:325 - Argument : EventEnablevalue: null
+2026-07-13 17:33:25,142 [INFO] Argument:335 - Argument : EventEnablevalue: null
+2026-07-13 17:33:25,143 [INFO] Argument:325 - Argument : RequestNumbervalue: null
+2026-07-13 17:33:25,143 [INFO] Argument:335 - Argument : RequestNumbervalue: null
+2026-07-13 17:33:25,772 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\MXTmpFiles\license.tmp_save
+2026-07-13 17:33:26,092 [INFO] CodeEngine:289 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\MXTmpFiles\license.tmp
+2026-07-13 17:33:26,302 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\MXTmpFiles\gpio.tmp_save
+2026-07-13 17:33:26,548 [INFO] CodeEngine:289 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\MXTmpFiles\gpio.tmp
+2026-07-13 17:33:27,511 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\MXTmpFiles\dma.tmp_save
+2026-07-13 17:33:27,663 [INFO] CodeEngine:289 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\MXTmpFiles\dma.tmp
+2026-07-13 17:33:27,679 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\MXTmpFiles\dma_GV.tmp_save
+2026-07-13 17:33:27,818 [INFO] CodeEngine:289 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\MXTmpFiles\dma_GV.tmp
+2026-07-13 17:33:27,871 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Src\stm32l4xx_it.c_save
+2026-07-13 17:33:28,267 [INFO] CodeEngine:289 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Src\stm32l4xx_it.c
+2026-07-13 17:33:28,296 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Inc\stm32l4xx_it.h_save
+2026-07-13 17:33:28,414 [INFO] CodeEngine:289 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Inc\stm32l4xx_it.h
+2026-07-13 17:33:28,447 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Src\stm32l4xx_hal_msp.c_save
+2026-07-13 17:33:28,697 [INFO] CodeEngine:289 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Src\stm32l4xx_hal_msp.c
+2026-07-13 17:33:28,718 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\MXTmpFiles\system.tmp_save
+2026-07-13 17:33:28,805 [INFO] CodeEngine:289 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\MXTmpFiles\system.tmp
+2026-07-13 17:33:28,828 [INFO] CodeEngine:321 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Inc\stm32l4xx_hal_conf.h_save
+2026-07-13 17:33:28,929 [INFO] CodeEngine:345 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Inc\stm32l4xx_hal_conf.h
+2026-07-13 17:33:28,990 [WARN] IPConfigManager:3811 - IP not found : TIM
+2026-07-13 17:33:29,003 [WARN] CodeGenerator:4259 - IP not found : null
+2026-07-13 17:33:29,020 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Inc\main.h_save
+2026-07-13 17:33:29,171 [INFO] CodeEngine:289 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Inc\main.h
+2026-07-13 17:33:29,197 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Src\main.c_save
+2026-07-13 17:33:29,418 [INFO] CodeEngine:289 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Src\main.c
+2026-07-13 17:33:30,802 [INFO] ProjectBuilder:3606 - Time for Copy HAL[1] : 371mS.
+2026-07-13 17:33:30,807 [INFO] ProjectBuilder:5216 - Project Generator version: 4.7.0-B52
+2026-07-13 17:33:30,908 [INFO] ConfigFileManager:1595 - The Die is : DIE435
+2026-07-13 17:33:32,598 [INFO] ProjectBuilder:5496 - Time for Generating toolchain IDE Files: 1790mS.
+2026-07-13 17:33:32,599 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 1mS.
+2026-07-13 17:33:32,602 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.
+2026-07-13 19:25:03,921 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 857529400 Bytes (1073741824)
+2026-07-13 19:25:04,090 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 878500920 Bytes (1073741824)
+2026-07-13 19:25:04,755 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 905763896 Bytes (1073741824)
+2026-07-13 19:25:05,288 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: NVIC
+2026-07-13 19:25:05,288 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2026-07-13 19:25:05,289 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: DMA
+2026-07-13 19:25:05,289 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: TIM1_8L4
+2026-07-13 19:25:05,289 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: TIM1_8L4
+2026-07-13 19:25:05,289 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: SYS
+2026-07-13 19:25:05,290 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: GPIO
+2026-07-13 19:25:05,290 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: ADC
+2026-07-13 19:25:05,290 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: RCC
+2026-07-13 19:25:05,292 [INFO] CodeGenerator:892 - code generatio: config db path: C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659\\db\
+2026-07-13 19:25:05,308 [INFO] Argument:325 - Argument : hdmavalue: null
+2026-07-13 19:25:05,309 [INFO] Argument:327 - 	 sub Args: 
+2026-07-13 19:25:05,309 [INFO] Argument:325 - Argument : Instancevalue: DMA1_Channel1
+2026-07-13 19:25:05,309 [INFO] Argument:335 - Argument : Instancevalue: DMA1_Channel1
+2026-07-13 19:25:05,309 [INFO] Argument:325 - Argument : Initvalue: null
+2026-07-13 19:25:05,309 [INFO] Argument:327 - 	 sub Args: 
+2026-07-13 19:25:05,309 [INFO] Argument:325 - Argument : Requestvalue: DMA_REQUEST_0
+2026-07-13 19:25:05,309 [INFO] Argument:335 - Argument : Requestvalue: DMA_REQUEST_0
+2026-07-13 19:25:05,310 [INFO] Argument:325 - Argument : Directionvalue: DMA_PERIPH_TO_MEMORY
+2026-07-13 19:25:05,310 [INFO] Argument:335 - Argument : Directionvalue: DMA_PERIPH_TO_MEMORY
+2026-07-13 19:25:05,310 [INFO] Argument:325 - Argument : PeriphIncvalue: DMA_PINC_DISABLE
+2026-07-13 19:25:05,310 [INFO] Argument:335 - Argument : PeriphIncvalue: DMA_PINC_DISABLE
+2026-07-13 19:25:05,310 [INFO] Argument:325 - Argument : MemIncvalue: DMA_MINC_ENABLE
+2026-07-13 19:25:05,310 [INFO] Argument:335 - Argument : MemIncvalue: DMA_MINC_ENABLE
+2026-07-13 19:25:05,310 [INFO] Argument:325 - Argument : PeriphDataAlignmentvalue: DMA_PDATAALIGN_HALFWORD
+2026-07-13 19:25:05,311 [INFO] Argument:335 - Argument : PeriphDataAlignmentvalue: DMA_PDATAALIGN_HALFWORD
+2026-07-13 19:25:05,311 [INFO] Argument:325 - Argument : MemDataAlignmentvalue: DMA_MDATAALIGN_HALFWORD
+2026-07-13 19:25:05,311 [INFO] Argument:335 - Argument : MemDataAlignmentvalue: DMA_MDATAALIGN_HALFWORD
+2026-07-13 19:25:05,311 [INFO] Argument:325 - Argument : Modevalue: DMA_CIRCULAR
+2026-07-13 19:25:05,311 [INFO] Argument:335 - Argument : Modevalue: DMA_CIRCULAR
+2026-07-13 19:25:05,311 [INFO] Argument:325 - Argument : Priorityvalue: DMA_PRIORITY_LOW
+2026-07-13 19:25:05,311 [INFO] Argument:335 - Argument : Priorityvalue: DMA_PRIORITY_LOW
+2026-07-13 19:25:05,311 [INFO] Argument:325 - Argument : Lockvalue: null
+2026-07-13 19:25:05,311 [INFO] Argument:335 - Argument : Lockvalue: null
+2026-07-13 19:25:05,311 [INFO] Argument:325 - Argument : Statevalue: null
+2026-07-13 19:25:05,311 [INFO] Argument:335 - Argument : Statevalue: null
+2026-07-13 19:25:05,311 [INFO] Argument:325 - Argument : Parentvalue: null
+2026-07-13 19:25:05,312 [INFO] Argument:335 - Argument : Parentvalue: null
+2026-07-13 19:25:05,312 [INFO] Argument:325 - Argument : XferCpltCallbackvalue: null
+2026-07-13 19:25:05,312 [INFO] Argument:335 - Argument : XferCpltCallbackvalue: null
+2026-07-13 19:25:05,312 [INFO] Argument:325 - Argument : XferHalfCpltCallbackvalue: null
+2026-07-13 19:25:05,312 [INFO] Argument:335 - Argument : XferHalfCpltCallbackvalue: null
+2026-07-13 19:25:05,312 [INFO] Argument:325 - Argument : XferErrorCallbackvalue: null
+2026-07-13 19:25:05,312 [INFO] Argument:335 - Argument : XferErrorCallbackvalue: null
+2026-07-13 19:25:05,312 [INFO] Argument:325 - Argument : XferAbortCallbackvalue: null
+2026-07-13 19:25:05,312 [INFO] Argument:335 - Argument : XferAbortCallbackvalue: null
+2026-07-13 19:25:05,312 [INFO] Argument:325 - Argument : ErrorCodevalue: null
+2026-07-13 19:25:05,312 [INFO] Argument:335 - Argument : ErrorCodevalue: null
+2026-07-13 19:25:05,313 [INFO] Argument:325 - Argument : DmaBaseAddressvalue: null
+2026-07-13 19:25:05,313 [INFO] Argument:335 - Argument : DmaBaseAddressvalue: null
+2026-07-13 19:25:05,313 [INFO] Argument:325 - Argument : ChannelIndexvalue: null
+2026-07-13 19:25:05,313 [INFO] Argument:335 - Argument : ChannelIndexvalue: null
+2026-07-13 19:25:05,313 [INFO] Argument:325 - Argument : hdmavalue: null
+2026-07-13 19:25:05,313 [INFO] Argument:327 - 	 sub Args: 
+2026-07-13 19:25:05,313 [INFO] Argument:325 - Argument : Instancevalue: DMA1_Channel1
+2026-07-13 19:25:05,313 [INFO] Argument:335 - Argument : Instancevalue: DMA1_Channel1
+2026-07-13 19:25:05,313 [INFO] Argument:325 - Argument : Initvalue: null
+2026-07-13 19:25:05,313 [INFO] Argument:327 - 	 sub Args: 
+2026-07-13 19:25:05,313 [INFO] Argument:325 - Argument : Requestvalue: DMA_REQUEST_0
+2026-07-13 19:25:05,313 [INFO] Argument:335 - Argument : Requestvalue: DMA_REQUEST_0
+2026-07-13 19:25:05,314 [INFO] Argument:325 - Argument : Directionvalue: DMA_PERIPH_TO_MEMORY
+2026-07-13 19:25:05,314 [INFO] Argument:335 - Argument : Directionvalue: DMA_PERIPH_TO_MEMORY
+2026-07-13 19:25:05,314 [INFO] Argument:325 - Argument : PeriphIncvalue: DMA_PINC_DISABLE
+2026-07-13 19:25:05,314 [INFO] Argument:335 - Argument : PeriphIncvalue: DMA_PINC_DISABLE
+2026-07-13 19:25:05,314 [INFO] Argument:325 - Argument : MemIncvalue: DMA_MINC_ENABLE
+2026-07-13 19:25:05,314 [INFO] Argument:335 - Argument : MemIncvalue: DMA_MINC_ENABLE
+2026-07-13 19:25:05,314 [INFO] Argument:325 - Argument : PeriphDataAlignmentvalue: DMA_PDATAALIGN_HALFWORD
+2026-07-13 19:25:05,314 [INFO] Argument:335 - Argument : PeriphDataAlignmentvalue: DMA_PDATAALIGN_HALFWORD
+2026-07-13 19:25:05,314 [INFO] Argument:325 - Argument : MemDataAlignmentvalue: DMA_MDATAALIGN_HALFWORD
+2026-07-13 19:25:05,314 [INFO] Argument:335 - Argument : MemDataAlignmentvalue: DMA_MDATAALIGN_HALFWORD
+2026-07-13 19:25:05,314 [INFO] Argument:325 - Argument : Modevalue: DMA_CIRCULAR
+2026-07-13 19:25:05,314 [INFO] Argument:335 - Argument : Modevalue: DMA_CIRCULAR
+2026-07-13 19:25:05,314 [INFO] Argument:325 - Argument : Priorityvalue: DMA_PRIORITY_LOW
+2026-07-13 19:25:05,315 [INFO] Argument:335 - Argument : Priorityvalue: DMA_PRIORITY_LOW
+2026-07-13 19:25:05,315 [INFO] Argument:325 - Argument : Lockvalue: null
+2026-07-13 19:25:05,315 [INFO] Argument:335 - Argument : Lockvalue: null
+2026-07-13 19:25:05,315 [INFO] Argument:325 - Argument : Statevalue: null
+2026-07-13 19:25:05,315 [INFO] Argument:335 - Argument : Statevalue: null
+2026-07-13 19:25:05,315 [INFO] Argument:325 - Argument : Parentvalue: null
+2026-07-13 19:25:05,315 [INFO] Argument:335 - Argument : Parentvalue: null
+2026-07-13 19:25:05,315 [INFO] Argument:325 - Argument : XferCpltCallbackvalue: null
+2026-07-13 19:25:05,315 [INFO] Argument:335 - Argument : XferCpltCallbackvalue: null
+2026-07-13 19:25:05,315 [INFO] Argument:325 - Argument : XferHalfCpltCallbackvalue: null
+2026-07-13 19:25:05,316 [INFO] Argument:335 - Argument : XferHalfCpltCallbackvalue: null
+2026-07-13 19:25:05,316 [INFO] Argument:325 - Argument : XferErrorCallbackvalue: null
+2026-07-13 19:25:05,316 [INFO] Argument:335 - Argument : XferErrorCallbackvalue: null
+2026-07-13 19:25:05,316 [INFO] Argument:325 - Argument : XferAbortCallbackvalue: null
+2026-07-13 19:25:05,316 [INFO] Argument:335 - Argument : XferAbortCallbackvalue: null
+2026-07-13 19:25:05,316 [INFO] Argument:325 - Argument : ErrorCodevalue: null
+2026-07-13 19:25:05,316 [INFO] Argument:335 - Argument : ErrorCodevalue: null
+2026-07-13 19:25:05,316 [INFO] Argument:325 - Argument : DmaBaseAddressvalue: null
+2026-07-13 19:25:05,316 [INFO] Argument:335 - Argument : DmaBaseAddressvalue: null
+2026-07-13 19:25:05,316 [INFO] Argument:325 - Argument : ChannelIndexvalue: null
+2026-07-13 19:25:05,316 [INFO] Argument:335 - Argument : ChannelIndexvalue: null
+2026-07-13 19:25:05,316 [INFO] Argument:325 - Argument : pSyncConfigvalue: null
+2026-07-13 19:25:05,316 [INFO] Argument:327 - 	 sub Args: 
+2026-07-13 19:25:05,316 [INFO] Argument:325 - Argument : SyncSignalIDvalue: null
+2026-07-13 19:25:05,316 [INFO] Argument:335 - Argument : SyncSignalIDvalue: null
+2026-07-13 19:25:05,317 [INFO] Argument:325 - Argument : SyncPolarityvalue: null
+2026-07-13 19:25:05,317 [INFO] Argument:335 - Argument : SyncPolarityvalue: null
+2026-07-13 19:25:05,317 [INFO] Argument:325 - Argument : SyncEnablevalue: null
+2026-07-13 19:25:05,317 [INFO] Argument:335 - Argument : SyncEnablevalue: null
+2026-07-13 19:25:05,317 [INFO] Argument:325 - Argument : EventEnablevalue: null
+2026-07-13 19:25:05,317 [INFO] Argument:335 - Argument : EventEnablevalue: null
+2026-07-13 19:25:05,317 [INFO] Argument:325 - Argument : RequestNumbervalue: null
+2026-07-13 19:25:05,317 [INFO] Argument:335 - Argument : RequestNumbervalue: null
+2026-07-13 19:25:05,401 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\MXTmpFiles\license.tmp_save
+2026-07-13 19:25:05,649 [INFO] CodeEngine:289 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\MXTmpFiles\license.tmp
+2026-07-13 19:25:05,713 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\MXTmpFiles\gpio.tmp_save
+2026-07-13 19:25:05,882 [INFO] CodeEngine:289 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\MXTmpFiles\gpio.tmp
+2026-07-13 19:25:06,384 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\MXTmpFiles\dma.tmp_save
+2026-07-13 19:25:06,487 [INFO] CodeEngine:289 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\MXTmpFiles\dma.tmp
+2026-07-13 19:25:06,494 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\MXTmpFiles\dma_GV.tmp_save
+2026-07-13 19:25:06,582 [INFO] CodeEngine:289 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\MXTmpFiles\dma_GV.tmp
+2026-07-13 19:25:06,600 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Src\stm32l4xx_it.c_save
+2026-07-13 19:25:06,882 [INFO] CodeEngine:289 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Src\stm32l4xx_it.c
+2026-07-13 19:25:06,890 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Inc\stm32l4xx_it.h_save
+2026-07-13 19:25:06,969 [INFO] CodeEngine:289 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Inc\stm32l4xx_it.h
+2026-07-13 19:25:06,991 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Src\stm32l4xx_hal_msp.c_save
+2026-07-13 19:25:07,128 [INFO] CodeEngine:289 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Src\stm32l4xx_hal_msp.c
+2026-07-13 19:25:07,136 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\MXTmpFiles\system.tmp_save
+2026-07-13 19:25:07,199 [INFO] CodeEngine:289 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\MXTmpFiles\system.tmp
+2026-07-13 19:25:07,212 [INFO] CodeEngine:321 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Inc\stm32l4xx_hal_conf.h_save
+2026-07-13 19:25:07,279 [INFO] CodeEngine:345 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Inc\stm32l4xx_hal_conf.h
+2026-07-13 19:25:07,305 [WARN] IPConfigManager:3811 - IP not found : TIM
+2026-07-13 19:25:07,306 [WARN] CodeGenerator:4259 - IP not found : null
+2026-07-13 19:25:07,316 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Inc\main.h_save
+2026-07-13 19:25:07,402 [INFO] CodeEngine:289 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Inc\main.h
+2026-07-13 19:25:07,410 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Src\main.c_save
+2026-07-13 19:25:07,613 [INFO] CodeEngine:289 - Generated code: C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\Core\Src\main.c
+2026-07-13 19:25:08,058 [INFO] ProjectBuilder:3606 - Time for Copy HAL[1] : 210mS.
+2026-07-13 19:25:08,062 [INFO] ProjectBuilder:5216 - Project Generator version: 4.7.0-B52
+2026-07-13 19:25:08,130 [INFO] ConfigFileManager:1595 - The Die is : DIE435
+2026-07-13 19:25:08,960 [INFO] ProjectBuilder:5496 - Time for Generating toolchain IDE Files: 897mS.
+2026-07-13 19:25:08,961 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 1mS.
+2026-07-13 19:25:08,966 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.

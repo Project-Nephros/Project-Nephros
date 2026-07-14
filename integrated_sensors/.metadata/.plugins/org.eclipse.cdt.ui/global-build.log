@@ -1524,3 +1524,203 @@ Finished building: default.size.stdout
  
 Finished building: integrated_sensors.list
  
+15:34:18 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-size  integrated_sensors.elf 
+   text	   data	    bss	    dec	    hex	filename
+  42588	    476	   2808	  45872	   b330	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+18:25:42 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-size  integrated_sensors.elf 
+   text	   data	    bss	    dec	    hex	filename
+  42588	    476	   2808	  45872	   b330	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+18:24:10 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-size  integrated_sensors.elf 
+   text	   data	    bss	    dec	    hex	filename
+  42588	    476	   2808	  45872	   b330	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+18:25:11 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-size  integrated_sensors.elf 
+   text	   data	    bss	    dec	    hex	filename
+  42588	    476	   2808	  45872	   b330	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+18:27:51 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "integrated_sensors.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="integrated_sensors.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: integrated_sensors.elf
+ 
+arm-none-eabi-size  integrated_sensors.elf 
+arm-none-eabi-objdump -h -S integrated_sensors.elf  > "integrated_sensors.list"
+   text	   data	    bss	    dec	    hex	filename
+  42572	    476	   2808	  45856	   b320	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+Finished building: integrated_sensors.list
+ 
+18:40:51 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "integrated_sensors.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="integrated_sensors.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: integrated_sensors.elf
+ 
+arm-none-eabi-size  integrated_sensors.elf 
+arm-none-eabi-objdump -h -S integrated_sensors.elf  > "integrated_sensors.list"
+   text	   data	    bss	    dec	    hex	filename
+  42572	    476	   2808	  45856	   b320	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+Finished building: integrated_sensors.list
+ 
+18:42:52 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "integrated_sensors.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="integrated_sensors.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: integrated_sensors.elf
+ 
+arm-none-eabi-size  integrated_sensors.elf 
+arm-none-eabi-objdump -h -S integrated_sensors.elf  > "integrated_sensors.list"
+   text	   data	    bss	    dec	    hex	filename
+  42588	    476	   2808	  45872	   b330	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+Finished building: integrated_sensors.list
+ 
+18:54:42 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "integrated_sensors.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="integrated_sensors.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: integrated_sensors.elf
+ 
+arm-none-eabi-size  integrated_sensors.elf 
+arm-none-eabi-objdump -h -S integrated_sensors.elf  > "integrated_sensors.list"
+   text	   data	    bss	    dec	    hex	filename
+  42580	    476	   2808	  45864	   b328	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+Finished building: integrated_sensors.list
+ 
+18:55:30 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "integrated_sensors.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="integrated_sensors.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: integrated_sensors.elf
+ 
+arm-none-eabi-size  integrated_sensors.elf 
+arm-none-eabi-objdump -h -S integrated_sensors.elf  > "integrated_sensors.list"
+   text	   data	    bss	    dec	    hex	filename
+  42588	    476	   2808	  45872	   b330	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+Finished building: integrated_sensors.list
+ 
+18:55:52 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "integrated_sensors.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="integrated_sensors.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: integrated_sensors.elf
+ 
+arm-none-eabi-size  integrated_sensors.elf 
+arm-none-eabi-objdump -h -S integrated_sensors.elf  > "integrated_sensors.list"
+   text	   data	    bss	    dec	    hex	filename
+  42580	    476	   2808	  45864	   b328	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+Finished building: integrated_sensors.list
+ 
+19:35:56 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "integrated_sensors.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="integrated_sensors.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: integrated_sensors.elf
+ 
+arm-none-eabi-size  integrated_sensors.elf 
+arm-none-eabi-objdump -h -S integrated_sensors.elf  > "integrated_sensors.list"
+   text	   data	    bss	    dec	    hex	filename
+  42636	    476	   2808	  45920	   b360	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+Finished building: integrated_sensors.list
+ 
+19:42:13 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc "../Core/Src/stm32l4xx_hal_msp.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32l4xx_hal_msp.d" -MT"Core/Src/stm32l4xx_hal_msp.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32l4xx_hal_msp.o"
+arm-none-eabi-gcc "../Core/Src/stm32l4xx_it.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32l4xx_it.d" -MT"Core/Src/stm32l4xx_it.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32l4xx_it.o"
+arm-none-eabi-gcc -o "integrated_sensors.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="integrated_sensors.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: integrated_sensors.elf
+ 
+arm-none-eabi-size  integrated_sensors.elf 
+arm-none-eabi-objdump -h -S integrated_sensors.elf  > "integrated_sensors.list"
+   text	   data	    bss	    dec	    hex	filename
+  42460	    476	   2808	  45744	   b2b0	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+Finished building: integrated_sensors.list
+ 
+17:49:07 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "integrated_sensors.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="integrated_sensors.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: integrated_sensors.elf
+ 
+arm-none-eabi-size  integrated_sensors.elf 
+arm-none-eabi-objdump -h -S integrated_sensors.elf  > "integrated_sensors.list"
+   text	   data	    bss	    dec	    hex	filename
+  42540	    472	   2808	  45820	   b2fc	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+Finished building: integrated_sensors.list
+ 
+19:21:00 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "integrated_sensors.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="integrated_sensors.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: integrated_sensors.elf
+ 
+arm-none-eabi-size  integrated_sensors.elf 
+arm-none-eabi-objdump -h -S integrated_sensors.elf  > "integrated_sensors.list"
+   text	   data	    bss	    dec	    hex	filename
+  42540	    472	   2808	  45820	   b2fc	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+Finished building: integrated_sensors.list
+ 
+19:25:11 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc "../Core/Src/stm32l4xx_hal_msp.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32l4xx_hal_msp.d" -MT"Core/Src/stm32l4xx_hal_msp.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32l4xx_hal_msp.o"
+arm-none-eabi-gcc "../Core/Src/stm32l4xx_it.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32l4xx_it.d" -MT"Core/Src/stm32l4xx_it.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32l4xx_it.o"
+arm-none-eabi-gcc -o "integrated_sensors.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="integrated_sensors.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: integrated_sensors.elf
+ 
+arm-none-eabi-size  integrated_sensors.elf 
+arm-none-eabi-objdump -h -S integrated_sensors.elf  > "integrated_sensors.list"
+   text	   data	    bss	    dec	    hex	filename
+  42660	    472	   2808	  45940	   b374	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+Finished building: integrated_sensors.list
+ 
+19:35:54 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L432xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "integrated_sensors.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\integrated_sensors\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="integrated_sensors.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: integrated_sensors.elf
+ 
+arm-none-eabi-size  integrated_sensors.elf 
+arm-none-eabi-objdump -h -S integrated_sensors.elf  > "integrated_sensors.list"
+   text	   data	    bss	    dec	    hex	filename
+  42668	    472	   2808	  45948	   b37c	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+Finished building: integrated_sensors.list
+ 
