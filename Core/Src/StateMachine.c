@@ -54,6 +54,7 @@ static int32_t flowError = 0;
 static uint8_t stoppedMessagePrinted = 0U;
 //static uint8_t emergencyMessagePrinted = 0U;
 
+
 //Prototype Functions
 static int32_t GetPlaceholderMeasuredFlow(uint32_t arr, uint32_t elapsedMs); //will be removed later
 static const char* GetStateName(State state);
@@ -196,7 +197,6 @@ void RunStateMachine(uint32_t currentTick){
     if (currentTick - lastPIDSystemCheck < 1){
         return;
     }
-
     lastPIDSystemCheck = currentTick;
 
     switch (currentState)

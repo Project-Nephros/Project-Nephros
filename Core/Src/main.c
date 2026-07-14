@@ -67,7 +67,9 @@ static NephrosSensorData sensor_data =
 static NephrosSetup setup_data;
 
 //TIMER VARIABLES
-uint32_t lastAlarmSystemCheck = 0; //FIXME: THis was used for the alarm system might not need anymore
+uint32_t lastlastAlarmLCDCheck = 0;
+static uint32_t end_message_hold_ms = 0U;
+static bool lcd_message_active = false;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -176,41 +178,64 @@ int main(void)
 
         RunStateMachine(currentTick);
 
+        /* ------ Sensor Reading ------ */ //FIXME: Should this be moved inside 20ms check?
         read_sensors(&sensor_data);
 
-        button_pressed = NephrosUI_ButtonPressed(now);
+        button_pressed = NephrosUI_ButtonPressed(currentTick);
 
         safety_output = NephrosSafety_Update(
             &sensor_data,
             button_pressed,
-            now
+            currentTick
         );
-
-        if (safety_output.halted == true)
+        
+      if (currentTick - lastAlarmLCDCheck >= 20U){
+      
+        lastAlarmLCDCheck = currentTick;
+        
+        /* ------ Emergency Stop Handling ------ */
+        if (safety_output.halted)
         {
             SetState(STATE_EMERGENCY_STOP);
         }
+        
+        //Checks if the safety system has requested a resume, and restarts/resumes session
+        if (safety_output.resume_requested)
+        {
+          MotorValuesInit();
+          StartMotorPWM();
+          SetState(STATE_MOTOR_START_RAMP); 
+          //FIXME: but we want to ensure that time and etc. of the ensuring session is the remaining time from before.
+        }
 
+        /* ------ LCD Message Handling ------ */
         if (safety_output.lcd_message_valid)
         {
-            NephrosUI_ShowMessage(
-                safety_output.lcd_line1,
-                safety_output.lcd_line2
-            );
-
-            /*
-             * Demo-only delay.
-             * When PID is integrated, replace this with non-blocking timing.
-             */
-            if (safety_output.message_hold_ms > 0U)
+            if (!lcd_message_active)
             {
-                HAL_Delay(safety_output.message_hold_ms);
+                NephrosUI_ShowMessage(
+                    safety_output.lcd_line1,
+                    safety_output.lcd_line2
+                );
+
+                lcd_message_active = true;
+                end_message_hold_ms = currentTick + safety_output.message_hold_ms;
             }
 
-            NephrosUI_ForceRedraw();
+            if (lcd_message_active && currentTick >= end_message_hold_ms)
+            {
+                lcd_message_active = false;
+                NephrosUI_ForceRedraw();
+            }
         }
         else
         {
+            if (lcd_message_active)
+            {
+                lcd_message_active = false;
+                NephrosUI_ForceRedraw();
+            }
+
             if (safety_output.force_normal_lcd_redraw)
             {
                 NephrosUI_ForceRedraw();
@@ -227,7 +252,7 @@ int main(void)
             }
         }
 
-        HAL_Delay(20);
+      }
 
 
     /* USER CODE END WHILE */

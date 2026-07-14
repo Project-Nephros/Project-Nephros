@@ -52,6 +52,7 @@ typedef struct
 
     bool warning_active;
     bool halted;
+    bool resume_requested;
 
     bool lcd_message_valid;
     const char *lcd_line1;

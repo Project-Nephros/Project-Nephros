@@ -172,6 +172,8 @@ NephrosSafetyOutput NephrosSafety_Update(
                 output.fault = NEPHROS_FAULT_NONE;
                 output.halted = false;
 
+                output.resume_requested = true;
+
                 output.lcd_message_valid = true;
                 output.lcd_line1 = "SAFETY CHECK";
                 output.lcd_line2 = "RESUMED";
@@ -394,6 +396,7 @@ static NephrosSafetyOutput make_output(void)
 
     output.warning_active = false;
     output.halted = (system_state == NEPHROS_HALTED);
+    output.resume_requested = false;
 
     output.lcd_message_valid = false;
     output.lcd_line1 = "";
