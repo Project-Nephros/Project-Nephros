@@ -32,8 +32,12 @@
 
 /* USER CODE END 1 */
 
-/** Configure pins
-     PA0   ------> ADCx_IN5
+/** Configure pins as
+        * Analog
+        * Input
+        * Output
+        * EVENT_OUT
+        * EXTI
 */
 void MX_GPIO_Init(void)
 {
@@ -41,40 +45,35 @@ void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, FAN_Pin|GPIO_PIN_11, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, Direction_Pin|FAN_Pin|ALARM_LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, LD3_Pin|BUZZER_Pin|ALARM_LED_Pin|PUMP_KILL_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, LD3_Pin|BUZZER_Pin|PUMP_KILL_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : PA0 */
-  GPIO_InitStruct.Pin = GPIO_PIN_0;
-  GPIO_InitStruct.Mode = GPIO_MODE_ANALOG_ADC_CONTROL;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : FAN_Pin PA11 */
-  GPIO_InitStruct.Pin = FAN_Pin|GPIO_PIN_11;
+  /*Configure GPIO pins : Direction_Pin FAN_Pin ALARM_LED_Pin */
+  GPIO_InitStruct.Pin = Direction_Pin|FAN_Pin|ALARM_LED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : NEPHROS_BTN_Pin */
-  GPIO_InitStruct.Pin = NEPHROS_BTN_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(NEPHROS_BTN_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : LD3_Pin BUZZER_Pin ALARM_LED_Pin PUMP_KILL_Pin */
-  GPIO_InitStruct.Pin = LD3_Pin|BUZZER_Pin|ALARM_LED_Pin|PUMP_KILL_Pin;
+  /*Configure GPIO pins : LD3_Pin BUZZER_Pin PUMP_KILL_Pin */
+  GPIO_InitStruct.Pin = LD3_Pin|BUZZER_Pin|PUMP_KILL_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : NEPHROS_BTN_Pin */
+  GPIO_InitStruct.Pin = NEPHROS_BTN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(NEPHROS_BTN_GPIO_Port, &GPIO_InitStruct);
 
 }
 

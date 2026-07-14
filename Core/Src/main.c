@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "i2c.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -59,7 +60,7 @@
 
 static NephrosSensorData sensor_data =
 {
-    .temperature_c = 36.5f,
+    .temperature_c = 42.0f,
     .pressure = 150U,
     .air_detected = false
 };
@@ -67,7 +68,7 @@ static NephrosSensorData sensor_data =
 static NephrosSetup setup_data;
 
 //TIMER VARIABLES
-uint32_t lastlastAlarmLCDCheck = 0;
+uint32_t lastAlarmLCDCheck = 0;
 static uint32_t end_message_hold_ms = 0U;
 static bool lcd_message_active = false;
 /* USER CODE END PV */
@@ -124,6 +125,8 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_I2C1_Init();
+  MX_TIM1_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
     /* USER CODE BEGIN 2 */
   /* USER CODE BEGIN 2 */
@@ -204,7 +207,7 @@ int main(void)
         {
           MotorValuesInit();
           StartMotorPWM();
-          SetState(STATE_MOTOR_START_RAMP); 
+          SetState(STATE_START_MOTOR_RAMP);
           //FIXME: but we want to ensure that time and etc. of the ensuring session is the remaining time from before.
         }
 
@@ -278,10 +281,16 @@ void SystemClock_Config(void)
     Error_Handler();
   }
 
+  /** Configure LSE Drive Capability
+  */
+  HAL_PWR_EnableBkUpAccess();
+  __HAL_RCC_LSEDRIVE_CONFIG(RCC_LSEDRIVE_LOW);
+
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_MSI;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSE|RCC_OSCILLATORTYPE_MSI;
+  RCC_OscInitStruct.LSEState = RCC_LSE_ON;
   RCC_OscInitStruct.MSIState = RCC_MSI_ON;
   RCC_OscInitStruct.MSICalibrationValue = 0;
   RCC_OscInitStruct.MSIClockRange = RCC_MSIRANGE_6;
@@ -310,6 +319,10 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+
+  /** Enable MSI Auto calibration
+  */
+  HAL_RCCEx_EnableMSIPLLMode();
 }
 
 /* USER CODE BEGIN 4 */

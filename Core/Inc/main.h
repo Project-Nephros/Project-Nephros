@@ -57,12 +57,14 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define Direction_Pin GPIO_PIN_0
+#define Direction_GPIO_Port GPIOA
 #define VCP_TX_Pin GPIO_PIN_2
 #define VCP_TX_GPIO_Port GPIOA
 #define FAN_Pin GPIO_PIN_8
 #define FAN_GPIO_Port GPIOA
-#define NEPHROS_BTN_Pin GPIO_PIN_12
-#define NEPHROS_BTN_GPIO_Port GPIOA
+#define ALARM_LED_Pin GPIO_PIN_11
+#define ALARM_LED_GPIO_Port GPIOA
 #define SWDIO_Pin GPIO_PIN_13
 #define SWDIO_GPIO_Port GPIOA
 #define SWCLK_Pin GPIO_PIN_14
@@ -71,10 +73,10 @@ void Error_Handler(void);
 #define VCP_RX_GPIO_Port GPIOA
 #define LD3_Pin GPIO_PIN_3
 #define LD3_GPIO_Port GPIOB
-#define BUZZER_Pin GPIO_PIN_4
+#define NEPHROS_BTN_Pin GPIO_PIN_4
+#define NEPHROS_BTN_GPIO_Port GPIOB
+#define BUZZER_Pin GPIO_PIN_5
 #define BUZZER_GPIO_Port GPIOB
-#define ALARM_LED_Pin GPIO_PIN_5
-#define ALARM_LED_GPIO_Port GPIOB
 #define PUMP_KILL_Pin GPIO_PIN_6
 #define PUMP_KILL_GPIO_Port GPIOB
 

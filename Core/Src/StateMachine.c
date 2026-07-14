@@ -339,7 +339,7 @@ void RunStateMachine(uint32_t currentTick){
         case STATE_EMERGENCY_STOP:
         {
           StopMotorPWM();
-          HAL_GPIO_WritePin(GPIOB, Alarm_LED_Pin | Buzzer_Pin, GPIO_PIN_SET);
+          //HAL_GPIO_WritePin(GPIOB, ALARM_LED_Pin | BUZZER_Pin, GPIO_PIN_SET); //This is handled by alarm system
           PrintMotorStatus();
           // if (a reset button pressed or whatever) 
           // {
