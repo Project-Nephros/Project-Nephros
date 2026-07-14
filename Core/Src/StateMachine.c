@@ -306,8 +306,10 @@ void RunStateMachine(uint32_t currentTick){
 
             if (FlushPump())
             {
-                motorState = MOTOR_STATE_STOPPED; //MODIFIED: motorState = MOTOR_STATE_END_RAMP; not sure when the flush happens. check where it should occur.
+                currentState = STATE_MOTOR_STOPPED; //MODIFIED: motorState = MOTOR_STATE_END_RAMP; not sure when the flush happens. check where it should occur.
                 PrintMotorStatus();
+            }
+            break;
         }
 
         case STATE_MOTOR_STOPPED:
