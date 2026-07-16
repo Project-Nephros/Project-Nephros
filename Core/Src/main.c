@@ -60,7 +60,7 @@
 
 static NephrosSensorData sensor_data =
 {
-    .temperature_c = 42.0f,
+    .temperature_c = 36.5f,
     .pressure = 150U,
     .air_detected = false
 };
