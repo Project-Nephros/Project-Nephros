@@ -76,8 +76,14 @@ static const uint32_t kStartAndEndARR = 1000U - 1U;
  * kFlushDurationMs sets how long the flush runs.
  * Both are placeholders and should be tuned later.
  */
-static const uint32_t kFlushARR = 52U - 1U;
-static const uint32_t kFlushDurationMs = 10000U;
+
+static const uint32_t kFlushARR = 52U - 1U;         // TODO: confirm real flush speed
+static const uint32_t kFlushDurationMs = 120000U;   // 2 minutes, per flush-feature spec
+
+// ADDED (flush trigger work): promoted out of FlushPump() to file scope so
+// FlushPump_Reset() and FlushPump_RemainingMs() can see them.
+static uint8_t  gFlushStarted   = 0U;
+static uint32_t gFlushStartTick = 0U;
 
 
 
@@ -400,40 +406,53 @@ uint8_t EndPump(void)
 
 uint8_t FlushPump(void)
 {
-    /*Run the pump at a fixed flush speed for kFlushDurationMs.
-     * This is open-loop (no PID) because we only need to push fluid out,
-     * not hold a target flow.
-     *
-     * Return:
-     * 0 = still flushing
-     * 1 = flush finished
+    /* Run the pump at a fixed flush speed for kFlushDurationMs.
+     * Open-loop (no PID): we only need to push fluid out, not hold a flow.
+     * Return: 0 = still flushing, 1 = flush finished.
      */
-
-    static uint8_t  flushStarted = 0U;
-    static uint32_t flushStartTick = 0U;
-
-    /*
-     * On the first call, make sure PWM is on, set the flush speed,
-     * and record the start time.
-     */
-    if (!flushStarted)
+    if (!gFlushStarted)
     {
         StartMotorPWM();
         UpdateARR(kFlushARR);
-        flushStartTick = HAL_GetTick();
-        flushStarted = 1U;
+        gFlushStartTick = HAL_GetTick();
+        gFlushStarted = 1U;
     }
 
-    /*
-     * When the flush time has passed, reset for next session and finish.
-     */
-    if ((HAL_GetTick() - flushStartTick) >= kFlushDurationMs)
+    if ((HAL_GetTick() - gFlushStartTick) >= kFlushDurationMs)
     {
-        flushStarted = 0U;
+        gFlushStarted = 0U;
         return 1U;
     }
 
     return 0U;
+}
+
+
+// ADDED (flush trigger work)
+void FlushPump_Reset(void)
+{
+    gFlushStarted = 0U;
+    gFlushStartTick = 0U;
+}
+
+// ADDED (flush trigger work)
+uint32_t FlushPump_RemainingMs(void)
+{
+    uint32_t elapsed;
+
+    if (!gFlushStarted)
+    {
+        return 0U;
+    }
+
+    elapsed = HAL_GetTick() - gFlushStartTick;
+
+    if (elapsed >= kFlushDurationMs)
+    {
+        return 0U;
+    }
+
+    return kFlushDurationMs - elapsed;
 }
 
 

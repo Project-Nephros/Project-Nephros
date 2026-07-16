@@ -33,6 +33,15 @@ uint8_t EndPump(void);
 // Return 1 = flush finished
 uint8_t FlushPump(void);
 
+// ADDED (flush trigger work): reset the flush timer so an interrupted flush
+// (e.g. aborted by a safety halt) starts clean next time instead of instantly
+// "finishing" because the old start tick is stale.
+void FlushPump_Reset(void);
+
+// ADDED (flush trigger work): milliseconds left in the current flush, for the
+// LCD countdown. Returns 0 when no flush is running.
+uint32_t FlushPump_RemainingMs(void);
+
 
 // ADDED: ResetPID clears PID internal memory before entering PID control.
 // This was not in the original code.

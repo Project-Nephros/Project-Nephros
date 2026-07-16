@@ -29,6 +29,7 @@
 #include "StateMachine.h"
 #include "nephros_ui.h"
 #include "nephros_safety.h"
+#include "nephros_flush.h"
 #include "liquidcrystal_i2c.h"
 
 
@@ -142,6 +143,7 @@ int main(void)
   NephrosUI_ShowSetupComplete(&setup_data);
 
   NephrosSafety_Init(NephrosUI_Write);
+  NephrosFlush_Init();   /* ADDED (flush trigger work): flush menu ready to offer */
   
     /*
    * Existing motor initialisation.
@@ -178,6 +180,8 @@ int main(void)
         uint32_t currentTick = HAL_GetTick();
         bool button_pressed;
         NephrosSafetyOutput safety_output;
+        NephrosFlushOutput flush_out;   /* ADDED (flush trigger work) */
+        bool session_over;              /* ADDED (flush trigger work) */
 
         RunStateMachine(currentTick);
 
@@ -195,7 +199,16 @@ int main(void)
       if (currentTick - lastAlarmLCDCheck >= 20U){
       
         lastAlarmLCDCheck = currentTick;
-        
+
+        /* ------ Flush menu (post-session) ------ */   /* ADDED (flush trigger work) */
+        session_over = (GetState() == STATE_MOTOR_STOPPED ||
+                        GetState() == STATE_MOTOR_FLUSH);
+
+        flush_out = NephrosFlush_Update(button_pressed,
+                                        safety_output.halted,
+                                        session_over,
+                                        currentTick);
+
         /* ------ Emergency Stop Handling ------ */
         if (safety_output.halted)
         {
@@ -208,11 +221,23 @@ int main(void)
           MotorValuesInit();
           StartMotorPWM();
           SetState(STATE_START_MOTOR_RAMP);
+          NephrosFlush_Init();   /* ADDED (flush trigger work): offer flush again after next session */
           //FIXME: but we want to ensure that time and etc. of the ensuring session is the remaining time from before.
         }
 
         /* ------ LCD Message Handling ------ */
-        if (safety_output.lcd_message_valid)
+        /* MODIFIED (flush trigger work): a flush that owns the LCD takes
+         * priority over normal views; safety messages still take priority
+         * over an idle offer via the else-if below. */
+        if (flush_out.owns_lcd)
+        {
+            if (flush_out.lcd_message_valid)
+            {
+                NephrosUI_ShowMessage(flush_out.lcd_line1, flush_out.lcd_line2);
+            }
+            /* flush consumed the button + screen this cycle */
+        }
+        else if (safety_output.lcd_message_valid)
         {
             if (!lcd_message_active)
             {
@@ -244,7 +269,11 @@ int main(void)
                 NephrosUI_ForceRedraw();
             }
 
-            if (safety_output.can_cycle_lcd_view)
+            if (flush_out.lcd_message_valid)   /* ADDED: one-shot DONE/ABORTED msg */
+            {
+                NephrosUI_ShowMessage(flush_out.lcd_line1, flush_out.lcd_line2);
+            }
+            else if (safety_output.can_cycle_lcd_view)
             {
                 if (button_pressed)
                 {
