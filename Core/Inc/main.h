@@ -77,8 +77,6 @@ void Error_Handler(void);
 #define NEPHROS_BTN_GPIO_Port GPIOB
 #define BUZZER_Pin GPIO_PIN_5
 #define BUZZER_GPIO_Port GPIOB
-#define PUMP_KILL_Pin GPIO_PIN_6
-#define PUMP_KILL_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

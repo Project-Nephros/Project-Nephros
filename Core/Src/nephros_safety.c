@@ -58,8 +58,8 @@ static NephrosFaultCode find_critical_fault(
 
 static void set_outputs(
     bool warning_led_on,
-    bool buzzer_on,
-    bool pump_kill_on
+    bool buzzer_on
+    //bool pump_kill_on //FIXME
 );
 
 static void update_fan(float temperature_c);
@@ -137,7 +137,7 @@ NephrosSafetyOutput NephrosSafety_Update(
      * HALTED MODE:
      * - warning LED on
      * - buzzer on
-     * - pump kill on
+     * - pump kill on //FIXME
      * - button means "re-check"
      */
     if (system_state == NEPHROS_HALTED)
@@ -215,9 +215,9 @@ NephrosSafetyOutput NephrosSafety_Update(
 
         /*
          * Halt state:
-         * LED on + buzzer on + pump kill on.
+         * LED on + buzzer on + // REMOVED pump kill on.
          */
-        set_outputs(true, true, true);
+        set_outputs(true, true);
 
         log_event(
             now_ms,
@@ -244,14 +244,14 @@ NephrosSafetyOutput NephrosSafety_Update(
      * Warning-only rule:
      * - LED on
      * - buzzer off
-     * - pump kill off
+     * - pump kill off // REMOVED FIXME
      */
     temp_warning_now =
         NephrosSafety_TemperatureWarning(sensor->temperature_c);
 
     if (temp_warning_now)
     {
-        set_outputs(true, false, false);
+        set_outputs(true, false);
 
         output.warning_active = true;
         output.can_cycle_lcd_view = false;
@@ -280,9 +280,9 @@ NephrosSafetyOutput NephrosSafety_Update(
      * Outputs:
      * - LED off
      * - buzzer off
-     * - pump kill off
+     * - pump kill off //REMOVED FIXME
      */
-    set_outputs(false, false, false);
+    set_outputs(false, false);
 
     if (temp_warning_was_active)
     {
@@ -505,8 +505,8 @@ static bool pressure_out_of_range_long_enough(
  */
 static void set_outputs(
     bool warning_led_on,
-    bool buzzer_on,
-    bool pump_kill_on
+    bool buzzer_on
+    //bool pump_kill_on //FIXME REMOVED
 )
 {
     HAL_GPIO_WritePin(
@@ -521,11 +521,6 @@ static void set_outputs(
         buzzer_on ? GPIO_PIN_SET : GPIO_PIN_RESET
     );
 
-    HAL_GPIO_WritePin(
-        PUMP_KILL_GPIO_Port,
-        PUMP_KILL_Pin,
-        pump_kill_on ? GPIO_PIN_SET : GPIO_PIN_RESET
-    );
 }
 
 
