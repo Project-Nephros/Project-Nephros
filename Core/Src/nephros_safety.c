@@ -87,7 +87,7 @@ void NephrosSafety_Init(NephrosLogWriter writer)
     temp_warning_was_active = false;
     fan_on = false;
 
-    set_outputs(false, false, false);
+    set_outputs(false, false);
 
     HAL_GPIO_WritePin(
         FAN_GPIO_Port,
@@ -142,7 +142,7 @@ NephrosSafetyOutput NephrosSafety_Update(
      */
     if (system_state == NEPHROS_HALTED)
     {
-        set_outputs(true, true, true);
+        set_outputs(true, true);
 
         output.state = system_state;
         output.fault = latched_fault;
@@ -160,7 +160,7 @@ NephrosSafetyOutput NephrosSafety_Update(
                 system_state = NEPHROS_RUNNING;
                 latched_fault = NEPHROS_FAULT_NONE;
 
-                set_outputs(false, false, false);
+                set_outputs(false, false);
 
                 log_event(
                     now_ms,
