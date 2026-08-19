@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
 #include "i2c.h"
 #include "tim.h"
 #include "usart.h"
@@ -62,7 +63,8 @@ static NephrosSensorData sensor_data =
 {
     .temperature_c = 36.5f,
     .pressure = 150U,
-    .air_detected = false
+    .air_detected = false,
+    .flow_rate = 0.0f
 };
 
 static NephrosSetup setup_data;
@@ -71,6 +73,21 @@ static NephrosSetup setup_data;
 uint32_t lastAlarmLCDCheck = 0;
 static uint32_t end_message_hold_ms = 0U;
 static bool lcd_message_active = false;
+
+//RECIEVE UART VARIABLES
+#define RX_BUFFER_SIZE 256
+uint8_t rx_Buffer[RX_BUFFER_SIZE];
+uint8_t main_Buffer[RX_BUFFER_SIZE + 1];
+volatile uint8_t data_ready_flag = 0;
+
+float r_temp2, r_psi1, r_psi2, r_flow1, r_flow2;
+int r_bubble = 0;
+char r_status[20];
+
+
+
+
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -123,10 +140,12 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART2_UART_Init();
   MX_I2C1_Init();
   MX_TIM1_Init();
   MX_TIM2_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
     /* USER CODE BEGIN 2 */
   /* USER CODE BEGIN 2 */
@@ -161,11 +180,14 @@ int main(void)
    * UART message to confirm the program has started.
    */
   HAL_UART_Transmit(
-      &huart2,
+      &huart2, //FIXME CHECK THIS IS THE RIGHT HUART
       (uint8_t*)startMessage,
       strlen(startMessage),
       100
   );
+
+  // Start listening via DMA. It triggers an event when the transmission stops.
+HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rx_Buffer, RX_BUFFER_SIZE);
 
   //PrintMotorStatus(); //FIXME Need to figure out what we'll do in the actual code or whatever. as this wont work 
 
@@ -179,10 +201,10 @@ int main(void)
         bool button_pressed;
         NephrosSafetyOutput safety_output;
 
-        RunStateMachine(currentTick);
-
-        /* ------ Sensor Reading ------ */ //FIXME: Should this be moved inside 20ms check?
+        /* ------ Sensor Reading ------ */
         read_sensors(&sensor_data);
+
+        RunStateMachine(currentTick, &sensor_data);
 
         button_pressed = NephrosUI_ButtonPressed(currentTick);
 
@@ -326,7 +348,7 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-static void read_sensors(NephrosSensorData *sensor)
+static void read_sensors(NephrosSensorData *sensor_data)
 {
     /*
      * For now, this function does nothing because we are using
@@ -337,8 +359,35 @@ static void read_sensors(NephrosSensorData *sensor)
      * sensor->pressure
      * sensor->air_detected
      */
+  if (data_ready_flag) {
+    data_ready_flag = 0; 
+    
+    int parsed = sscanf((char*)main_Buffer, "[T1=%f, T2=%f, Bubble=%d, Status=%19[^,], P1=%f, P2=%f, F1=%f, F2=%f]",
+                        &sensor_data->temperature_c, &r_temp2, &r_bubble, r_status, &r_psi1, &r_psi2, &sensor_data->flow_rate, &r_flow2);
 
-    (void)sensor;
+    //Check if all values have been safely parsed, if so do logic
+    //FIXME need to add logic for what to do if not succesful.
+    if (parsed == 8){
+    //Deal with Different Types FIXME: should try change for consistency, decide whether this should be inside if check                 
+    sensor_data->air_detected = (r_bubble != 0);
+    sensor_data->pressure = (uint16_t)r_psi1; //FIXME: if float negative or bigger than uint16 issue.
+    }
+    
+  }
+}
+
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
+{
+    if (huart->Instance == USART2) { // Change to your UART instance
+        // Copy data to main buffer so DMA can safely restart immediately
+        memcpy(main_Buffer, rx_Buffer, Size);
+        main_Buffer[Size] = '\0'; // Null-terminate the string safely
+        
+        data_ready_flag = 1; // Signal the main loop to parse the data
+        
+        // Re-arm DMA for the next message
+        HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rx_Buffer, RX_BUFFER_SIZE);
+    }
 }
 /* USER CODE END 4 */
 

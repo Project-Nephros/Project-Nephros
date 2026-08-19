@@ -9,6 +9,7 @@ extern "C" {
 // Includes
 #include "main.h"
 #include <stdint.h>
+#include "nephros_types.h"
 
 //Variables
 /*Motor state machine.
@@ -22,6 +23,7 @@ extern "C" {
 typedef enum
 {
     STATE_START_MOTOR_RAMP = 0,
+    STATE_MOTOR_MAINTENANCE,
     STATE_MOTOR_PID_TEST,
     STATE_MOTOR_END_RAMP,
     STATE_MOTOR_FLUSH,
@@ -30,7 +32,7 @@ typedef enum
 } State;
 
 //Functions
-void RunStateMachine(uint32_t currentTick);
+void RunStateMachine(uint32_t currentTick, NephrosSensorData *sensor_data);
 void SetState(State state);
 State GetState(void);
 

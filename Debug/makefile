@@ -61,7 +61,7 @@ main-build: Project-Nephros-ACTUAL.elf secondary-outputs
 
 # Tool invocations
 Project-Nephros-ACTUAL.elf Project-Nephros-ACTUAL.map: $(OBJS) $(USER_OBJS) C:\Data\repos\Project-Nephros-ACTUAL\STM32L432KCUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Project-Nephros-ACTUAL.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Data\repos\Project-Nephros-ACTUAL\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Project-Nephros-ACTUAL.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	arm-none-eabi-gcc -o "Project-Nephros-ACTUAL.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Data\repos\Project-Nephros-ACTUAL\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Project-Nephros-ACTUAL.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

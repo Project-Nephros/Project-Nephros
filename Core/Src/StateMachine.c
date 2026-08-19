@@ -133,6 +133,9 @@ static const char* GetStateName(State state)
         case STATE_START_MOTOR_RAMP:
             return "START_RAMP";
 
+        case STATE_MOTOR_MAINTENANCE:
+            return "MAINTENANCE";
+
         case STATE_MOTOR_PID_TEST:
             return "PID_TEST";
 
@@ -192,7 +195,7 @@ State GetState(void){
 }
 
 //Functions
-void RunStateMachine(uint32_t currentTick){
+void RunStateMachine(uint32_t currentTick, NephrosSensorData *sensor_data){
 
     if (currentTick - lastPIDSystemCheck < 1){
         return;
@@ -216,10 +219,24 @@ void RunStateMachine(uint32_t currentTick){
             pidStartTick = currentTick;
             lastControlUpdateTick = currentTick;
             lastUartPrintTick = currentTick;
-            currentState = STATE_MOTOR_PID_TEST;
+            currentState = STATE_MOTOR_PID_TEST; //FIXME: should change to maintenance?
             PrintMotorStatus();
           }
           break;
+        }
+
+        case STATE_MOTOR_MAINTENANCE:
+        {
+            if ((currentTick - lastControlUpdateTick) >= CONTROL_UPDATE_INTERVAL_MS)
+            {
+                measuredFlow = sensor_data -> flow_rate;
+                flowError = targetFlow - measuredFlow;
+
+                /*Motor speed is controlled based on PID error.*/
+                UpdatePID((float)flowError);
+
+                lastControlUpdateTick = currentTick;
+            }
         }
         
         case STATE_MOTOR_PID_TEST:

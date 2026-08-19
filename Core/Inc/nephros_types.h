@@ -16,6 +16,7 @@ typedef struct
     float temperature_c;
     uint16_t pressure;
     bool air_detected;
+    float flow_rate;
 } NephrosSensorData;
 
 typedef struct
