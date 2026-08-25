@@ -72,13 +72,9 @@ char msg[200];
 
 
 // thermistor variables
-#define R_FIXED 10000.0
-#define R0      100000.0
-#define BETA    4261.0
-#define T0      298.15
 #define ADC_MAX 4095.0
 #define V_REF   3.3
-#define WINDOW_SIZE 10
+#define WINDOW_SIZE 3
 
 double temp1 = 0;
 double temp2 = 0;
@@ -663,9 +659,8 @@ double readSmoothedTemperature(MovingAverage_t *ma, uint16_t rawSample)
 
     // Convert smoothed ADC value to temperature
     double Vout = (avgRaw / ADC_MAX) * V_REF;
-    double R_therm = R_FIXED * (Vout / (V_REF - Vout));
-    double tempK = 1.0 / ((1.0 / T0) + (1.0 / BETA) * log(R_therm / R0));
-    return tempK - 273.15;
+    double temperature = -2.945 * Vout + 41.701;
+    return temperature;
 }
 
 float readPressureMMHg(PressureMA_t *ma, uint32_t rawADC)
