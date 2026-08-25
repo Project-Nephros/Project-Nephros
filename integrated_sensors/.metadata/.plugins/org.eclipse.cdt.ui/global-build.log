@@ -1724,3 +1724,38 @@ Finished building: default.size.stdout
  
 Finished building: integrated_sensors.list
  
+15:35:37 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-size  integrated_sensors.elf 
+   text	   data	    bss	    dec	    hex	filename
+  42668	    472	   2808	  45948	   b37c	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+17:05:00 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-size  integrated_sensors.elf 
+   text	   data	    bss	    dec	    hex	filename
+  42668	    472	   2808	  45948	   b37c	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+11:23:34 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-size  integrated_sensors.elf 
+   text	   data	    bss	    dec	    hex	filename
+  42668	    472	   2808	  45948	   b37c	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+11:38:14 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-size  integrated_sensors.elf 
+   text	   data	    bss	    dec	    hex	filename
+  42668	    472	   2808	  45948	   b37c	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+17:13:50 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-size  integrated_sensors.elf 
+   text	   data	    bss	    dec	    hex	filename
+  42668	    472	   2808	  45948	   b37c	integrated_sensors.elf
+Finished building: default.size.stdout
+ 

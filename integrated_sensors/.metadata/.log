@@ -188,3 +188,48 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64
 
 !ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-07-14 15:23:56.409
 !MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2026-08-04 17:04:18.212 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_AU
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-08-04 17:04:34.256
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-08-04 17:04:34.261
+!MESSAGE Log4j2 initialized with config file C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-08-04 17:04:46.048
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2026-08-07 11:22:56.120 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_AU
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-08-07 11:23:15.061
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-08-07 11:23:15.061
+!MESSAGE Log4j2 initialized with config file C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-08-07 11:23:24.667
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2026-08-11 17:11:53.630 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_AU
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-08-11 17:12:04.851
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-08-11 17:12:04.854
+!MESSAGE Log4j2 initialized with config file C:\Users\azaki\Documents\GitHub\Project-Nephros\integrated_sensors\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-08-11 17:12:14.020
+!MESSAGE Started RMI Server, listening on port 41337
