@@ -88,6 +88,7 @@ char r_status[20];
 
 
 
+static bool pending_button_press = false;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -197,83 +198,100 @@ HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rx_Buffer, RX_BUFFER_SIZE);
   /* USER CODE BEGIN WHILE */
     while (1)
     {
-        uint32_t currentTick = HAL_GetTick();
-        bool button_pressed;
-        NephrosSafetyOutput safety_output;
+    	uint32_t currentTick = HAL_GetTick();
 
-        /* ------ Sensor Reading ------ */
-        read_sensors(&sensor_data);
+    	    /*
+    	     * Always check the button quickly.
+    	     * If a press happens, remember it until the 20 ms control block uses it.
+    	     */
+    	    if (NephrosUI_ButtonPressed(currentTick))
+    	    {
+    	        pending_button_press = true;
+    	    }
 
-        RunStateMachine(currentTick, &sensor_data);
+    	    /*
+    	     * Run safety/UI logic every 20 ms.
+    	     */
+    	    if (currentTick - lastAlarmLCDCheck >= 20U)
+    	    {
+    	        bool button_pressed;
+    	        NephrosSafetyOutput safety_output;
 
-        button_pressed = NephrosUI_ButtonPressed(currentTick);
+    	        lastAlarmLCDCheck = currentTick;
 
-        safety_output = NephrosSafety_Update(
-            &sensor_data,
-            button_pressed,
-            currentTick
-        );
-        
-      if (currentTick - lastAlarmLCDCheck >= 20U){
-      
-        lastAlarmLCDCheck = currentTick;
-        
-        /* ------ Emergency Stop Handling ------ */
-        if (safety_output.halted)
-        {
-            SetState(STATE_EMERGENCY_STOP);
-        }
-        
-        //Checks if the safety system has requested a resume, and restarts/resumes session
-        if (safety_output.resume_requested)
-        {
-          MotorValuesInit();
-          StartMotorPWM();
-          SetState(STATE_START_MOTOR_RAMP);
-          //FIXME: but we want to ensure that time and etc. of the ensuring session is the remaining time from before.
-        }
+    	        /*
+    	         * Use the stored button press once.
+    	         */
+    	        button_pressed = pending_button_press;
+    	        pending_button_press = false;
 
-        /* ------ LCD Message Handling ------ */
-        if (safety_output.lcd_message_valid)
-        {
-            if (!lcd_message_active)
-            {
-                NephrosUI_ShowMessage(
-                    safety_output.lcd_line1,
-                    safety_output.lcd_line2
-                );
+    	        read_sensors(&sensor_data);
 
-                lcd_message_active = true;
-                end_message_hold_ms = currentTick + safety_output.message_hold_ms;
-            }
+    	        safety_output = NephrosSafety_Update(
+    	            &sensor_data,
+    	            button_pressed,
+    	            currentTick
+    	        );
 
-            if (lcd_message_active && currentTick >= end_message_hold_ms)
-            {
-                lcd_message_active = false;
-                NephrosUI_ForceRedraw();
-            }
-        }
-        else
-        {
-            if (lcd_message_active)
-            {
-                lcd_message_active = false;
-                NephrosUI_ForceRedraw();
-            }
+    	        /*
+    	         * Emergency stop handling.
+    	         */
+    	        if (safety_output.halted)
+    	        {
+    	            SetState(STATE_EMERGENCY_STOP);
+    	        }
 
-            if (safety_output.force_normal_lcd_redraw)
-            {
-                NephrosUI_ForceRedraw();
-            }
+    	        /*
+    	         * Resume handling.
+    	         */
+    	        if (safety_output.resume_requested)
+    	        {
+    	            MotorValuesInit();
+    	            StartMotorPWM();
+    	            SetState(STATE_START_MOTOR_RAMP);
+    	        }
 
-            if (safety_output.can_cycle_lcd_view)
-            {
-                if (button_pressed)
-                {
-                    NephrosUI_NextView();
-                }
+    	        /*
+    	         * Run motor state machine after safety decision.
+    	         */
+    	        RunStateMachine(currentTick, &sensor_data);
 
-                NephrosUI_ShowNormalIfChanged(&sensor_data);
+    	        /*
+    	         * LCD message handling.
+    	         */
+    	        if (safety_output.lcd_message_valid)
+    	        {
+    	            NephrosUI_ShowMessage(
+    	                safety_output.lcd_line1,
+    	                safety_output.lcd_line2
+    	            );
+
+    	            lcd_message_active = true;
+    	            end_message_hold_ms =
+    	                currentTick + safety_output.message_hold_ms;
+    	        }
+    	        else if (lcd_message_active &&
+    	                 currentTick >= end_message_hold_ms)
+    	        {
+    	            lcd_message_active = false;
+    	            NephrosUI_ForceRedraw();
+    	        }
+    	        else if (!lcd_message_active)
+    	        {
+    	            if (safety_output.force_normal_lcd_redraw)
+    	            {
+    	                NephrosUI_ForceRedraw();
+    	            }
+
+    	            if (safety_output.can_cycle_lcd_view)
+    	            {
+    	                if (button_pressed)
+    	                {
+    	                    NephrosUI_NextView();
+    	                }
+
+    	                NephrosUI_ShowNormalIfChanged(&sensor_data);
+
             }
         }
 
