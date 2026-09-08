@@ -219,7 +219,7 @@ void RunStateMachine(uint32_t currentTick, NephrosSensorData *sensor_data){
             pidStartTick = currentTick;
             lastControlUpdateTick = currentTick;
             lastUartPrintTick = currentTick;
-            currentState = STATE_MOTOR_PID_TEST; //FIXME: should change to maintenance?
+            currentState = STATE_MOTOR_MAINTENANCE; //FIXME: should change to maintenance?
             PrintMotorStatus();
           }
           break;
@@ -229,14 +229,17 @@ void RunStateMachine(uint32_t currentTick, NephrosSensorData *sensor_data){
         {
             if ((currentTick - lastControlUpdateTick) >= CONTROL_UPDATE_INTERVAL_MS)
             {
-                measuredFlow = sensor_data -> flow_rate;
+                measuredFlow = sensor_data->flow_rate;
                 flowError = targetFlow - measuredFlow;
 
-                /*Motor speed is controlled based on PID error.*/
+                /* Motor speed is controlled based on PID error. */
                 UpdatePID((float)flowError);
 
                 lastControlUpdateTick = currentTick;
             }
+
+            /* Stay in maintenance indefinitely for now. */
+            break;
         }
         
         case STATE_MOTOR_PID_TEST:
@@ -244,7 +247,7 @@ void RunStateMachine(uint32_t currentTick, NephrosSensorData *sensor_data){
             /*PID testing stage. measuredFlow comes fromGetPlaceholderMeasuredFlow().
             * Later, replace this placeholder value with real flow sensor data.
             */
-            uint32_t elapsedMs = currentTick - pidStartTick;\
+            uint32_t elapsedMs = currentTick - pidStartTick;
 
             /*Scheduled setpoint changes for the test scenario.
             * 0–15s:  target = 250
