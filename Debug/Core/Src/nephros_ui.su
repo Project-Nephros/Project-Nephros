@@ -1,0 +1,14 @@
+../Core/Src/nephros_ui.c:57:6:NephrosUI_Init	8	static
+../Core/Src/nephros_ui.c:68:6:NephrosUI_Write	16	static
+../Core/Src/nephros_ui.c:87:6:NephrosUI_ShowBoot	8	static
+../Core/Src/nephros_ui.c:101:6:NephrosUI_ShowConsolePrompt	8	static
+../Core/Src/nephros_ui.c:117:6:NephrosUI_RunStartupMenu	224	static
+../Core/Src/nephros_ui.c:180:6:NephrosUI_ShowSetupComplete	48	static
+../Core/Src/nephros_ui.c:218:6:NephrosUI_ButtonPressed	24	static
+../Core/Src/nephros_ui.c:246:6:NephrosUI_NextView	8	static
+../Core/Src/nephros_ui.c:257:6:NephrosUI_ForceRedraw	4	static
+../Core/Src/nephros_ui.c:268:6:NephrosUI_ShowNormalIfChanged	64	static
+../Core/Src/nephros_ui.c:325:6:NephrosUI_ShowMessage	16	static
+../Core/Src/nephros_ui.c:348:13:uart_read_line	32	static
+../Core/Src/nephros_ui.c:432:13:parse_positive_u32	32	static
+../Core/Src/nephros_ui.c:480:17:ask_for_positive_number	48	static

@@ -1,0 +1,37 @@
+2026-04-19 14:02:21,052 [INFO] Activator:176 - 
+
+
+2026-04-19 14:02:21,078 [INFO] Activator:177 - !SESSION log4j initialized
+2026-04-19 14:02:59,480 [INFO] LogOutputStream:77 - [STDOUT_REDIRECT] 
+2026-04-19 14:03:08,520 [INFO] ApplicationProperties:184 - Using Application install path: C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659
+2026-04-19 14:03:08,666 [INFO] DbMcusXml:78 - Set database path to: C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659\\db\/mcu/
+2026-04-19 14:03:08,667 [INFO] ApiDb:274 - Set plugin database path to: C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659\\db\/plugins/boardmanager/
+2026-04-19 14:03:08,670 [WARN] ApiDb:259 - Overriding images path with different value:  => C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659\\db\/plugins/mcufinder/images/
+2026-04-19 14:03:08,730 [INFO] ApiDb:250 - Set database path to: C:\Users\azaki\.stmcufinder\plugins\mcufinder//mcu/
+2026-04-19 14:03:08,741 [INFO] DbMcusAds:125 - Set database path to: C:\Users\azaki\.stmcufinder\plugins\mcufinder//mcu/
+2026-04-19 14:03:08,767 [INFO] CrossReferenceDbSqlite:203 - Set database path to: C:\Users\azaki\.stmcufinder\plugins\mcufinder//mcu/cs/
+2026-04-19 14:03:11,252 [INFO] RulesReader:64 - Compatibility file has been processed (317 Rules)
+2026-04-19 14:03:13,281 [INFO] DbMcusXml:78 - Set database path to: C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659\\db\/mcu/
+2026-04-19 14:03:13,287 [INFO] ApiDb:274 - Set plugin database path to: C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659\\db\/plugins/boardmanager/
+2026-04-19 14:03:13,294 [INFO] ApiDb:261 - Set plugin images path to: C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659\\db\/plugins/mcufinder/images/
+2026-04-19 14:03:13,304 [WARN] DbFile:41 - Overriding database path with different value: C:\Users\azaki\.stmcufinder\plugins\mcufinder/ => C:\Users\azaki\.stmcufinder\plugins\mcufinder
+2026-04-19 14:03:13,317 [INFO] ApiDb:250 - Set database path to: C:\Users\azaki\.stmcufinder\plugins\mcufinder//mcu/
+2026-04-19 14:03:13,318 [WARN] DbFile:41 - Overriding database path with different value: C:\Users\azaki\.stmcufinder\plugins\mcufinder/ => C:\Users\azaki\.stmcufinder\plugins\mcufinder
+2026-04-19 14:03:13,322 [INFO] DbMcusAds:125 - Set database path to: C:\Users\azaki\.stmcufinder\plugins\mcufinder//mcu/
+2026-04-19 14:03:13,331 [WARN] DbFile:41 - Overriding database path with different value: C:\Users\azaki\.stmcufinder\plugins\mcufinder/ => C:\Users\azaki\.stmcufinder\plugins\mcufinder
+2026-04-19 14:03:13,332 [WARN] DbFile:41 - Overriding database path with different value: C:\Users\azaki\.stmcufinder\plugins\mcufinder/ => C:\Users\azaki\.stmcufinder\plugins\mcufinder
+2026-04-19 14:03:13,338 [INFO] CrossReferenceDbSqlite:203 - Set database path to: C:\Users\azaki\.stmcufinder\plugins\mcufinder//mcu/cs/
+2026-04-19 14:03:15,098 [INFO] MainPanel:274 - HeapMemory: 268435456
+2026-04-19 14:03:17,235 [INFO] DbMcusXml:78 - Set database path to: C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659\\db\/mcu/
+2026-04-19 14:03:17,236 [INFO] ApiDb:274 - Set plugin database path to: C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659\\db\/plugins/boardmanager/
+2026-04-19 14:03:17,236 [INFO] ApiDb:261 - Set plugin images path to: C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659\\db\/plugins/mcufinder/images/
+2026-04-19 14:03:17,243 [WARN] DbFile:41 - Overriding database path with different value: C:\Users\azaki\.stmcufinder\plugins\mcufinder/ => C:\Users\azaki\.stmcufinder\plugins\mcufinder
+2026-04-19 14:03:17,243 [INFO] ApiDb:250 - Set database path to: C:\Users\azaki\.stmcufinder\plugins\mcufinder//mcu/
+2026-04-19 14:03:17,244 [WARN] DbFile:41 - Overriding database path with different value: C:\Users\azaki\.stmcufinder\plugins\mcufinder/ => C:\Users\azaki\.stmcufinder\plugins\mcufinder
+2026-04-19 14:03:17,244 [INFO] DbMcusAds:125 - Set database path to: C:\Users\azaki\.stmcufinder\plugins\mcufinder//mcu/
+2026-04-19 14:03:17,246 [WARN] DbFile:41 - Overriding database path with different value: C:\Users\azaki\.stmcufinder\plugins\mcufinder/ => C:\Users\azaki\.stmcufinder\plugins\mcufinder
+2026-04-19 14:03:17,246 [WARN] DbFile:41 - Overriding database path with different value: C:\Users\azaki\.stmcufinder\plugins\mcufinder/ => C:\Users\azaki\.stmcufinder\plugins\mcufinder
+2026-04-19 14:03:17,277 [INFO] CrossReferenceDbSqlite:203 - Set database path to: C:\Users\azaki\.stmcufinder\plugins\mcufinder//mcu/cs/
+2026-04-19 14:03:17,508 [INFO] ApplicationProperties:184 - Using Application install path: C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659
+2026-04-19 14:03:17,527 [INFO] PluginManage:196 - Search for loadable plugins [exclusion list=, ]
+2026-04-19 14:03:17,558 [INFO] PluginManage:310 - Check plugin analytics

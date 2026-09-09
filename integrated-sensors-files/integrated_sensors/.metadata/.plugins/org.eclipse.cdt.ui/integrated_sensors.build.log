@@ -1,0 +1,10 @@
+17:13:50 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j20 all 
+arm-none-eabi-size  integrated_sensors.elf 
+   text	   data	    bss	    dec	    hex	filename
+  42668	    472	   2808	  45948	   b37c	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+
+17:13:52 Build Finished. 0 errors, 0 warnings. (took 1s.573ms)
+
