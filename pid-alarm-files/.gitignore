@@ -1,0 +1,21 @@
+# Build output folders
+Debug/
+Release/
+
+# Compiled files
+*.o
+*.d
+*.elf
+*.map
+*.list
+*.su
+*.cyclo
+
+# STM32CubeIDE settings
+.settings/
+
+# Logs
+*.log
+
+# STM32CubeIDE launch configs
+*.launch
