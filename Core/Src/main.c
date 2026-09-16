@@ -368,43 +368,93 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 static void read_sensors(NephrosSensorData *sensor_data)
 {
-    /*
-     * For now, this function does nothing because we are using
-     * the debugger to edit sensor_data manually.
-     *
-     * Later, Group A sensor code should update:
-     * sensor->temperature_c
-     * sensor->pressure
-     * sensor->air_detected
-     */
-  if (data_ready_flag) {
-    data_ready_flag = 0; 
-    
-    int parsed = sscanf((char*)main_Buffer, "[T1=%f, T2=%f, Bubble=%d, Status=%19[^,], P1=%f, P2=%f, F1=%f, F2=%f]",
-                        &sensor_data->temperature_c, &r_temp2, &r_bubble, r_status, &r_psi1, &r_psi2, &sensor_data->flow_rate, &r_flow2);
+    if (data_ready_flag)
+    {
+        data_ready_flag = 0;
 
-    //Check if all values have been safely parsed, if so do logic
-    //FIXME need to add logic for what to do if not succesful.
-    if (parsed == 8){
-    //Deal with Different Types FIXME: should try change for consistency, decide whether this should be inside if check                 
-    sensor_data->air_detected = (r_bubble != 0);
-    sensor_data->pressure = (uint16_t)r_psi1; //FIXME: if float negative or bigger than uint16 issue.
+        // Temporary variables
+        // Don't modify sensor_data until we know the ENTIRE message is valid
+        float temp1;
+        float temp2;
+        float psi1;
+        float psi2;
+        float flow1;
+        float flow2;
+        int bubble;
+        char status[20];
+
+        // DEBUG: print exactly what UART1 received to UART2
+        HAL_UART_Transmit(
+            &huart2,
+            (uint8_t *)main_Buffer,
+            strlen((char *)main_Buffer),
+            100
+        );
+
+        char newline[] = "\r\n";
+
+        HAL_UART_Transmit(
+            &huart2,
+            (uint8_t *)newline,
+            strlen(newline),
+            100
+        );
+
+        // Parse the received UART message
+        int parsed = sscanf(
+            (char *)main_Buffer,
+            "[T1=%f, T2=%f, Bubble=%d, Status=%19[^,], P1=%f, P2=%f, F1=%f, F2=%f]",
+            &temp1,
+            &temp2,
+            &bubble,
+            status,
+            &psi1,
+            &psi2,
+            &flow1,
+            &flow2
+        );
+
+        // Only update the real sensor data if ALL 8 values were read
+        if (parsed == 8)
+        {
+            sensor_data->temperature_c = temp1;
+            sensor_data->air_detected = (bubble != 0);
+            sensor_data->pressure = (uint16_t)psi1;
+            sensor_data->flow_rate = flow1;
+        }
     }
-    
-  }
 }
 
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 {
-    if (huart->Instance == USART2) { // Change to your UART instance
-        // Copy data to main buffer so DMA can safely restart immediately
+    if (huart->Instance == USART1)
+    {
         memcpy(main_Buffer, rx_Buffer, Size);
-        main_Buffer[Size] = '\0'; // Null-terminate the string safely
-        
-        data_ready_flag = 1; // Signal the main loop to parse the data
-        
-        // Re-arm DMA for the next message
-        HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rx_Buffer, RX_BUFFER_SIZE);
+        main_Buffer[Size] = '\0';
+
+        // Immediately print what was received to the PC
+        HAL_UART_Transmit(
+            &huart2,
+            main_Buffer,
+            Size,
+            100
+        );
+
+        char newline[] = "\r\n";
+        HAL_UART_Transmit(
+            &huart2,
+            (uint8_t *)newline,
+            strlen(newline),
+            100
+        );
+
+        data_ready_flag = 1;
+
+        HAL_UARTEx_ReceiveToIdle_DMA(
+            &huart1,
+            rx_Buffer,
+            RX_BUFFER_SIZE
+        );
     }
 }
 /* USER CODE END 4 */

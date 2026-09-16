@@ -1,5 +1,5 @@
-../Core/Src/main.c:107:5:main	112	static
-../Core/Src/main.c:294:6:SystemClock_Config	96	static
-../Core/Src/main.c:351:13:read_sensors	48	static
-../Core/Src/main.c:379:6:HAL_UARTEx_RxEventCallback	16	static
-../Core/Src/main.c:398:6:Error_Handler	4	static,ignoring_inline_asm
+../Core/Src/main.c:108:5:main	112	static
+../Core/Src/main.c:312:6:SystemClock_Config	96	static
+../Core/Src/main.c:369:13:read_sensors	96	static
+../Core/Src/main.c:428:6:HAL_UARTEx_RxEventCallback	24	static
+../Core/Src/main.c:466:6:Error_Handler	4	static,ignoring_inline_asm
