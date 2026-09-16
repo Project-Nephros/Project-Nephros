@@ -1,0 +1,10 @@
+18:58:26 **** Incremental Build of configuration Debug for project pid_alarm ****
+make -j16 all 
+arm-none-eabi-size  pid_alarm.elf 
+   text	   data	    bss	    dec	    hex	filename
+  43244	    500	   2396	  46140	   b43c	pid_alarm.elf
+Finished building: default.size.stdout
+ 
+
+18:58:27 Build Finished. 0 errors, 0 warnings. (took 737ms)
+
