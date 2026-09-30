@@ -39,7 +39,7 @@
 #define ADC_MAX_COUNT        4095.0f
 #define VREF_VOLTS           3.3f
 #define DIVIDER_RATIO        0.5f
-#define SENSOR_V_AT_ZERO    0.918f
+#define SENSOR_V_AT_ZERO    0.5f
 #define SENSOR_VOLTAGE_SPAN 4.0f
 #define SENSOR_PSI_MAX      30.0f
 #define PSI_TO_MMHG         51.71493f
@@ -489,7 +489,7 @@ static void MX_TIM1_Init(void)
   {
     Error_Handler();
   }
-  if (HAL_TIM_IC_ConfigChannel(&htim1, &sConfigIC, TIM_CHANNEL_2) != HAL_OK)
+  if (HAL_TIM_IC_ConfigChannel(&htim1, &sConfigIC, TIM_CHANNEL_4) != HAL_OK)
   {
     Error_Handler();
   }
