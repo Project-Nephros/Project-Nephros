@@ -1,0 +1,6 @@
+../Core/Src/StateMachine.c:64:16:GetPlaceholderMeasuredFlow	32	static
+../Core/Src/StateMachine.c:128:20:GetStateName	16	static
+../Core/Src/StateMachine.c:156:13:PrintMotorStatus	200	static
+../Core/Src/StateMachine.c:186:6:SetState	16	static
+../Core/Src/StateMachine.c:190:7:GetState	4	static
+../Core/Src/StateMachine.c:195:6:RunStateMachine	80	static
