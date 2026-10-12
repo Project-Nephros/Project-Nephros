@@ -39,22 +39,13 @@
 #define ADC_MAX_COUNT        4095.0f
 #define VREF_VOLTS           3.3f
 #define DIVIDER_RATIO        0.5f
-#define SENSOR_V_AT_ZERO    0.918f
+#define SENSOR_V_AT_ZERO    0.5f
 #define SENSOR_VOLTAGE_SPAN 4.0f
 #define SENSOR_PSI_MAX      30.0f
 #define PSI_TO_MMHG         51.71493f
 #define MA_DEPTH             10
 
 #define FLOW_PULSES_PER_LITRE  5880.0
-
-#define TEST_TEMP1_C            37.00
-#define TEST_TEMP2_C            36.50
-#define TEST_PSI1_MMHG          40.00f
-#define TEST_PSI2_MMHG          38.50f
-#define TEST_FLOW1_MLMIN        120.00
-#define TEST_FLOW2_MLMIN        115.00
-#define TEST_BUBBLE_DETECTION   0
-#define TEST_BUBBLE_STATUS      "NORMAL"
 
 
 /* USER CODE END PD */
@@ -71,6 +62,7 @@ DMA_HandleTypeDef hdma_adc1;
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim2;
 
+UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
@@ -155,6 +147,7 @@ static void MX_USART2_UART_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_TIM1_Init(void);
+static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
 double readSmoothedTemperature(MovingAverage_t *ma, uint16_t rawSample);
 float readPressureMMHg(PressureMA_t *ma, uint32_t rawADC);
@@ -220,13 +213,14 @@ int main(void)
   MX_ADC1_Init();
   MX_TIM2_Init();
   MX_TIM1_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_ADC_Start_DMA(&hadc1, (uint32_t *) ADCvalues, 5);
   HAL_TIM_Base_Start_IT(&htim2);
 
   /* Start flow capture */
   HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_1);
-  HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_2);
+  HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_4);
 
 
   /* USER CODE END 2 */
@@ -282,9 +276,26 @@ int main(void)
 		  flow_update(&flow2, p4);
 
 		  // send results through UART
+		  //sprintf(msg, "[T1=%.2f, T2=%.2f, Bubble=%d, Status=%s, P1=%.2f, P2=%.2f, F1=%.2f, F2=%.2f]\r\n",
+				  //temp1, temp2, bubble_detection, bubble_detector_status, psi1, psi2, flow1.avg_mLmin, flow2.avg_mLmin);
+		  //HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+
+		  // --- TEST VALUES (remove for production) ---
+		  temp1 = 36.75f;
+		  temp2 = 37.20f;
+		  bubble_detection = 0;
+		  bubble_detector_status = "NORMAL";
+		  psi1 = 151.34f;
+		  psi2 = 160.98f;
+		  flow1.avg_mLmin = 250.50f;
+		  flow2.avg_mLmin = 248.75f;
+		  // -
 		  sprintf(msg, "[T1=%.2f, T2=%.2f, Bubble=%d, Status=%s, P1=%.2f, P2=%.2f, F1=%.2f, F2=%.2f]\r\n",
-				  TEST_TEMP1_C, TEST_TEMP1_C, TEST_BUBBLE_DETECTION, TEST_BUBBLE_STATUS, TEST_PSI1_MMHG, TEST_PSI2_MMHG, TEST_FLOW1_MLMIN, TEST_FLOW2_MLMIN);
-		  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+		          temp1, temp2, bubble_detection, bubble_detector_status, psi1, psi2, flow1.avg_mLmin, flow2.avg_mLmin);
+
+		  HAL_UART_Transmit(&huart1, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+
+
 
 		  bubble_detection = 0;
 	  }
@@ -496,7 +507,7 @@ static void MX_TIM1_Init(void)
   {
     Error_Handler();
   }
-  if (HAL_TIM_IC_ConfigChannel(&htim1, &sConfigIC, TIM_CHANNEL_2) != HAL_OK)
+  if (HAL_TIM_IC_ConfigChannel(&htim1, &sConfigIC, TIM_CHANNEL_4) != HAL_OK)
   {
     Error_Handler();
   }
@@ -548,6 +559,41 @@ static void MX_TIM2_Init(void)
   /* USER CODE BEGIN TIM2_Init 2 */
 
   /* USER CODE END TIM2_Init 2 */
+
+}
+
+/**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 115200;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart1.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
 
 }
 
@@ -705,7 +751,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
     {
         pulse_count_1++;
     }
-    else if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_2)
+    else if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_4)
     {
         pulse_count_4++;
         HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);

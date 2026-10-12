@@ -1,0 +1,123 @@
+/* USER CODE BEGIN Header */
+/* main.c */
+/* USER CODE END Header */
+#include "main.h"
+#include "dma.h"
+#include "i2c.h"
+#include "tim.h"
+#include "usart.h"
+#include "gpio.h"
+
+/* USER CODE BEGIN Includes */
+#include <string.h>
+#include <stdint.h>
+/* USER CODE END Includes */
+
+/* USER CODE BEGIN PV */
+#define RX_BUFFER_SIZE 512
+uint8_t rx_Buffer[RX_BUFFER_SIZE];
+uint8_t main_Buffer[RX_BUFFER_SIZE + 1];
+volatile uint8_t data_ready_flag = 0;
+volatile uint16_t rx_len = 0;
+/* USER CODE END PV */
+
+void SystemClock_Config(void);
+
+int main(void)
+{
+  HAL_Init();
+  SystemClock_Config();
+
+  MX_GPIO_Init();
+  MX_DMA_Init();
+  MX_USART2_UART_Init();
+  MX_I2C1_Init();
+  MX_TIM1_Init();
+  MX_TIM2_Init();
+  MX_USART1_UART_Init();
+
+  /* USER CODE BEGIN 2 */
+  HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rx_Buffer, RX_BUFFER_SIZE);
+
+  char msg[] = "receiver ready\r\n";
+  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 100);
+  /* USER CODE END 2 */
+
+  /* USER CODE BEGIN WHILE */
+  while (1)
+  {
+      if (data_ready_flag)
+      {
+          data_ready_flag = 0;
+          HAL_UART_Transmit(&huart2, main_Buffer, rx_len, 100);
+          HAL_UART_Transmit(&huart2, (uint8_t*)"\r\n", 2, 100);
+      }
+  }
+  /* USER CODE END WHILE */
+}
+
+void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+
+  if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  HAL_PWR_EnableBkUpAccess();
+  __HAL_RCC_LSEDRIVE_CONFIG(RCC_LSEDRIVE_LOW);
+
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSE|RCC_OSCILLATORTYPE_MSI;
+  RCC_OscInitStruct.LSEState = RCC_LSE_ON;
+  RCC_OscInitStruct.MSIState = RCC_MSI_ON;
+  RCC_OscInitStruct.MSICalibrationValue = 0;
+  RCC_OscInitStruct.MSIClockRange = RCC_MSIRANGE_6;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_MSI;
+  RCC_OscInitStruct.PLL.PLLM = 1;
+  RCC_OscInitStruct.PLL.PLLN = 16;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV7;
+  RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
+  RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  HAL_RCCEx_EnableMSIPLLMode();
+}
+
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
+{
+    if (huart->Instance == USART1)
+    {
+        memcpy(main_Buffer, rx_Buffer, Size);
+        main_Buffer[Size] = '\0';
+        rx_len = Size;
+        data_ready_flag = 1;
+        HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rx_Buffer, RX_BUFFER_SIZE);
+    }
+}
+
+void Error_Handler(void)
+{
+  __disable_irq();
+  while (1) { }
+}
+#ifdef USE_FULL_ASSERT
+void assert_failed(uint8_t *file, uint32_t line) { }
+#endif

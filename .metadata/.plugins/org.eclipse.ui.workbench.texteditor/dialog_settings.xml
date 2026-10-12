@@ -3,10 +3,18 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="false"/>
 	<list key="searchhistory">
+		<item value="dma"/>
+		<item value="buffer"/>
+		<item value="uartex_rece"/>
+		<item value="msg"/>
+		<item value="types"/>
+		<item value="typedef"/>
+		<item value="parsed == 8"/>
+		<item value="read_sensor"/>
+		<item value="ld3_pin"/>
 		<item value="gpio"/>
 		<item value="sensor"/>
 		<item value="temperature_c"/>
 		<item value="temperature"/>
-		<item value="msg"/>
 	</list>
 </section>

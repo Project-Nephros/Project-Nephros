@@ -1,0 +1,176 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file           : main.c
+  * @brief          : Main program body
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+/* Includes ------------------------------------------------------------------*/
+#include "main.h"
+#include "dma.h"
+#include "i2c.h"
+#include "tim.h"
+#include "usart.h"
+#include "gpio.h"
+
+/* USER CODE BEGIN Includes */
+#include "PumpMotor.h"
+#include "StateMachine.h"
+#include "nephros_ui.h"
+#include "nephros_safety.h"
+#include "liquidcrystal_i2c.h"
+
+#include <string.h>
+#include <stdio.h>
+#include <math.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <stdint.h>
+#include <errno.h>
+/* USER CODE END Includes */
+
+/* USER CODE BEGIN PV */
+#define RX_BUFFER_SIZE 512
+uint8_t rx_Buffer[RX_BUFFER_SIZE];
+uint8_t main_Buffer[RX_BUFFER_SIZE + 1];
+volatile uint8_t data_ready_flag = 0;
+volatile uint16_t rx_len = 0;
+
+static NephrosSensorData sensor_data =
+{
+    .temperature_c = 36.5f,
+    .pressure = 150U,
+    .air_detected = false,
+    .flow_rate = 0.0f
+};
+
+static NephrosSetup setup_data;
+
+uint32_t lastAlarmLCDCheck = 0;
+static uint32_t end_message_hold_ms = 0U;
+static bool lcd_message_active = false;
+static bool pending_button_press = false;
+/* USER CODE END PV */
+
+void SystemClock_Config(void);
+/* USER CODE BEGIN PFP */
+static void read_sensors(NephrosSensorData *sensor);
+/* USER CODE END PFP */
+
+int main(void)
+{
+  /* USER CODE BEGIN 1 */
+  /* USER CODE END 1 */
+
+  HAL_Init();
+  SystemClock_Config();
+
+  MX_GPIO_Init();
+  MX_DMA_Init();
+  MX_USART2_UART_Init();
+  MX_I2C1_Init();
+  MX_TIM1_Init();
+  MX_TIM2_Init();
+  MX_USART1_UART_Init();
+
+  /* USER CODE BEGIN 2 */
+  HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rx_Buffer, RX_BUFFER_SIZE);
+
+  /* --- menu/motor disabled for UART1 test ---
+  NephrosUI_Init();
+  NephrosUI_ShowBoot();
+  NephrosUI_ShowConsolePrompt();
+  NephrosUI_RunStartupMenu(&setup_data);
+  NephrosUI_ShowSetupComplete(&setup_data);
+  NephrosSafety_Init(NephrosUI_Write);
+  MotorValuesInit();
+  StartMotorPWM();
+  */
+
+  char startMessage[] = "UART1 echo test ready\r\n";
+  HAL_UART_Transmit(&huart2, (uint8_t*)startMessage, strlen(startMessage), 100);
+  /* USER CODE END 2 */
+
+  /* USER CODE BEGIN WHILE */
+  while (1)
+  {
+      if (data_ready_flag)
+      {
+          data_ready_flag = 0;
+          HAL_UART_Transmit(&huart2, main_Buffer, rx_len, 100);
+          HAL_UART_Transmit(&huart2, (uint8_t*)"\r\n", 2, 100);
+      }
+  }
+  /* USER CODE END WHILE */
+}
+
+/* (SystemClock_Config unchanged — keep your existing one) */
+
+/* USER CODE BEGIN 4 */
+static void read_sensors(NephrosSensorData *sensor)
+{
+    if (!data_ready_flag) return;
+    data_ready_flag = 0;
+
+    float t1, t2, p1, p2, f1, f2;
+    int bubble;
+    char status[20];
+
+    int parsed = sscanf((char *)main_Buffer,
+        "[T1=%f, T2=%f, Bubble=%d, Status=%19[^,], P1=%f, P2=%f, F1=%f, F2=%f]",
+        &t1, &t2, &bubble, status, &p1, &p2, &f1, &f2);
+
+    if (parsed == 8)
+    {
+        sensor->temperature_c = t1;
+        sensor->air_detected  = (bubble != 0);
+        sensor->pressure      = (uint16_t)p1;
+        sensor->flow_rate     = f1;
+    }
+}
+
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
+{
+    if (huart->Instance == USART1)
+    {
+        memcpy(main_Buffer, rx_Buffer, Size);
+        main_Buffer[Size] = '\0';
+        rx_len = Size;
+        data_ready_flag = 1;
+        HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rx_Buffer, RX_BUFFER_SIZE);
+    }
+}
+/* USER CODE END 4 */
+
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
+void Error_Handler(void)
+{
+  /* USER CODE BEGIN Error_Handler_Debug */
+  /* User can add his own implementation to report the HAL error return state */
+  __disable_irq();
+  while (1)
+  {
+  }
+  /* USER CODE END Error_Handler_Debug */
+}
+#ifdef USE_FULL_ASSERT
+/**
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
+void assert_failed(uint8_t *file, uint32_t line)
+{
+  /* USER CODE BEGIN 6 */
+  /* User can add his own implementation to report the file name and line number,
+     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+  /* USER CODE END 6 */
+}
+#endif /* USE_FULL_ASSERT */
