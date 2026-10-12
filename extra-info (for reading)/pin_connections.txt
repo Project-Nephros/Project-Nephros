@@ -1,0 +1,13 @@
+This is made under the assumption the USB is connected to the PID-Alarm STM32
+
+board1 = sensor STM
+board2 = pid-alarm STM
+
+
+1. GND to GND
+2. 5V to 5V
+3. TX (board1) to RX (board2)
+4. 3V3 (board1) to RST (board1) via 100 ohm resistor
+
+
+Note: The 4th connection is likely only necessary if board1 does not have a USB plugged into it

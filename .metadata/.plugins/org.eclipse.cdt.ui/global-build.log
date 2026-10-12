@@ -1340,3 +1340,38 @@ arm-none-eabi-size  pid_alarm.elf
   55708	    504	   3648	  59860	   e9d4	pid_alarm.elf
 Finished building: default.size.stdout
  
+00:53:34 **** Build of configuration Debug for project integrated_sensors ****
+make -j16 all 
+arm-none-eabi-size  integrated_sensors.elf 
+   text	   data	    bss	    dec	    hex	filename
+  41896	    472	   2912	  45280	   b0e0	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+00:54:10 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j16 all 
+arm-none-eabi-size  integrated_sensors.elf 
+   text	   data	    bss	    dec	    hex	filename
+  41896	    472	   2912	  45280	   b0e0	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+00:54:32 **** Build of configuration Debug for project pid_alarm ****
+make -j16 all 
+arm-none-eabi-size  pid_alarm.elf 
+   text	   data	    bss	    dec	    hex	filename
+  55708	    504	   3648	  59860	   e9d4	pid_alarm.elf
+Finished building: default.size.stdout
+ 
+00:56:08 **** Incremental Build of configuration Debug for project integrated_sensors ****
+make -j16 all 
+arm-none-eabi-size  integrated_sensors.elf 
+   text	   data	    bss	    dec	    hex	filename
+  41896	    472	   2912	  45280	   b0e0	integrated_sensors.elf
+Finished building: default.size.stdout
+ 
+00:56:41 **** Incremental Build of configuration Debug for project pid_alarm ****
+make -j16 all 
+arm-none-eabi-size  pid_alarm.elf 
+   text	   data	    bss	    dec	    hex	filename
+  55708	    504	   3648	  59860	   e9d4	pid_alarm.elf
+Finished building: default.size.stdout
+ 
