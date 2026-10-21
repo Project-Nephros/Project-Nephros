@@ -34,8 +34,6 @@
 #define PRESSURE_HIGH_LIMIT     200U
 #define PRESSURE_CONFIRM_MS     3000U
 
-#define SENSOR_LOG_PERIOD_MS    1000U
-
 /* Fan hysteresis */
 #define FAN_ON_TEMP_C           38.0f
 #define FAN_OFF_TEMP_C          37.5f

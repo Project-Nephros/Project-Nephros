@@ -47,7 +47,7 @@ static const uint32_t kTimeUpdateIntervalMs = 20U;
  *
  * This is still a placeholder and should be tuned later.
  */
-static const uint32_t kFinalStartARR = 52U - 1U;
+static const uint32_t kFinalStartARR = 24U - 1U;
 
 /*
  * Existing idea from original code:
@@ -87,7 +87,7 @@ static const uint32_t kFlushDurationMs = 10000U;
  * Safety bounds for ARR.
  * This prevents PID or other functions from setting an unsafe ARR value.
  */
-static const uint32_t kMinARR = 52U - 1U;
+static const uint32_t kMinARR = 24U - 1U;
 static const uint32_t kMaxARR = 1000U - 1U;
 
 /* -------------------------------------------------------------------------- */

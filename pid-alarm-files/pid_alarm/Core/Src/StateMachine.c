@@ -58,7 +58,7 @@ static uint8_t stoppedMessagePrinted = 0U;
 //Prototype Functions
 static int32_t GetPlaceholderMeasuredFlow(uint32_t arr, uint32_t elapsedMs); //will be removed later
 static const char* GetStateName(State state);
-static void PrintMotorStatus(void);
+static void PrintMotorStatus(uint32_t currentTick, const NephrosSensorData *sensor_data);
 
 //helper Functions
 static int32_t GetPlaceholderMeasuredFlow(uint32_t arr, uint32_t elapsedMs)
@@ -133,6 +133,12 @@ static const char* GetStateName(State state)
         case STATE_START_MOTOR_RAMP:
             return "START_RAMP";
 
+        case STATE_MOTOR_MAINTENANCE:
+            return "MAINTENANCE";
+
+        case STATE_MOTOR_MAINTENANCE_NO_PID:
+            return "MAINTENANCE";
+
         case STATE_MOTOR_PID_TEST:
             return "PID_TEST";
 
@@ -153,7 +159,7 @@ static const char* GetStateName(State state)
     }
 }
 
-static void PrintMotorStatus(void)
+static void PrintMotorStatus(uint32_t currentTick, const NephrosSensorData *sensor_data)
 {
     /*UART debug print.
      *
@@ -164,22 +170,27 @@ static void PrintMotorStatus(void)
      * based on the PID error.
      */
 
-    char buffer[150];
+    char buffer[220];
 
     int len = snprintf(
         buffer,
         sizeof(buffer),
-        "State=%s, Target=%ld mL/min, Measured=%ld mL/min, Error=%ld, ARR=%lu\r\n",
+        "State=%s, Target=%ld mL/min, Measured=%ld mL/min, Error=%ld, ARR=%lu, Time=%lu ms, Temp=%.1f C, Pressure=%u, Air=%u, Safety=%s\r\n",
         GetStateName(currentState),
         (long)targetFlow,
         (long)measuredFlow,
         (long)flowError,
-        (unsigned long)GetARR()
+        (unsigned long)GetARR(),
+        (unsigned long)currentTick,
+        (double)sensor_data->temperature_c,
+        (unsigned int)sensor_data->pressure,
+        sensor_data->air_detected ? 1U : 0U,
+        (currentState == STATE_EMERGENCY_STOP) ? "HALTED" : "RUNNING"
     );
 
-    if (len > 0)
+    if (len > 0 && (size_t)len < sizeof(buffer))
     {
-        HAL_UART_Transmit(&huart2, (uint8_t*)buffer, (uint16_t)strlen(buffer), 100);
+        HAL_UART_Transmit(&huart2, (uint8_t*)buffer, (uint16_t)len, 100);
     }
 }
 
@@ -192,7 +203,7 @@ State GetState(void){
 }
 
 //Functions
-void RunStateMachine(uint32_t currentTick){
+void RunStateMachine(uint32_t currentTick, NephrosSensorData *sensor_data){
 
     if (currentTick - lastPIDSystemCheck < 1){
         return;
@@ -206,7 +217,7 @@ void RunStateMachine(uint32_t currentTick){
           /*Periodic UART print during ramp-up so we can see ARR decreasing. */
           if ((currentTick - lastUartPrintTick) >= UART_PRINT_INTERVAL_MS)
           {
-            PrintMotorStatus(); //check we can do this
+            PrintMotorStatus(currentTick, sensor_data); //check we can do this
             lastUartPrintTick = currentTick;
           }
 
@@ -216,10 +227,25 @@ void RunStateMachine(uint32_t currentTick){
             pidStartTick = currentTick;
             lastControlUpdateTick = currentTick;
             lastUartPrintTick = currentTick;
-            currentState = STATE_MOTOR_PID_TEST;
-            PrintMotorStatus();
+            currentState = STATE_MOTOR_MAINTENANCE_NO_PID;
+            PrintMotorStatus(currentTick, sensor_data);
           }
           break;
+        }
+
+        case STATE_MOTOR_MAINTENANCE_NO_PID:
+        {
+            // Maintain the current ARR without PID control.
+            // TIM2 continues generating PWM at the existing frequency.
+
+            if ((currentTick - lastUartPrintTick) >= UART_PRINT_INTERVAL_MS)
+            {
+                PrintMotorStatus(currentTick, sensor_data);
+                lastUartPrintTick = currentTick;
+            }
+
+            // Stay in this state until another state is requested.
+            break;
         }
         
         case STATE_MOTOR_PID_TEST:
@@ -227,7 +253,7 @@ void RunStateMachine(uint32_t currentTick){
             /*PID testing stage. measuredFlow comes fromGetPlaceholderMeasuredFlow().
             * Later, replace this placeholder value with real flow sensor data.
             */
-            uint32_t elapsedMs = currentTick - pidStartTick;\
+            uint32_t elapsedMs = currentTick - pidStartTick;
 
             /*Scheduled setpoint changes for the test scenario.
             * 0–15s:  target = 250
@@ -261,7 +287,7 @@ void RunStateMachine(uint32_t currentTick){
 
             if ((currentTick - lastUartPrintTick) >= UART_PRINT_INTERVAL_MS)
             {
-                PrintMotorStatus();
+                PrintMotorStatus(currentTick, sensor_data);
                 lastUartPrintTick = currentTick;
             }
 
@@ -269,7 +295,7 @@ void RunStateMachine(uint32_t currentTick){
             if (elapsedMs >= PID_TEST_DURATION_MS)
             {
                 currentState = STATE_MOTOR_END_RAMP;
-                PrintMotorStatus();
+                PrintMotorStatus(currentTick, sensor_data);
             }
 
             break;
@@ -280,14 +306,14 @@ void RunStateMachine(uint32_t currentTick){
             /* ADDED: Periodic UART print during ramp-down so we can see ARR increasing. */
             if ((currentTick - lastUartPrintTick) >= UART_PRINT_INTERVAL_MS)
             {
-                PrintMotorStatus();
+                PrintMotorStatus(currentTick, sensor_data);
                 lastUartPrintTick = currentTick;
             }
 
             if (EndPump())
             {
                 currentState = STATE_MOTOR_STOPPED;
-                PrintMotorStatus();
+                PrintMotorStatus(currentTick, sensor_data);
             }
             break;
         }
@@ -300,14 +326,14 @@ void RunStateMachine(uint32_t currentTick){
              */
             if ((currentTick - lastUartPrintTick) >= UART_PRINT_INTERVAL_MS)
             {
-                PrintMotorStatus();
+                PrintMotorStatus(currentTick, sensor_data);
                 lastUartPrintTick = currentTick;
             }
 
             if (FlushPump())
             {
                 currentState = STATE_MOTOR_STOPPED; //MODIFIED: motorState = MOTOR_STATE_END_RAMP; not sure when the flush happens. check where it should occur.
-                PrintMotorStatus();
+                PrintMotorStatus(currentTick, sensor_data);
             }
             break;
         }
@@ -340,7 +366,7 @@ void RunStateMachine(uint32_t currentTick){
         {
           StopMotorPWM();
           //HAL_GPIO_WritePin(GPIOB, ALARM_LED_Pin | BUZZER_Pin, GPIO_PIN_SET); //This is handled by alarm system
-          PrintMotorStatus();
+          PrintMotorStatus(currentTick, sensor_data);
           // if (a reset button pressed or whatever) 
           // {
           //   MotorValuesInit();
@@ -365,6 +391,3 @@ void RunStateMachine(uint32_t currentTick){
         }
       }
 }
-
-
-

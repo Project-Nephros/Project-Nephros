@@ -33,6 +33,7 @@ typedef enum
     VIEW_TEMP = 0,
     VIEW_PRES,
     VIEW_AIR,
+    VIEW_FLOW,
     VIEW_COUNT
 } LcdView;
 
@@ -241,7 +242,7 @@ bool NephrosUI_ButtonPressed(uint32_t now_ms)
 
 /*
  * Moves to the next normal LCD view:
- * Temperature -> Pressure -> Air Status -> Temperature.
+ * Temperature -> Pressure -> Air Status -> Flow -> Temperature.
  */
 void NephrosUI_NextView(void)
 {
@@ -300,6 +301,11 @@ void NephrosUI_ShowNormalIfChanged(const NephrosSensorData *sensor)
                 "%s",
                 sensor->air_detected ? "DETECTED" : "Clear"
             );
+            break;
+
+        case VIEW_FLOW:
+            snprintf(line1, sizeof(line1), "Flow Rate");
+            snprintf(line2, sizeof(line2), "%.1f mL/min", (double)sensor->flow_rate);
             break;
 
         default:

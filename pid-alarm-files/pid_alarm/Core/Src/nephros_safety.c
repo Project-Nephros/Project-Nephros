@@ -20,9 +20,6 @@ static NephrosFaultCode latched_fault = NEPHROS_FAULT_NONE;
 static bool pressure_timer_active = false;
 static uint32_t pressure_out_start_ms = 0;
 
-/* Sensor log timing */
-static uint32_t last_sensor_log_ms = 0;
-
 /* Warning and fan state */
 static bool temp_warning_was_active = false;
 static bool fan_on = false;
@@ -39,11 +36,6 @@ static void log_event(
     uint32_t now_ms,
     const char *event_name,
     const char *detail
-);
-
-static void log_sensor_reading(
-    const NephrosSensorData *sensor,
-    uint32_t now_ms
 );
 
 static bool pressure_out_of_range_long_enough(
@@ -83,7 +75,6 @@ void NephrosSafety_Init(NephrosLogWriter writer)
     pressure_timer_active = false;
     pressure_out_start_ms = 0;
 
-    last_sensor_log_ms = 0;
     temp_warning_was_active = false;
     fan_on = false;
 
@@ -125,7 +116,6 @@ NephrosSafetyOutput NephrosSafety_Update(
      * Fan and logging run every loop, even during halted state.
      */
     update_fan(sensor->temperature_c);
-    log_sensor_reading(sensor, now_ms);
 
     /*
      * Check for current critical faults:
@@ -577,50 +567,6 @@ static void log_event(
         (unsigned long)now_ms,
         event_name,
         detail
-    );
-
-    log_write(line);
-}
-
-
-/*
- * Logs sensor readings periodically.
- *
- * Example:
- * DATA,1000,36.5,150,0,RUNNING
- *
- * Meaning:
- * timestamp, temperature, pressure, air_detected, system_state
- */
-static void log_sensor_reading(
-    const NephrosSensorData *sensor,
-    uint32_t now_ms
-)
-{
-    char line[128];
-
-    if (log_write == NULL || sensor == NULL)
-    {
-        return;
-    }
-
-    if ((uint32_t)(now_ms - last_sensor_log_ms)
-        < SENSOR_LOG_PERIOD_MS)
-    {
-        return;
-    }
-
-    last_sensor_log_ms = now_ms;
-
-    snprintf(
-        line,
-        sizeof(line),
-        "DATA,%lu,%.1f,%u,%u,%s\r\n",
-        (unsigned long)now_ms,
-        sensor->temperature_c,
-        (unsigned int)sensor->pressure,
-        sensor->air_detected ? 1U : 0U,
-        (system_state == NEPHROS_HALTED) ? "HALTED" : "RUNNING"
     );
 
     log_write(line);
