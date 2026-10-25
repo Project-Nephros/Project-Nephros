@@ -231,7 +231,13 @@ int main(void)
                   {
                       NephrosUI_NextView();
                   }
-                  NephrosUI_ShowNormalIfChanged(&sensor_data);
+                  static uint32_t lastLCDUpdate = 0U;
+
+                  if (currentTick - lastLCDUpdate >= 200U)
+                  {
+                      lastLCDUpdate = currentTick;
+                      NephrosUI_ShowNormalIfChanged(&sensor_data);
+                  }
               }
           }
       }
@@ -400,7 +406,7 @@ static void read_sensors(NephrosSensorData *sensor, uint32_t now_ms)
 
     if (find_value(msg, "Bubble=", &v))
     {
-        sensor->air_detected = (v != 0.0f);
+        sensor->air_detected = (v != 0.0%f);
         fields++;
     }
 
@@ -412,7 +418,7 @@ static void read_sensors(NephrosSensorData *sensor, uint32_t now_ms)
         fields++;
     }
 
-    if (find_value(msg, "F1=", &v))
+    if (find_value(msg, "F2=", &v))
     {
         sensor->flow_rate = v;
         fields++;

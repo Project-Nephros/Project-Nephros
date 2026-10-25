@@ -17,14 +17,14 @@
 
 /* Normal dialysate temperature range */
 #define TEMP_NORMAL_LOW_C       35.0f
-#define TEMP_NORMAL_HIGH_C      38.0f
+#define TEMP_NORMAL_HIGH_C     	50.0f
 
 /*
  * Prototype severe-temperature limits.
  * Team should confirm final values.
  */
 #define TEMP_HALT_LOW_C         33.0f
-#define TEMP_HALT_HIGH_C        40.0f
+#define TEMP_HALT_HIGH_C        60.0f
 
 /*
  * Demo pressure window.

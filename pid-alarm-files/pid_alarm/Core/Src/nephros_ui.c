@@ -276,10 +276,6 @@ void NephrosUI_ShowNormalIfChanged(const NephrosSensorData *sensor)
         return;
     }
 
-    if (current_view == last_drawn_view)
-    {
-        return;
-    }
 
     switch (current_view)
     {
